@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spotify - Home</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body style="background-color: #121212" class="text-light">
+    <header>
+      <nav class="navbar" style="background-color: black">
+        <div class="container-fluid">
+          <div class="d-flex align-items-center px-2 gap-3">
+            <a class="navbar-brand bg-success" style="width: 110px">
+              <img
+                src="./assets/imgs/logo.svg"
+                alt="logo-spotify
+              
+              "
+            /></a>
+            <a href="./home-page.html" class="text-light border-1">
+              <i
+                class="bi bi-house-door-fill fs-2 px-2 px-2 pb-1 rounded rounded-circle bg-secondary"
+              ></i>
+            </a>
+            <form
+              class="d-flex text-light btn-group border border-1 rounded-5"
+              role="search"
+            >
+              <button type="button" class="btn text-light" id="search-btn">
+                <i class="bi bi-search"></i>
+              </button>
+              <input
+                class="bg-black w-auto text-light border-0"
+                type="search"
+                placeholder="Want do you wanna play?"
+                aria-label="Search"
+              />
+              <button type="button" class="btn">
+                <i class="bi bi-archive text-light"></i>
+              </button>
+            </form>
+          </div>
+          <section class="d-flex align-items-center">
+            <div class="d-flex gap-3 border-end border-2 px-3">
+              <a href="#" class="text-light fw-bold text-decoration-none">
+                Premium</a
+              >
+              <a href="#" class="text-light fw-bold text-decoration-none">
+                Support</a
+              >
+              <a href="#" class="text-light fw-bold text-decoration-none"
+                >Download
+              </a>
+            </div>
+            <div class="d-flex align-items-center gap-3 px-3">
+              <a href="#" class="text-light fw-bold text-decoration-none"
+                ><i class="bi bi-arrow-down-circle-fill"></i> Install App</a
+              >
+              <a href="#" class="text-light fw-bold text-decoration-none">
+                Sign Up</a
+              >
+              <button
+                type="button"
+                class="btn text-dark border border-1 bg-light rounded-4 p-2"
+                id="search-btn"
+              >
+                <a href="#" class="text-decoration-none fw-bold text-dark"
+                  >Log in</a
+                >
+              </button>
+            </div>
+          </section>
+        </div>
+      </nav>
+      <div
+        class="bg-black d-flex flex-column p-2"
+        style="width: 350px; height: 100vh"
+      >
+        <div
+          class="bg-dark rounded-3 d-flex flex-column flex-grow-1 overflow-hidden"
+        >
+          <div
+            class="p-3 d-flex justify-content-between align-items-center text-secondary"
+          >
+            <div class="fw-bold text-light">
+              <i class="bi bi-collection-play me-2 text-light"></i>La tua
+              libreria
+            </div>
+            <button
+              class="btn btn-dark rounded-pill border-0 px-3 py-1 d-flex align-items-center gap-1 hover-light"
+              style="background-color: #1f1f1f"
+            >
+              <i class="bi bi-plus-lg fs-6"></i>
+              <span class="fw-bold" style="font-size: 14px">Crea</span>
+            </button>
+          </div>
+
+          <div
+            class="flex-grow-1 overflow-y-auto px-3 custom-scroll"
+            style="background-color: #121212"
+          >
+            <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-4">
+              <p class="fw-bold text-white mb-1">Crea la tua prima playlist</p>
+              <p class="text-light small mb-3">È facile, ti aiuteremo</p>
+              <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+                Crea playlist
+              </button>
+            </div>
+
+            <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3">
+              <p class="fw-bold text-white mb-1">
+                Cerca qualche podcast da seguire
+              </p>
+              <p class="text-white small mb-3">
+                Ti aggiorneremo sui nuovi episodi
+              </p>
+              <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+                Sfoglia i podcast
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 mt-auto">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 12px"
+                >Informazioni legali</a
+              >
+
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 12px"
+                >Sicurezza e Centro sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 12px"
+                >Informativa sulla privacy</a
+              >
+
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 12px"
+                >Impostazioni cookie</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 12px"
+                >Info annunci</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 12px"
+                >Accessibilità</a
+              >
+            </div>
+            <div class="mb-3">
+              <a
+                href="#"
+                class="text-light text-decoration-none"
+                style="font-size: 15px"
+                >Politica sui cookie</a
+              >
+            </div>
+            <button
+              class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold border-secondary-subtle"
+            >
+              <i class="bi bi-globe me-1"></i> Italiano
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main></main>
+    <footer></footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
