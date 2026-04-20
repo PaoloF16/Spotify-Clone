@@ -9,126 +9,39 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>searchBar</title>
+  </head>
+  <body class="bg-dark text-white">
     <header>
       <nav class="navbar bg-black px-3">
-        <div
-          class="container-fluid d-flex justify-content-between align-items-center"
-        >
-          <!-- LEFT -->
-          <div class="d-flex align-items-center">
-            <a href="#" class="me-3">
-              <svg width="32" height="32" fill="#ffffff" viewBox="0 0 16 16">
-                <path
-                  d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288"
-                />
-              </svg>
-            </a>
-          </div>
-
-          <!-- CENTER -->
-          <div
-            class="d-flex align-items-center flex-grow-1 justify-content-center"
-          >
-            <div
-              class="bg-dark rounded-circle d-flex align-items-center justify-content-center me-3"
-              style="width: 40px; height: 40px"
-            >
-              <svg width="20" height="20" fill="#ffffff" viewBox="0 0 256 256">
-                <path
-                  d="M224,120v96a8,8,0,0,1-8,8H160a8,8,0,0,1-8-8V164a4,4,0,0,0-4-4H108a4,4,0,0,0-4,4v52a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V120a16,16,0,0,1,4.69-11.31l80-80a16,16,0,0,1,22.62,0l80,80A16,16,0,0,1,224,120Z"
-                />
-              </svg>
-            </div>
-
+        <div class="container-fluid d-flex justify-content-center">
+          <div class="search-box">
             <div
               class="d-flex align-items-center bg-dark rounded-pill px-3"
-              style="width: 400px; height: 40px"
+              style="height: 40px"
             >
-              <svg
-                width="18"
-                height="18"
-                fill="#b3b3b3"
-                class="me-2"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85 1.415-1.414-3.85-3.85zm-5.242 1.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-                />
-              </svg>
               <input
                 id="inputSearch"
                 type="search"
                 class="form-control bg-transparent border-0 text-white p-0"
-                placeholder="Search"
+                placeholder="Buscar artista"
+                autocomplete="off"
               />
             </div>
-          </div>
 
-          <!-- RIGHT -->
-          <div class="d-flex align-items-center">
-            <button class="btn btn-light rounded-pill me-3 fw-bold">
-              Upgrade to Premium
-            </button>
-
-            <div class="d-flex align-items-center me-3">
-              <span class="me-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#ffffff"
-                  stroke-width="1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                  <path d="M7 11l5 5l5 -5" />
-                  <path d="M12 4l0 12" />
-                </svg>
-              </span>
-              <a
-                href="#"
-                class="text-white text-decoration-none d-flex align-items-center"
-              >
-                Download
-              </a>
-            </div>
-
-            <div class="me-3">
-              <svg width="20" height="20" fill="#ffffff" viewBox="0 0 24 24">
-                <path
-                  d="M12 2C7.84 2 4.48 5.36 4.48 9.52c0 1.04-.06 2.02-.68 2.91-.48.68-1.13 1.36-1.26 2.2-.21 1.35.74 2.29 1.9 2.76 4.46 1.79 10.67 1.79 15.13 0 1.16-.47 2.11-1.41 1.9-2.76-.13-.84-.78-1.52-1.26-2.2-.62-.89-.68-1.87-.68-2.91C19.52 5.36 16.16 2 12 2z"
-                />
-              </svg>
-            </div>
-
-            <div
-              class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
-              style="width: 32px; height: 32px"
-            >
-              F
-            </div>
+            <ul id="listaData"></ul>
           </div>
         </div>
       </nav>
     </header>
-  </head>
-  <body>
-    <div>
-      <ul id="listaData">
-        Data Info
-        <li></li>
-      </ul>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
+
+    <section class="container">
+      <div id="cardArtist" class="mb-4"></div>
+      <div id="cardSongs"></div>
+      <div id="cardAlbums"></div>
+    </section>
+
     <script src="./searchbar.js"></script>
   </body>
 </html>

@@ -1,0 +1,43 @@
+#listaData {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 45px;
+  left: 0;
+  width: 100%;
+  background: #222;
+  border-radius: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+#listaData li {
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+}
+
+#listaData li:hover {
+  background: #333;
+}
+
+.search-box {
+  position: relative;
+  width: 400px;
+}
+
+#cardArtist img {
+  width: 180px;
+  border-radius: 12px;
+}
+
+#cardArtist {
+  margin-top: 30px;
+}
+
+#cardSongs ul {
+  padding-left: 20px;
+}
