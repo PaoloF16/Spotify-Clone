@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>searchBar</title>
+  </head>
+  <body class="bg-dark text-white">
+    <header>
+      <nav class="navbar bg-black px-3">
+        <div class="container-fluid d-flex justify-content-center">
+          <div class="search-box">
+            <div
+              class="d-flex align-items-center bg-dark rounded-pill px-3"
+              style="height: 40px"
+            >
+              <input
+                id="inputSearch"
+                type="search"
+                class="form-control bg-transparent border-0 text-white p-0"
+                placeholder="Buscar artista"
+                autocomplete="off"
+              />
+            </div>
+
+            <ul id="listaData"></ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="container">
+      <div id="cardArtist" class="mb-4"></div>
+      <div id="cardSongs"></div>
+      <div id="cardAlbums"></div>
+    </section>
+
+    <script src="./searchbar.js"></script>
+  </body>
+</html>

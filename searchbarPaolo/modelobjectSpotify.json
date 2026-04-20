@@ -1,0 +1,43 @@
+{
+    "data": [
+        {
+            "id": 12274786,
+            "readable": true,
+            "title": "Under Pressure (Remastered 2011)",
+            "title_short": "Under Pressure",
+            "title_version": "(Remastered 2011)",
+            "isrc": "GBUM71029622",
+            "link": "https://www.deezer.com/track/12274786",
+            "duration": 247,
+            "rank": 926707,
+            "explicit_lyrics": false,
+            "explicit_content_lyrics": 0,
+            "explicit_content_cover": 0,
+            "preview": "https://cdnt-preview.dzcdn.net/api/1/1/e/7/2/0/e72feba503e62570f613d66d6d500a94.mp3?hdnea=exp=1776676974~acl=/api/1/1/e/7/2/0/e72feba503e62570f613d66d6d500a94.mp3*~data=user_id=0,application_id=42~hmac=8540959fbabe457d79735069f73af32d1e356b1c1ac8c45573762b03132ad330",
+            "md5_image": "e16455433a84c7e19025403ae3eec52d",
+            "artist": {
+                "id": 412,
+                "name": "Queen",
+                "link": "https://www.deezer.com/artist/412",
+                "picture": "https://api.deezer.com/artist/412/image",
+                "picture_small": "https://cdn-images.dzcdn.net/images/artist/71eeb9e2eeb375df35a3c0654a5a01ab/56x56-000000-80-0-0.jpg",
+                "picture_medium": "https://cdn-images.dzcdn.net/images/artist/71eeb9e2eeb375df35a3c0654a5a01ab/250x250-000000-80-0-0.jpg",
+                "picture_big": "https://cdn-images.dzcdn.net/images/artist/71eeb9e2eeb375df35a3c0654a5a01ab/500x500-000000-80-0-0.jpg",
+                "picture_xl": "https://cdn-images.dzcdn.net/images/artist/71eeb9e2eeb375df35a3c0654a5a01ab/1000x1000-000000-80-0-0.jpg",
+                "tracklist": "https://striveschool-api.herokuapp.com/api/deezer/artist/412/top?limit=50",
+                "type": "artist"
+            },
+            "album": {
+                "id": 1127912,
+                "title": "Hot Space (Deluxe Edition 2011 Remaster)",
+                "cover": "https://api.deezer.com/album/1127912/image",
+                "cover_small": "https://cdn-images.dzcdn.net/images/cover/e16455433a84c7e19025403ae3eec52d/56x56-000000-80-0-0.jpg",
+                "cover_medium": "https://cdn-images.dzcdn.net/images/cover/e16455433a84c7e19025403ae3eec52d/250x250-000000-80-0-0.jpg",
+                "cover_big": "https://cdn-images.dzcdn.net/images/cover/e16455433a84c7e19025403ae3eec52d/500x500-000000-80-0-0.jpg",
+                "cover_xl": "https://cdn-images.dzcdn.net/images/cover/e16455433a84c7e19025403ae3eec52d/1000x1000-000000-80-0-0.jpg",
+                "md5_image": "e16455433a84c7e19025403ae3eec52d",
+                "tracklist": "https://api.deezer.com/album/1127912/tracks",
+                "type": "album"
+            },
+            "type": "track"
+        }
