@@ -1,30 +1,4 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Spotify - Home</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <header></header>
-    <main></main>
-    <footer></footer>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
-
-<!doctype html>
 <html lang="it">
   <head>
     <meta charset="utf-8" />
@@ -43,8 +17,52 @@
       body,
       html {
         height: 100%;
-        overflow: hidden;
         background-color: black;
+        color: white;
+      }
+
+      /*  mainsidebar dinamica */
+      #main-sidebar {
+        width: 350px;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+      }
+
+      #main-sidebar.closed {
+        width: 85px;
+      }
+
+      /* elementi interni della sid */
+      .hide-on-closed {
+        display: block;
+      }
+      #main-sidebar.closed .hide-on-closed {
+        display: none !important;
+      }
+
+      /* chusura side */
+      #main-sidebar.closed .sidebar-header-content {
+        justify-content: center !important;
+        padding-left: 0 !important;
+      }
+
+      #main-sidebar.closed .sidebar-header-content i {
+        margin-right: 0 !important;
+      }
+
+      /* Main */
+      #main-content {
+        flex-grow: 1;
+        background-color: #121212;
+        overflow-y: auto;
+      }
+
+      /*lo scroll*/
+      .custom-scroll::-webkit-scrollbar {
+        width: 10px;
+      }
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
       }
 
       .hover-riga:hover {
@@ -53,106 +71,167 @@
       }
     </style>
   </head>
-  <body class="text-light">
+  <body>
     <header>
-      <nav class="navbar" style="background-color: black">
+      <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-          <div class="d-flex align-items-center px-2 gap-3">
-            <a class="navbar-brand bg-success" style="width: 110px">
-              <img src="./assets/imgs/logo.svg" alt="logo-spotify" />
-            </a>
-            <a href="./home-page.html" class="text-light">
-              <i
-                class="bi bi-house-door-fill fs-2 px-2 pb-1 rounded rounded-circle bg-secondary"
-              ></i>
-            </a>
-            <form
-              class="d-flex text-light btn-group border border-1 rounded-5"
-              role="search"
+          <a class="navbar-brand p-0" href="./home-page.html">
+            <!--  <img
+              src="./assets/imgs/logo.svg"
+              alt="logo-spotify
+              
+              "
+          /> --><i class="bi bi-spotify text-light fs-1"></i
+          ></a>
+          <button
+            class="navbar-toggler text-light"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span><i class="bi bi-list fs-1"></i></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul
+              class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center align-items-sm-start gap-3"
             >
-              <button type="button" class="btn text-light">
-                <i class="bi bi-search"></i>
-              </button>
-              <input
-                class="bg-black w-auto text-light border-0"
-                type="search"
-                placeholder="Cosa vuoi ascoltare?"
-              />
-              <button type="button" class="btn">
-                <i class="bi bi-archive text-light"></i>
-              </button>
-            </form>
+              <li class="nav-item">
+                <a href="./home-page.html" class="text-light border-1">
+                  <i
+                    class="bi bi-house-door-fill fs-4 px-2 px-2 pb-1 rounded rounded-circle bg-secondary"
+                  ></i>
+                </a>
+              </li>
+              <form
+                class="d-flex text-light btn-group border border-1 rounded-5"
+                role="search"
+              >
+                <button
+                  type="button"
+                  class="btn text-light w-auto"
+                  id="search-btn"
+                >
+                  <i class="bi bi-search"></i>
+                </button>
+                <div class="container-fluid d-flex justify-content-center">
+                  <div class="search-box">
+                    <div
+                      class="d-flex align-items-center bg-dark rounded-pill px-3"
+                      style="height: 40px"
+                    >
+                      <input
+                        id="inputSearch"
+                        class="bg-transparent w-auto text-light border-0 w-100"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
+                    </div>
+                    <ul id="listaData"></ul>
+                  </div>
+                </div>
+
+                <button type="button" class="btn">
+                  <i class="bi bi-archive text-light"></i>
+                </button>
+              </form>
+            </ul>
+            <section
+              class="d-flex flex-column flex-md-row align-items-md-center"
+            >
+              <div
+                class="d-flex flex-column flex-md-row align-items-md-center gap-3 border-end border-2 px-0 px-md-3"
+              >
+                <a href="#" class="text-light fw-bold text-decoration-none">
+                  Premium</a
+                >
+                <a href="#" class="text-light fw-bold text-decoration-none">
+                  Support</a
+                >
+                <a
+                  href="#"
+                  class="text-light fw-bold text-decoration-none mb-3 mb-md-0"
+                  >Download
+                </a>
+              </div>
+              <div
+                class="d-flex flex-column flex-md-row align-items-md-center gap-3 px-0 px-md-3"
+              >
+                <a href="#" class="text-light fw-bold text-decoration-none"
+                  ><i class="bi bi-arrow-down-circle-fill"></i> Install App</a
+                >
+                <a href="#" class="text-light fw-bold text-decoration-none">
+                  Sign Up</a
+                >
+                <button
+                  type="button"
+                  class="btn text-dark border border-1 bg-light rounded-4 p-2 flex-shrink-1"
+                  id="search-btn"
+                >
+                  <a href="#" class="text-decoration-none fw-bold text-black"
+                    >Log in</a
+                  >
+                </button>
+              </div>
+            </section>
           </div>
-          <section class="d-flex align-items-center">
-            <div class="d-flex gap-3 border-end border-2 px-3">
-              <a href="#" class="text-light fw-bold text-decoration-none small"
-                >Premium</a
-              >
-              <a href="#" class="text-light fw-bold text-decoration-none small"
-                >Supporto</a
-              >
-              <a href="#" class="text-light fw-bold text-decoration-none small"
-                >Download</a
-              >
-            </div>
-            <div class="d-flex align-items-center gap-3 px-3 text-nowrap">
-              <a href="#" class="text-light fw-bold text-decoration-none small"
-                ><i class="bi bi-arrow-down-circle-fill"></i> Installa App</a
-              >
-              <a href="#" class="text-light fw-bold text-decoration-none small"
-                >Iscriviti</a
-              >
-              <button
-                type="button"
-                class="btn text-dark bg-light rounded-4 fw-bold px-3 py-1"
-              >
-                Accedi
-              </button>
-            </div>
-          </section>
         </div>
       </nav>
+      <!-- esempio nav -->
     </header>
 
-    <div class="container-fluid px-2">
-      <div class="row g-2 flex-grow-1" style="height: 90vh">
-        <aside class="col-3 h-100">
+    <div class="container-fluid p-2 h-100">
+      <div class="d-flex h-100 gap-2">
+        <aside id="main-sidebar" class="h-100">
           <div
-            class="bg-dark rounded-3 d-flex flex-column h-100 overflow-hidden"
+            class="rounded-3 d-flex flex-column h-100 overflow-hidden"
             style="background-color: #121212"
           >
-            <div class="p-3 d-flex justify-content-between align-items-center">
-              <div class="fw-bold text-light">
-                <i class="bi bi-collection-play me-2"></i>La tua libreria
+            <div
+              id="toggle-sidebar"
+              class="p-3 d-flex justify-content-between align-items-center sidebar-header-content"
+              style="cursor: pointer"
+            >
+              <div class="fw-bold text-secondary d-flex align-items-center">
+                <i class="bi bi-collection-play fs-4 me-3"></i>
+                <span class="hide-on-closed text-light">La tua libreria</span>
               </div>
-              <button
-                class="btn btn-dark rounded-pill border-0 px-3 py-1 d-flex align-items-center gap-1"
-                style="background-color: #1f1f1f"
-              >
-                <i class="bi bi-plus-lg fs-6"></i>
-                <span class="fw-bold" style="font-size: 14px">Crea</span>
-              </button>
+              <div class="hide-on-closed text-secondary">
+                <i class="bi bi-plus-lg fs-5"></i>
+              </div>
             </div>
 
             <div class="flex-grow-1 overflow-y-auto px-3 custom-scroll">
-              <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2">
+              <div
+                class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
+              >
                 <p class="fw-bold text-white mb-1">
                   Crea la tua prima playlist
                 </p>
-                <p class="text-light small mb-3">È facile, ti aiuteremo</p>
+                <p class="text-light small mb-3 opacity-75">
+                  È facile, ti aiuteremo
+                </p>
                 <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
                   Crea playlist
                 </button>
               </div>
-              <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3">
+
+              <div
+                class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+              >
                 <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
-                <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+                <button
+                  class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+                >
                   Sfoglia i podcast
                 </button>
               </div>
             </div>
 
-            <div class="p-3 mt-auto">
+            <div class="p-3 mt-auto hide-on-closed">
               <div class="d-flex flex-wrap gap-2 mb-3">
                 <a
                   href="#"
@@ -191,11 +270,16 @@
                   >Accessibilità</a
                 >
               </div>
-              <div>
-                <p>Politica sui cookie</p>
+              <div class="mb-3">
+                <p
+                  class="text-secondary small m-0 fw-bold text-light"
+                  style="font-size: 14px"
+                >
+                  Politica sui cookie
+                </p>
               </div>
               <button
-                class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold"
+                class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold border-secondary"
               >
                 <i class="bi bi-globe me-1"></i> Italiano
               </button>
@@ -203,69 +287,68 @@
           </div>
         </aside>
 
-        <main class="col-9 h-100">
+        <main id="main-content" class="custom-scroll">
+          <section id="hero-artista">
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-2 mt-2 ms-3">
+                <i
+                  class="bi bi-patch-check-fill verificato-icon text-primary"
+                ></i>
+                <span class="small fw-bold">Artista verificato</span>
+              </div>
+              <h1 id="nome-artista" class="display-1 fw-bold m-0">
+                Nome Artista
+              </h1>
+              <p
+                id="ascoltatori-mensili"
+                class="mt-3 ms-4 fw-semibold opacity-75"
+              >
+                0 ascoltatori mensili
+              </p>
+            </div>
+          </section>
+
+          <div class="p-4 d-flex align-items-center gap-4">
+            <div
+              class="bg-success rounded-circle d-flex align-items-center justify-content-center shadow"
+              style="width: 56px; height: 56px; cursor: pointer"
+            >
+              <i class="bi bi-play-fill fs-1 text-black"></i>
+            </div>
+            <button
+              class="btn btn-outline-light rounded-pill fw-bold px-4 border-secondary"
+            >
+              Segui
+            </button>
+            <i class="bi bi-three-dots text-secondary fs-3 clickable-btn"></i>
+          </div>
+
           <div
-            class="rounded-3 h-100 overflow-y-auto custom-scroll"
-            style="background-color: #121212"
+            class="track-row d-flex align-items-center justify-content-between"
           >
-            <div id="intestazione-artista" class="d-flex align-items-end p-5">
-              <div>
-                <div class="small mb-2">
-                  <i class="bi bi-patch-check-fill text-primary"></i> Artista
-                  verificato
-                </div>
-                <h1 id="nome-artista" class="display-1 fw-bold text-white m-0">
-                  Nome Artista
-                </h1>
-                <p
-                  id="ascoltatori-mensili"
-                  class="text-white mt-3 fw-semibold text-opacity-75"
-                >
-                  0 ascoltatori mensili
-                </p>
+            <div class="d-flex align-items-center flex-grow-1">
+              <div
+                class="track-index text-spotify-grey me-3"
+                style="width: 30px; text-align: center"
+              >
+                <span class="track-num">1</span>
+                <i class="bi bi-play-fill track-play-icon d-none fs-5"></i>
+              </div>
+
+              <img
+                src=""
+                class="rounded me-3"
+                style="width: 40px; height: 40px; object-fit: cover"
+              />
+
+              <div class="text-truncate">
+                <p class="track-title text-truncate">Titolo della Canzone</p>
               </div>
             </div>
 
-            <div class="p-4 d-flex align-items-center gap-4">
-              <button
-                class="btn btn-success rounded-circle d-flex align-items-center justify-content-center shadow-lg"
-                style="width: 56px; height: 56px"
-              >
-                <i class="bi bi-play-fill fs-2 text-black"></i>
-              </button>
-              <button
-                class="btn btn-outline-light rounded-pill fw-bold px-4 py-1 border-secondary"
-              >
-                Segui
-              </button>
-              <i
-                class="bi bi-three-dots text-secondary fs-3"
-                style="cursor: pointer"
-              ></i>
-            </div>
-
-            <div class="px-4 pb-5">
-              <h2 class="h4 fw-bold text-white mb-4">Popolari</h2>
-              <div id="lista-brani-popolari">
-                <div
-                  class="row align-items-center py-2 px-3 rounded hover-riga text-secondary"
-                >
-                  <div class="col-auto text-center" style="width: 30px">1</div>
-                  <div class="col-auto px-1">
-                    <img src="" class="rounded" alt="cover" />
-                  </div>
-                  <div
-                    id="titolo-canzone"
-                    class="col text-white fw-bold text-truncate"
-                  >
-                    Titolo della Canzone
-                  </div>
-                  <div id="streaming" class="col-auto d-none d-md-block mx-4">
-                    0
-                  </div>
-                  <div id="durata-brano" class="col-auto">0:00</div>
-                </div>
-              </div>
+            <div class="d-flex align-items-center text-spotify-grey">
+              <div class="d-none d-md-block me-4">0</div>
+              <div style="width: 50px; text-align: right">0</div>
             </div>
           </div>
         </main>
@@ -273,5 +356,17 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // LOGICA APERTURA/CHIUSURA SIDEBAR
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("main-sidebar");
+        const toggleBtn = document.getElementById("toggle-sidebar");
+
+        toggleBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("closed");
+        });
+      });
+    </script>
   </body>
 </html>
