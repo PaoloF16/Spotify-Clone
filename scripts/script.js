@@ -1,67 +1,12 @@
-<<<<<<< Updated upstream
-const getArtist = function() {
-    fetch("https://striveschool-api.herokuapp.com/api/deezer/artist/412")
-        .then((response) => {
-            if (response.ok) {
-                return response.json() 
-            } else {
-                throw new Error(`Request failed: ${response.status}`)
-            }
-        })
-        .then((data) => {
-            console.log(data) 
-        })
-        .catch((error) => console.log(error))
-}
-
-const getAlbum = function() {
-    fetch("https://striveschool-api.herokuapp.com/api/deezer/album/75621062")
-        .then((response) => {
-            if (response.ok) {
-                return response.json() 
-            } else {
-                throw new Error(`Request failed: ${response.status}`)
-            }
-        })
-        .then((data) => {
-            console.log(data) 
-        })
-        .catch((error) => console.log(error))
-}
-
-getAlbum()
-getArtist()
-=======
 
 class Artist {
     
 }
 
 
-const getArtist = function() {
+const getArtist = function(artist) {
 
-    fetch("https://striveschool-api.herokuapp.com/api/deezer/artist/412")
-
-    .then((response) => { 
-        if (response.ok) {
-            console.log(response)
-            return response.json()
-            } else {
-                throw new Error(`Request failed: ${response.status}`)   
-            }
-        })
-
-    .then((data) => {
-        console.log(data)
-    })
-
-    .catch((error) => console.log(error))
-
-    }
-
-const getAlbum = function() {
-
-    fetch("https://striveschool-api.herokuapp.com/api/deezer/album/75621062")
+    fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artist}`)
 
     .then((response) => { 
         if (response.ok) {
@@ -81,5 +26,29 @@ const getAlbum = function() {
     }
 
 
+// GET ALBUM FETCH FUNCTION 
 
->>>>>>> Stashed changes
+const getAlbum = function(album) {
+
+    fetch(`https://striveschool-api.herokuapp.com/api/deezer/album/${album}`)
+
+    .then((response) => { 
+        if (response.ok) {
+            console.log(response)
+            return response.json()
+            } else {
+                throw new Error(`Request failed: ${response.status}`)   
+            }
+        })
+
+    .then((data) => {
+        console.log(data)
+    })
+
+    .catch((error) => console.log(error))
+
+    }
+
+
+
+
