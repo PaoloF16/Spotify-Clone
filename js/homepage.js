@@ -1,3 +1,27 @@
+//PER LO SCORRIMENTO DELLE CARDS
+const tracks = document.querySelectorAll(".carosello");
+const prevs = document.querySelectorAll(".prev");
+const nexts = document.querySelectorAll(".next");
+
+const widthImage = 180;
+
+nexts.forEach((nextBtn, index) => {
+  nextBtn.addEventListener("click", () => {
+    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" });
+  });
+});
+
+prevs.forEach((prevBtn, index) => {
+  prevBtn.addEventListener("click", () => {
+    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" });
+  });
+});
+tracks.forEach((scrollRow, index) => {
+  scrollRow.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    scrollRow.scrollBy({ left: e.deltaY * 2, behavior: "smooth" });
+  });
+});
 const searchApiLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
 const artistLink = "https://striveschool-api.herokuapp.com/api/deezer/artist/";
 
