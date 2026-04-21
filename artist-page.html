@@ -113,6 +113,12 @@
         position: relative;
         overflow: hidden;
       }
+      #hover-icon:hover {
+        transform: scale(1.1);
+      }
+      .dropdown-menu a:hover {
+        color: #0c0b0b !important;
+      }
     </style>
   </head>
   <body>
@@ -358,14 +364,93 @@
               class="bg-success rounded-circle d-flex align-items-center justify-content-center shadow"
               style="width: 56px; height: 56px; cursor: pointer"
             >
-              <i class="bi bi-play-fill fs-1 text-black"></i>
+              <i
+                class="bi bi-play-fill fs-4 text-black"
+                style="cursor: pointer"
+              ></i>
             </div>
+            <i
+              class="bi bi-shuffle fs-4"
+              style="cursor: pointer"
+              id="hover-icon"
+            ></i>
             <button
               class="btn btn-outline-light rounded-pill fw-bold px-4 border-secondary"
             >
               Segui
             </button>
-            <i class="bi bi-three-dots text-secondary fs-3 clickable-btn"></i>
+            <div class="dropdown">
+              <i
+                class="bi bi-three-dots text-secondary fs-3 clickable-btn"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="cursor: pointer"
+              >
+              </i>
+
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+                style="background-color: #282828"
+              >
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center text-light"
+                    href="#"
+                  >
+                    <i class="bi bi-person-add me-2"></i> Segui
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center text-light"
+                    href="#"
+                  >
+                    <i class="bi bi-ban me-2"></i> Non riprodurre i contenuti
+                    dell'artista
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center text-light"
+                    href="#"
+                  >
+                    <i class="bi bi-broadcast me-2"></i> Vai a Radio
+                    dell'Artista
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center text-light"
+                    href="#"
+                  >
+                    <i class="bi bi-exclamation-diamond me-2"></i> Segnala
+                    <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center text-light"
+                    href="#"
+                  >
+                    <i class="bi bi-share me-2"></i> Condividi
+                    <i class="bi bi-box-arrow-up ms-auto"></i>
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a
+                    class="dropdown-item d-flex align-items-center text-light"
+                    href="#"
+                  >
+                    <i class="bi bi-spotify me-2"></i> Apri con l'app per il
+                    desktop
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
           <section class="px-4 pb-5">
             <h2 class="mb-4 text-white">Popular</h2>
@@ -596,6 +681,7 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/searchbar.js"></script>
+    <script src="./js/homepage.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
