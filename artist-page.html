@@ -69,6 +69,38 @@
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
       }
+
+      #right-sidebar {
+        width: 25vw;
+        min-width: 280px;
+        max-width: 380px;
+
+        transition: all 0.3s;
+        flex-shrink: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      #right-sidebar.closed {
+        width: 0px;
+        min-width: 0px;
+        margin-left: 0;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (max-width: 992px) {
+        #right-sidebar {
+          position: fixed;
+          right: 0;
+          top: 0;
+          height: 100vh;
+          z-index: 1050;
+          width: 320px;
+          background-color: black;
+          box-shadow: -10px 0 15px rgba(0, 0, 0, 0.5);
+        }
+      }
     </style>
   </head>
   <body>
@@ -288,21 +320,31 @@
         </aside>
 
         <main id="main-content" class="custom-scroll">
-          <section id="cardArtist">
-            <div>
-              <div class="d-flex align-items-center gap-2 mb-2 mt-2 ms-3">
-                <i
-                  class="bi bi-patch-check-fill verificato-icon text-primary"
-                ></i>
+          <section
+            id="cardArtist"
+            class="position-relative d-flex align-items-end p-4"
+            style="height: 400px; background-color: #282828; overflow: hidden"
+          >
+            <div
+              id="artist-bg-image"
+              class="position-absolute top-0 start-0 w-100 h-100"
+              style="
+                background-size: cover;
+                background-position: center;
+                filter: brightness(0.7);
+                z-index: 0;
+              "
+            ></div>
+
+            <div class="position-relative z-1">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="bi bi-patch-check-fill text-primary fs-5"></i>
                 <span class="small fw-bold">Artista verificato</span>
               </div>
               <h1 id="nome-artista" class="display-1 fw-bold m-0">
                 Nome Artista
               </h1>
-              <p
-                id="ascoltatori-mensili"
-                class="mt-3 ms-4 fw-semibold opacity-75"
-              >
+              <p id="ascoltatori-mensili" class="mt-3 fw-semibold opacity-75">
                 0 ascoltatori mensili
               </p>
             </div>
@@ -324,6 +366,135 @@
           </div>
           <div id="cardSongs" class="px-4 pb-5"></div>
         </main>
+        <button class="btn text-secondary" id="open-right-sidebar">
+          <i class="bi bi-layout-sidebar-reverse fs-4"></i>
+        </button>
+        <aside id="right-sidebar" class="h-100">
+          <div
+            class="rounded-3 d-flex flex-column h-100 overflow-hidden"
+            style="background-color: #000000"
+          >
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-layout-sidebar-reverse text-white"></i>
+                <span class="fw-bold text-light" id="side-bar-main-title"
+                  >Luchè</span
+                >
+              </div>
+              <div class="text-secondary">
+                <i
+                  class="bi bi-three-dots fs-5 me-2"
+                  style="cursor: pointer"
+                ></i>
+                <i
+                  class="bi bi-x-lg fs-5"
+                  id="close-right-sidebar"
+                  style="cursor: pointer"
+                ></i>
+              </div>
+            </div>
+
+            <div
+              id="dynamic-credits"
+              class="flex-grow-1 overflow-y-auto px-3 custom-scroll"
+            >
+              <div
+                class="position-relative mb-4 overflow-hidden rounded-4"
+                style="height: 420px; min-height: 420px"
+              >
+                <img
+                  id="side-poster-img"
+                  src="https://via.placeholder.com/400x600"
+                  class="position-absolute top-0 start-0 w-100 h-100"
+                />
+
+                <div class="d-flex justify-content-between align-items-end">
+                  <div>
+                    <h2
+                      id="side-song-title"
+                      class="fw-bold text-white mb-0"
+                      style="font-size: 1.8rem"
+                    >
+                      Nessuna
+                    </h2>
+                    <p
+                      id="side-song-artist"
+                      class="text-light opacity-75 mb-0 fs-5"
+                    >
+                      Luchè
+                    </p>
+                  </div>
+                  <button class="btn text-white p-0 fs-3">
+                    <i class="bi bi-plus-circle"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="rounded-4 p-3 mb-3" style="background-color: #121212">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4"
+                >
+                  <h6 class="fw-bold text-white m-0">Riconoscimenti</h6>
+                  <span
+                    class="text-secondary small fw-bold"
+                    style="cursor: pointer"
+                    >Mostra tutto</span
+                  >
+                </div>
+
+                <div class="d-flex align-items-center mb-3">
+                  <div class="me-3">
+                    <img
+                      id="credit-artist-img"
+                      src="https://via.placeholder.com/48"
+                      class="rounded-circle"
+                      style="width: 48px; height: 48px; object-fit: cover"
+                    />
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="fw-bold text-white mb-0" id="credit-artist-name">
+                      Luchè
+                    </h6>
+                    <p class="text-secondary small mb-0">
+                      Artista Principale • Parti Vocali
+                    </p>
+                  </div>
+                  <button
+                    class="btn btn-outline-light btn-sm rounded-pill px-3 fw-bold border-secondary"
+                  >
+                    Segui
+                  </button>
+                </div>
+
+                <div class="mb-2 ps-1">
+                  <h6 class="fw-bold text-white mb-0">Davide Petrella</h6>
+                  <p class="text-secondary small mb-0">Paroliere</p>
+                </div>
+              </div>
+
+              <div class="rounded-4 p-3 mb-4" style="background-color: #121212">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h6 class="fw-bold text-white m-0">Prossimo in coda</h6>
+                  <span class="text-secondary small fw-bold">Apri coda</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <img
+                    src="https://via.placeholder.com/50"
+                    class="rounded-2"
+                    width="50"
+                    height="50"
+                  />
+                  <div>
+                    <h6 class="m-0 fw-bold text-white small">Lo Stesso Viso</h6>
+                    <p class="m-0 text-secondary small">Luchè, Da Blonde</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
 
@@ -331,14 +502,33 @@
     <script src="./searchbarPaolo/searchbar.js"></script>
 
     <script>
-      // LOGICA APERTURA/CHIUSURA SIDEBAR
       document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.getElementById("main-sidebar");
-        const toggleBtn = document.getElementById("toggle-sidebar");
+        // --- SIDEBAR SINISTRA ---
+        const mainSidebar = document.getElementById("main-sidebar");
+        const toggleMainBtn = document.getElementById("toggle-sidebar");
 
-        toggleBtn.addEventListener("click", function () {
-          sidebar.classList.toggle("closed");
-        });
+        if (toggleMainBtn) {
+          toggleMainBtn.addEventListener("click", () => {
+            mainSidebar.classList.toggle("closed");
+          });
+        }
+
+        // --- SIDEBAR DESTRA ---
+        const rightSidebar = document.getElementById("right-sidebar");
+        const closeRightBtn = document.getElementById("close-right-sidebar");
+        const openBtn = document.getElementById("open-right-sidebar");
+
+        if (closeRightBtn) {
+          closeRightBtn.addEventListener("click", () => {
+            rightSidebar.classList.add("closed");
+          });
+        }
+
+        if (openBtn) {
+          openBtn.addEventListener("click", () => {
+            rightSidebar.classList.remove("closed");
+          });
+        }
       });
     </script>
   </body>
