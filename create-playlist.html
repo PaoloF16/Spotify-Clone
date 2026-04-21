@@ -111,7 +111,7 @@
                 </a>
               </li>
               <form
-                class="d-flex text-light btn-group border border-1 rounded-5"
+                class="d-flex bg-black text-light btn-group border border-1 rounded-5"
                 role="search"
               >
                 <button
@@ -230,17 +230,14 @@
                 >
               </button>
             </div>
-
-            <div
-              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
-            >
-              <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
-              <button
-                class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
-              >
-                Sfoglia i podcast
-              </button>
-            </div>
+          </div>
+          <div
+            class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+          >
+            <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
+            <button class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2">
+              Sfoglia i podcast
+            </button>
           </div>
 
           <div class="p-3 mt-auto hide-on-closed">
@@ -305,7 +302,7 @@
             <label for="playlistTitle" class="form-label">Title</label>
             <input
               type="text"
-              class="form-control bg-dark text-white border-0 rounded-5"
+              class="form-control bg-secondary bg-opacity-10 text-white border-0 rounded-5"
               id="playlistTitle"
               aria-describedby="emailHelp"
             />
@@ -316,8 +313,16 @@
             >
             <input
               type="text"
-              class="form-control bg-dark text-white border-0 rounded-5"
+              class="form-control bg-secondary bg-opacity-10 text-white border-0 rounded-5"
               id="playlistDescription"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="playlistImage" class="form-label">Image Url</label>
+            <input
+              type="text"
+              class="form-control bg-secondary bg-opacity-10 text-white border-0 rounded-5"
+              id="playlistImage"
             />
           </div>
           <div class="mb-3 form-check">
