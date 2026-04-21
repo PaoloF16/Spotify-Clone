@@ -101,6 +101,18 @@
           box-shadow: -10px 0 15px rgba(0, 0, 0, 0.5);
         }
       }
+      #intestazione-artista {
+        min-height: 320px;
+        background-color: #282828;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: end;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
     </style>
   </head>
   <body>
@@ -266,7 +278,10 @@
                 </button>
               </div>
             </div>
-
+            <div
+              id="artistSidebarRail"
+              class="d-flex flex-column gap-3 mt-3"
+            ></div>
             <div class="p-3 mt-auto hide-on-closed">
               <div class="d-flex flex-wrap gap-2 mb-3">
                 <a
@@ -324,22 +339,7 @@
         </aside>
 
         <main id="main-content" class="custom-scroll">
-          <section
-            id="cardArtist"
-            class="position-relative d-flex align-items-end p-4"
-            style="height: 400px; background-color: #282828; overflow: hidden"
-          >
-            <div
-              id="artist-bg-image"
-              class="position-absolute top-0 start-0 w-100 h-100"
-              style="
-                background-size: cover;
-                background-position: center;
-                filter: brightness(0.7);
-                z-index: 0;
-              "
-            ></div>
-
+          <section id="intestazione-artista">
             <div class="position-relative z-1">
               <div class="d-flex align-items-center gap-2 mb-2">
                 <i class="bi bi-patch-check-fill text-primary fs-5"></i>
@@ -353,7 +353,6 @@
               </p>
             </div>
           </section>
-
           <div class="p-4 d-flex align-items-center gap-4">
             <div
               class="bg-success rounded-circle d-flex align-items-center justify-content-center shadow"
@@ -368,7 +367,10 @@
             </button>
             <i class="bi bi-three-dots text-secondary fs-3 clickable-btn"></i>
           </div>
-          <div id="cardSongs" class="px-4 pb-5"></div>
+          <section class="px-4 pb-5">
+            <h2 class="mb-4 text-white">Popular</h2>
+            <div id="cardSongs"></div>
+          </section>
         </main>
         <button class="btn text-secondary" id="open-right-sidebar">
           <i class="bi bi-layout-sidebar-reverse fs-4"></i>
@@ -382,7 +384,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-layout-sidebar-reverse text-white"></i>
                 <span class="fw-bold text-light" id="side-bar-main-title"
-                  >Luchè</span
+                  >Artist Name</span
                 >
               </div>
               <div class="text-secondary">
@@ -410,6 +412,8 @@
                   id="side-poster-img"
                   src="https://via.placeholder.com/400x600"
                   class="position-absolute top-0 start-0 w-100 h-100"
+                  style="object-fit: cover"
+                  alt="Artist poster"
                 />
 
                 <div class="d-flex justify-content-between align-items-end">
@@ -419,13 +423,13 @@
                       class="fw-bold text-white mb-0"
                       style="font-size: 1.8rem"
                     >
-                      Nessuna
+                      Nome Artista
                     </h2>
                     <p
                       id="side-song-artist"
                       class="text-light opacity-75 mb-0 fs-5"
                     >
-                      Luchè
+                      Artista
                     </p>
                   </div>
                   <button class="btn text-white p-0 fs-3">
@@ -453,6 +457,7 @@
                       src="https://via.placeholder.com/48"
                       class="rounded-circle"
                       style="width: 48px; height: 48px; object-fit: cover"
+                      alt="Artist avatar"
                     />
                   </div>
                   <div class="flex-grow-1">
@@ -485,14 +490,26 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                   <img
+                    id="right-sidebar-next-img"
                     src="https://via.placeholder.com/50"
                     class="rounded-2"
                     width="50"
                     height="50"
+                    alt="Next track"
                   />
                   <div>
-                    <h6 class="m-0 fw-bold text-white small">Lo Stesso Viso</h6>
-                    <p class="m-0 text-secondary small">Luchè, Da Blonde</p>
+                    <h6
+                      id="right-sidebar-next-title"
+                      class="m-0 fw-bold text-white small"
+                    >
+                      Nessun brano
+                    </h6>
+                    <p
+                      id="right-sidebar-next-artist"
+                      class="m-0 text-secondary small"
+                    >
+                      Nessun artista
+                    </p>
                   </div>
                 </div>
               </div>
@@ -503,37 +520,37 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./searchbarPaolo/searchbar.js"></script>
+    <script src="./js/searchbar.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // --- SIDEBAR SINISTRA ---
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
 
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
+            mainSidebar.classList.toggle("closed")
+          })
         }
 
         // --- SIDEBAR DESTRA ---
-        const rightSidebar = document.getElementById("right-sidebar");
-        const closeRightBtn = document.getElementById("close-right-sidebar");
-        const openBtn = document.getElementById("open-right-sidebar");
+        const rightSidebar = document.getElementById("right-sidebar")
+        const closeRightBtn = document.getElementById("close-right-sidebar")
+        const openBtn = document.getElementById("open-right-sidebar")
 
         if (closeRightBtn) {
           closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed");
-          });
+            rightSidebar.classList.add("closed")
+          })
         }
 
         if (openBtn) {
           openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed");
-          });
+            rightSidebar.classList.remove("closed")
+          })
         }
-      });
+      })
     </script>
   </body>
 </html>
