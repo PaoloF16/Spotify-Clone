@@ -1,13 +1,20 @@
 
 const likedSongs = []
+const userPlaylists = []
 
-const playlists = []
+
+// DOM ELEMENTS
+
+const createPlaylistForm = document.getElementById("createPlaylistForm")
+
+
+// INITIALIZE PLAYLIST CLASS
 
 class Playlist {
 
-    constructor(name = "", creator = "", description = "") {
+    constructor(title = "", creator = "", description = "") {
         this.id = `pl-${Math.floor(Math.random() * 100000)}`;
-        this.name = name;
+        this.title = title;
         this.creator = creator;
         this.description = description;
         this.isPublic = true;
@@ -18,9 +25,9 @@ class Playlist {
     }
 
     // Method to add a new song object to the array
-    addTrack(title, artist, durationSeconds) {
+    addTrack(id) {
         const newTrack = {
-            // add track key:values
+                // add track key:values
         };
         this.tracks.push(newTrack);
         console.log(`Added "${title}" to ${this.name}.`);
@@ -37,6 +44,8 @@ class Artist {
     
 }
 
+
+// GET ARTIST FETCH FUNCTION 
 
 const getArtist = function(artist) {
 
@@ -84,7 +93,40 @@ const getAlbum = function(album) {
     }
 
 
+const createPlaylist = function(e) {
 
-getAlbum(75621062)
-getArtist(412)
+    e.preventDefault()
+
+    const playlistTitleInput = document.getElementById("playlistTitle").value
+    const playlistDescriptionInput = document.getElementById("playlistDescription").value
+    const isPlaylistPublic = document.getElementById("playlistPublicCheck").checked
+    newPlaylist.isPublic = isPlaylistPublic
+
+    const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput)
+    
+    newPlaylist.isPublic = isPlaylistPublic
+
+    userPlaylists.push(newPlaylist)
+
+
+    // PUSH PLAYLISTS TO LOCAL STORAGE
+
+    localStorage.setItem("userPlaylists", JSON.stringify(userPlaylists))
+
+}
+
+
+const deletePlaylist = function(id) {
+
+}
+
+// PUSH LIKED SONGS TO LOCAL STORAGE
+localStorage.setItem("userLikedSongs", likedSongs)
+
+
+//ADD EVENT LISTENERS
+createPlaylistForm.addEventListener("submit", createPlaylist)
+
+getAlbum()
+getArtist()
 
