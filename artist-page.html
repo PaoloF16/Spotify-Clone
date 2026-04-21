@@ -434,6 +434,8 @@
                   <a
                     class="dropdown-item d-flex align-items-center text-light"
                     href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#shareModal"
                   >
                     <i class="bi bi-share me-2"></i> Condividi
                     <i class="bi bi-box-arrow-up ms-auto"></i>
@@ -598,6 +600,45 @@
             </div>
           </div>
         </aside>
+      </div>
+    </div>
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title">Condividi</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <div class="d-flex justify-content-around py-4">
+              <a href="#" class="text-decoration-none text-light">
+                <i class="bi bi-whatsapp fs-1 text-success"></i>
+                <p class="small mt-2">WhatsApp</p>
+              </a>
+              <a href="#" class="text-decoration-none text-light">
+                <i class="bi bi-instagram fs-1" style="color: #e1306c"></i>
+                <p class="small mt-2">Instagram</p>
+              </a>
+              <a href="#" class="text-decoration-none text-light">
+                <i class="bi bi-facebook fs-1 text-primary"></i>
+                <p class="small mt-2">Facebook</p>
+              </a>
+            </div>
+            <div class="input-group mb-3 px-3">
+              <input
+                type="text"
+                class="form-control bg-black text-white border-secondary small"
+                value="https://spotify.link/artista"
+                readonly
+              />
+              <button class="btn btn-outline-light btn-sm">Copia</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <footer>
