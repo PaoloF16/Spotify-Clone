@@ -284,10 +284,16 @@ const createAlbumArray = async () => {
   const promises = artisti.map(async (artista) => {
     try {
       const searchData = await fetchSearchResults(artista)
-
       if (!searchData.length) return
 
-      const artistaData = searchData[0].artist
+      // 🔥 buscar el artista correcto (no el primero random)
+      const artistaMatch = searchData.find((item) =>
+        item.artist?.name?.toLowerCase().includes(artista.toLowerCase()),
+      )
+
+      if (!artistaMatch) return
+
+      const artistaData = artistaMatch.artist
       const albumsData = await fetchArtistAlbums(artistaData.id)
 
       if (!albumsData || !albumsData.data) return

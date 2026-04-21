@@ -111,7 +111,7 @@ const createSuggestionItem = (artistItem) => {
           artistItem.picture_small ||
           artistItem.picture_medium ||
           artistItem.picture ||
-          "https://via.placeholder.com/48"
+          "./assets/imgs/fallback/fallback-cover.png"
         }"
         alt="${artistItem.name}"
         style="width: 48px; height: 48px; object-fit: cover; border-radius: 50%; flex-shrink: 0;"
@@ -219,6 +219,27 @@ const getUniqueSongs = (songs) => {
   return uniqueSongs
 }
 
+/* ========================================================= */
+/* CAMBIO BLOQUE: helper para convertir canciones al player  */
+/* ========================================================= */
+const mapSongsToPlayerQueue = (songs) => {
+  return songs
+    .filter((song) => song && song.preview)
+    .map((song) => ({
+      id: song.id,
+      title: song.title,
+      artist: song.artist?.name || "Artista sconosciuto",
+      preview: song.preview,
+      cover:
+        song.album?.cover_medium ||
+        song.album?.cover_small ||
+        song.album?.cover ||
+        "./assets/imgs/fallback/fallback-cover.png",
+      duration: song.duration || 30,
+    }))
+}
+/* ========================================================= */
+
 const renderSongsList = (songs) => {
   if (!cardSongs) return
 
@@ -258,6 +279,26 @@ const renderSongsList = (songs) => {
         <div style="width: 50px; text-align: right">${formatDuration(song.duration)}</div>
       </div>
     `
+
+    /* ========================================================= */
+    /* CAMBIO BLOQUE: click en canción -> player global          */
+    /* ========================================================= */
+    row.style.cursor = song.preview ? "pointer" : "default"
+
+    row.addEventListener("click", () => {
+      if (!song.preview) return
+      if (!window.spotifyPlayer) return
+
+      const visibleSongs = songs.slice(0, 10)
+      const queue = mapSongsToPlayerQueue(visibleSongs)
+
+      const clickedTrackIndex = queue.findIndex((track) => track.id === song.id)
+      if (clickedTrackIndex === -1) return
+
+      window.spotifyPlayer.setQueue(queue, clickedTrackIndex)
+      window.spotifyPlayer.playTrack(queue[clickedTrackIndex])
+    })
+    /* ========================================================= */
 
     songsWrapper.appendChild(row)
   })
