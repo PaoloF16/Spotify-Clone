@@ -117,6 +117,21 @@ const getAlbum = function(album) {
     }
 */
 
+// handle discard changes button
+const discardBtn = document.getElementById("discardButton")
+
+if (discardBtn) discardBtn.addEventListener("click", function(e) {
+    e.preventDefault()
+    editingId = null
+    document.querySelector("h1").innerText = "Create your playlist"
+    document.querySelector("button[type=submit]").innerText = "Create Playlist"
+    discardBtn.style.display = "none"
+    clearForm()
+})
+
+
+// CREATE PLAYLIST MAIN FUNCTION
+
 const createPlaylist = function(e) {
 
     e.preventDefault()
@@ -124,39 +139,32 @@ const createPlaylist = function(e) {
     const playlistTitleInput = document.getElementById("playlistTitle").value
     const playlistDescriptionInput = document.getElementById("playlistDescription").value
     const playlistImageInput = document.getElementById("playlistImage").value
-
     const isPlaylistPublic = document.getElementById("playlistPublicCheck").checked
 
     if (editingId) {
 
-        // if an editingId is stored, edits existing playlist
-
         // find playlist with matching id
         const playlistToEdit = userPlaylists.find(pl => pl.id === editingId)
+        if (!playlistToEdit) return
 
         // re-assign playlist attributes
         playlistToEdit.title = playlistTitleInput
         playlistToEdit.description = playlistDescriptionInput
-        if (playlistImageInput) {
-            playlistToEdit.img = playlistImageInput
-        } else {
-            playlistToEdit.img = defaultPlaylistImage
-        }
+        playlistToEdit.img = playlistImageInput || defaultPlaylistImage
         playlistToEdit.isPublic = isPlaylistPublic
 
-        // reset editingId to null
+        // reset editingId and UI after successful save
         editingId = null
+        document.querySelector("h1").innerText = "Create your playlist"
+        document.querySelector("button[type=submit]").innerText = "Create Playlist"
+        discardBtn.style.display = "none"
 
     } else {
 
-        // if editingId is null, new playlist is created
-
+        // if editingId is null, create new playlist
         const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput, playlistImageInput)
-        
         newPlaylist.isPublic = isPlaylistPublic
-
         userPlaylists.push(newPlaylist)
-        console.log(userPlaylists)
 
     }
 
@@ -171,7 +179,6 @@ const createPlaylist = function(e) {
 
 }
 
-
 const deletePlaylist = function(id) {
 
 }
@@ -180,45 +187,23 @@ const deletePlaylist = function(id) {
 // DISPLAY PLAYLIST CARDS FUNCTION
 
 // stores default content in case there are no user  playlist currently saved
-    let defaultContent = `<div
-                class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
-              >
-                <p class="fw-bold text-white mb-1">
-                  Crea la tua prima playlist
-                </p>
-                <p class="text-light small mb-3 opacity-75">
-                  È facile, ti aiuteremo
-                </p>
-                <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
-                  <a
-                    href="create-playlist.html"
-                    class="text-decoration-none text-black"
-                    >Crea playlist</a
-                  >
-                </button>
-              </div>`
-
+let defaultContent = `
+    <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed">
+        <p class="fw-bold text-white mb-1">
+            Crea la tua prima playlist
+        </p>
+        <p class="text-light small mb-3 opacity-75">
+            È facile, ti aiuteremo
+        </p>
+        <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+            <a href="#" class="text-decoration-none text-black">
+                Crea playlist
+            </a>
+        </button>
+    </div>`
 
 const displayAsidePlaylists = function() {
 
-    // stores default content in case there are no user  playlist currently saved
-    let defaultContent = `<div
-                class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
-              >
-                <p class="fw-bold text-white mb-1">
-                  Crea la tua prima playlist
-                </p>
-                <p class="text-light small mb-3 opacity-75">
-                  È facile, ti aiuteremo
-                </p>
-                <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
-                  <a
-                    href="create-playlist.html"
-                    class="text-decoration-none text-black"
-                    >Crea playlist</a
-                  >
-                </button>
-              </div>`
 
     if (userPlaylists.length !== 0) {
 
@@ -230,7 +215,7 @@ const displayAsidePlaylists = function() {
         userPlaylists.forEach((playlist) => {
             // create card
             const card = document.createElement("div")
-            card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-4", "flex-start", "flex-row")
+            card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-4", "d-flex", "flex-row")
 
             // store playlist id in card
             card.dataset.id = playlist.id

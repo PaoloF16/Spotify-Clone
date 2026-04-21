@@ -304,6 +304,8 @@
         class="container-fluid flex-grow-1 d-flex justify-content-center align-items-start"
       >
         <form id="createPlaylistForm" class="p-5 rounded-3" style="width: 100%">
+          <h1 class="mb-5">Crea la tua playlist</h1>
+
           <div class="mb-3">
             <label for="playlistTitle" class="form-label">Title</label>
             <input
@@ -343,9 +345,19 @@
               >Make this playlist public</label
             >
           </div>
-          <button type="submit" class="btn btn-success">Create Playlist</button>
-          <button id="clearInputs" type="button" class="btn btn-dark">
+          <button type="submit" class="btn btn-success me-2">
+            Create Playlist
+          </button>
+          <button id="clearInputs" type="button" class="btn btn-dark me-5">
             Clear
+          </button>
+          <button
+            id="discardChanges"
+            type="button"
+            class="btn btn-dark"
+            style="display: none"
+          >
+            Discard Changes
           </button>
         </form>
       </div>
