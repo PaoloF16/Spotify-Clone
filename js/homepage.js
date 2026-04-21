@@ -1,29 +1,27 @@
 //PER LO SCORRIMENTO DELLE CARDS
-const tracks = document.querySelectorAll(".carosello")
-const prevs = document.querySelectorAll(".prev")
-const nexts = document.querySelectorAll(".next")
+const tracks = document.querySelectorAll(".carosello");
+const prevs = document.querySelectorAll(".prev");
+const nexts = document.querySelectorAll(".next");
 
-const widthImage = 180
+const widthImage = 180;
 
 nexts.forEach((nextBtn, index) => {
   nextBtn.addEventListener("click", () => {
-    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" })
-  })
-})
+    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" });
+  });
+});
 
 prevs.forEach((prevBtn, index) => {
   prevBtn.addEventListener("click", () => {
-    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" })
-  })
-})
+    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" });
+  });
+});
 tracks.forEach((scrollRow) => {
   scrollRow.addEventListener("wheel", (e) => {
     e.preventDefault();
     scrollRow.scrollBy({ left: e.deltaY * 2, behavior: "smooth" });
   });
 });
-// const searchApiLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
-// const artistLink = "https://striveschool-api.herokuapp.com/api/deezer/artist/";
 
 const artisti = [
   "shakira",
@@ -70,10 +68,10 @@ const artisti = [
   "fiorella mannoia",
   "giorgia",
   "elisa",
-]
+];
 
-const linkArtist = "https://striveschool-api.herokuapp.com/api/deezer/artist/"
-const searchLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q="
+const linkArtist ="https://striveschool-api.herokuapp.com/api/deezer/artist/";
+const searchLink ="https://striveschool-api.herokuapp.com/api/deezer/search?q=";
 
 //CREO L'ARRAY CON LE INFO DEGLI ALBUM E LI SALVO NEL LOCAL STORAGE
 const createArray = function (callback) {
@@ -209,3 +207,45 @@ popolaArtisti(arrayMischiato, artistiWrapper);
 //PER LA DATA NEL FOOTER
 const currentYear = new Date().getFullYear();
 document.getElementById("date").innerText = `@${currentYear} Spotify AB`;
+};
+
+popolaCarosello(artistiSceltiPrimo, primoCarosello);
+popolaCarosello(artistiSceltiSecondo, secondoCarosello);
+
+//CUORE ROSSO PREFE
+const favoriteIcon = document.getElementById("favorite-icon");
+
+if (favoriteIcon) {
+  favoriteIcon.style.cursor = "pointer";
+  favoriteIcon.style.transition = "all 0.1s ease";
+  favoriteIcon.style.color = "#b3b3b3";
+
+  favoriteIcon.addEventListener("click", function () {
+    const isLiked = this.classList.contains("bi-heart-fill");
+
+    if (isLiked) {
+      this.classList.replace("bi-heart-fill", "bi-heart");
+      this.style.color = "#b3b3b3";
+      this.style.transform = "scale(1)";
+    } else {
+      this.classList.replace("bi-heart", "bi-heart-fill");
+      this.style.color = "#ff0000";
+      this.style.transform = "scale(1.3)";
+      setTimeout(() => {
+        this.style.transform = "scale(1)";
+      }, 200);
+    }
+  });
+
+  favoriteIcon.addEventListener("mouseenter", function () {
+    if (!this.classList.contains("bi-heart-fill")) {
+      this.style.color = "#ffffff";
+    }
+  });
+
+  favoriteIcon.addEventListener("mouseleave", function () {
+    if (!this.classList.contains("bi-heart-fill")) {
+      this.style.color = "#b3b3b3";
+    }
+  });
+}
