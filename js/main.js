@@ -1,5 +1,4 @@
 const SEARCH_API = "https://striveschool-api.herokuapp.com/api/deezer/search?q="
-const ALBUM_API = "https://striveschool-api.herokuapp.com/api/deezer/album/"
 const ARTIST_API = "https://striveschool-api.herokuapp.com/api/deezer/artist/"
 
 const searchInput = document.getElementById("inputSearch")
@@ -10,23 +9,7 @@ const primoCarosello = document.getElementById("primo-carosello")
 const secondoCarosello = document.getElementById("secondo-carosello")
 const artistiWrapper = document.getElementById("artisti-scroll-row")
 const artistSidebarRail = document.getElementById("artistSidebarRail")
-
 const favoriteIcon = document.getElementById("favorite-icon")
-
-const fetchConRetry = function (url, tentativi = 20) {
-  return fetch(url)
-    .then((response) => {
-      if (response.ok) return response.json();
-      throw new Error("risposta non ok");
-    })
-    .catch((error) => {
-      if (tentativi > 0) {
-        console.log(`riprovo... tentativi rimasti: ${tentativi}`);
-        return fetchConRetry(url, tentativi - 1);
-      }
-      throw error;
-    });
-};
 
 const artisti = [
   "shakira",
@@ -73,10 +56,65 @@ const artisti = [
   "fiorella mannoia",
   "giorgia",
   "elisa",
+  "lady gaga",
+  "dua lipa",
+  "taylor swift",
+  "harry styles",
+  "ed sheeran",
+  "post malone",
+  "drake",
+  "kendrick lamar",
+  "j balvin",
+  "bad bunny",
+  "karol g",
+  "maluma",
+  "rosalia",
+  "ozuna",
+  "feid",
+  "anuel aa",
+  "doja cat",
+  "sza",
+  "rihanna",
+  "beyonce",
+  "nicki minaj",
+  "olivia rodrigo",
+  "imagine dragons",
+  "linkin park",
+  "arctic monkeys",
+  "metallica",
+  "pink floyd",
+  "the beatles",
+  "red hot chili peppers",
+  "one republic",
+  "maroon 5",
+  "alan walker",
+  "kygo",
+  "martin garrix",
+  "david guetta",
+  "swedish house mafia",
+  "mahmood",
+  "annalisa",
+  "ghali",
+  "marracash",
+  "salmo",
+  "madame",
+  "blanco",
+  "elodie",
+  "BTS",
+  "BLACKPINK",
+  "tananai",
+  "coez",
+  "fabri fibra",
+  "ultimo",
+  "negramaro",
+  "cesare cremonini",
+  "vasco rossi",
+  "zucchero",
 ]
 
 const fetchSearchResults = async (query) => {
   const response = await fetch(SEARCH_API + encodeURIComponent(query))
+
   if (!response.ok) {
     throw new Error(`Search API error: ${response.status}`)
   }
@@ -92,9 +130,11 @@ const fetchSearchResults = async (query) => {
 
 const fetchArtistAlbums = async (artistId) => {
   const response = await fetch(`${ARTIST_API}${artistId}/albums`)
+
   if (!response.ok) {
     throw new Error(`Artist albums API error: ${response.status}`)
   }
+
   return response.json()
 }
 
@@ -258,8 +298,8 @@ const searchMixedSuggestions = async (query) => {
     })
 
     const mixedResults = [
-      ...uniqueArtists.slice(0, 4).map((item) => ({ type: "artist", item })),
-      ...uniqueSongs.slice(0, 4).map((item) => ({ type: "song", item })),
+      ...uniqueArtists.slice(0, 5).map((item) => ({ type: "artist", item })),
+      ...uniqueSongs.slice(0, 5).map((item) => ({ type: "song", item })),
     ]
 
     mixedResults.forEach(({ type, item }) => {
@@ -292,19 +332,21 @@ const searchMixedSuggestions = async (query) => {
     )
   }
 }
+/* ========================================================= */
 
+/* ========================================================= */
+/* CAMBIO BLOQUE: lógica original homepage.js                */
+/* ========================================================= */
 const createAlbumArray = async () => {
   const albumInfo = []
 
   const promises = artisti.map(async (artista) => {
     try {
       const searchData = await fetchSearchResults(artista)
-
       if (!searchData.length) return
 
       const artistaData = searchData[0].artist
       const albumsData = await fetchArtistAlbums(artistaData.id)
-
       if (!albumsData || !albumsData.data) return
 
       albumsData.data.forEach((album) => {
@@ -348,7 +390,7 @@ const popolaCarosello = (array, carosello) => {
   carosello.innerHTML = ""
 
   array.forEach((album) => {
-    if (carosello.querySelectorAll(".card").length > 16) return
+    if (carosello.querySelectorAll(".card").length >= 24) return
 
     carosello.innerHTML += `
       <a href="./album-page.html?albumId=${album.id}" class="text-decoration-none text-light">
@@ -356,7 +398,7 @@ const popolaCarosello = (array, carosello) => {
           <img src="${album.cover_medium}" class="card-img-top" alt="${album.titolo}" />
           <div class="card-body">
             <h4 class="m-0 fs-6 text-truncate">${album.titolo}</h4>
-            <p class="card-text small text-secondary text-truncate">${album.data}</p>
+            <p class="card-text small text-secondary text-truncate">${album.artista}</p>
           </div>
         </div>
       </a>
@@ -370,7 +412,7 @@ const popolaPiccoleCards = (array, wrapper) => {
   wrapper.innerHTML = ""
 
   array.forEach((album) => {
-    if (wrapper.querySelectorAll(".col").length === 8) return
+    if (wrapper.querySelectorAll(".col").length >= 12) return
 
     wrapper.innerHTML += `
       <div class="col">
@@ -381,7 +423,7 @@ const popolaPiccoleCards = (array, wrapper) => {
             </div>
             <div class="col-9 d-flex flex-column justify-content-center px-2">
               <span class="fw-bold text-truncate text-light">${album.titolo}</span>
-              <span class="text-secondary small">${album.data}</span>
+              <span class="text-secondary small text-truncate">${album.artista}</span>
             </div>
           </div>
         </a>
@@ -395,24 +437,33 @@ const popolaArtisti = (array, wrapper) => {
 
   wrapper.innerHTML = ""
 
-//CUORE ROSSO PREFE
-const favoriteIcon = document.getElementById("favorite-icon");
   const artistiUsati = new Set()
+  const artistiUnici = []
 
   array.forEach((album) => {
-    if (wrapper.querySelectorAll(".card").length > 20) return
+    if (!album.idArtista) return
     if (artistiUsati.has(album.idArtista)) return
 
     artistiUsati.add(album.idArtista)
+    artistiUnici.push(album)
+  })
 
+  artistiUnici.slice(0, 50).forEach((album) => {
     wrapper.innerHTML += `
-      <a href="./artist-page.html?artist=${encodeURIComponent(
-        album.artista,
-      )}" class="card text-decoration-none text-light bg-black border-0 flex-shrink-0">
-        <img src="${album.imgArtistaMedium}" class="rounded-circle object-fit-cover" style="width: 140px; height: 140px" />
+      <a
+        href="./artist-page.html?artist=${encodeURIComponent(album.artista)}"
+        class="card text-decoration-none text-light bg-black border-0 flex-shrink-0"
+        style="width: 150px;"
+      >
+        <img
+          src="${album.imgArtistaMedium || album.imgArtistaSmall || album.imgArtista}"
+          class="rounded-circle object-fit-cover"
+          style="width: 140px; height: 140px"
+          alt="${album.artista}"
+        />
         <div class="py-1">
-          <h6 class="m-0">${album.artista}</h6>
-          <p class="m-0 small text-secondary">${album.type}</p>
+          <h6 class="m-0 text-truncate">${album.artista}</h6>
+          <p class="m-0 small text-secondary">${album.type || "Artista"}</p>
         </div>
       </a>
     `
@@ -424,7 +475,7 @@ const popolaSidebarRail = (array, wrapper) => {
 
   wrapper.innerHTML = ""
 
-  array.slice(0, 6).forEach((album, index) => {
+  array.slice(0, 10).forEach((album, index) => {
     wrapper.innerHTML += `
       <a href="./album-page.html?albumId=${album.id}" class="text-decoration-none">
         <div class="d-flex align-items-center gap-2 px-2">
@@ -474,7 +525,11 @@ const attachOriginalCarouselScroll = () => {
     )
   })
 }
+/* ========================================================= */
 
+/* ========================================================= */
+/* CAMBIO BLOQUE: footer year                                */
+/* ========================================================= */
 const setFooterYear = () => {
   const dateElement = document.getElementById("date")
   if (!dateElement) return
@@ -482,7 +537,11 @@ const setFooterYear = () => {
   const currentYear = new Date().getFullYear()
   dateElement.innerText = `@${currentYear} Spotify AB`
 }
+/* ========================================================= */
 
+/* ========================================================= */
+/* CAMBIO BLOQUE: corazón favorito                           */
+/* ========================================================= */
 const initFavoriteHeart = () => {
   if (!favoriteIcon) return
 
@@ -569,18 +628,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   injectSuggestionScrollbarStyles()
 
   const albumSalvati = await getAlbumData()
-
-  const unTerzo = Math.floor(albumSalvati.length / 3)
-  const primoTerzo = albumSalvati
-    .slice(0, unTerzo)
-    .sort(() => Math.random() - 0.5)
-  const secondoTerzo = albumSalvati
-    .slice(unTerzo, unTerzo * 2)
-    .sort(() => Math.random() - 0.5)
-  const ultimoTerzo = albumSalvati
-    .slice(unTerzo * 2)
-    .sort(() => Math.random() - 0.5)
   const arrayMischiato = [...albumSalvati].sort(() => Math.random() - 0.5)
+
+  const primoTerzo = [...arrayMischiato].slice(0, 30)
+  const secondoTerzo = [...arrayMischiato].slice(30, 60)
+  const ultimoTerzo = [...arrayMischiato].slice(60, 90)
 
   popolaCarosello(primoTerzo, primoCarosello)
   popolaCarosello(secondoTerzo, secondoCarosello)
