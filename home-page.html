@@ -10,14 +10,31 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="./assets/css/audioplayer.css" />
     <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      main {
+        flex-grow: 1;
+      }
       .carosello {
         overflow-x: hidden;
+      }
+      #artisti a:hover {
+        transform: scale(1.1);
+        z-index: 10;
+        transition: all 0.15s linear;
+      }
+      #footer-links a {
+        text-decoration: none;
+        color: gray;
+      }
+      #footer-links a:hover {
+        color: white;
       }
     </style>
   </head>
@@ -88,51 +105,39 @@
       </nav>
     </header>
     <main class="px-0 px-lg-5">
+      <!-- CARDS PICCOLE  -->
       <section class="container" id="playlist-wrapper">
         <h2 class="my-4 text-center text-lg-start">Buonasera</h2>
         <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-3" id="small-cards-wrapper"></div>
       </section>
+      <!-- PRIMA SCROLL-ROW -->
       <section class="my-4">
         <div class="position-relative" id="first-scroll-row">
-          <button
-            id="prev"
-            class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1"
-          >
+          <button id="prev" class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-md-block">
             <i class="bi bi-chevron-left text-light fs-3"></i>
           </button>
-          <button id="next" class="next btn btn-light rounded-circle position-absolute end-0 top-50 translate-middle-y z-1">
-            <i class="bi bi-chevron-right"></i>
+          <button id="next" class="next btn  rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-md-block">
+            <i class="bi bi-chevron-right text-light fs-3"></i>
           </button>
-          <div class="d-flex gap-3 px-5 carosello" id="primo-carosello">
-          </div>
+          <div class="d-flex gap-3 px-5 carosello" id="primo-carosello"></div>
         </div>
       </section>
+      <!-- SECONDA SCROLL-ROW -->
       <section class="my-4">
         <div class="position-relative" id="second-scroll-row">
-          <button id="prev" class="prev btn btn-light rounded-circle position-absolute start-0 top-50 translate-middle-y z-1">
-            <i class="bi bi-chevron-left"></i>
+          <button id="prev" class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-md-block">
+            <i class="bi bi-chevron-left text-light fs-3"></i>
           </button>
-          <button id="next" class="next btn btn-light rounded-circle position-absolute end-0 top-50 translate-middle-y z-1">
-            <i class="bi bi-chevron-right"></i>
+          <button id="next" class="next btn  rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-md-block">
+            <i class="bi bi-chevron-right text-light fs-3"></i>
           </button>
-          <div class="d-flex gap-3 px-5 carosello" id="secondo-carosello">
-          </div>
+          <div class="d-flex gap-3 px-5 carosello" id="secondo-carosello"></div>
         </div>
       </section>
-    </main>
-    <footer>
-      <div
-        id="audio-player"
-        class="position-fixed bottom-0 w-100 p-3 bg-gray z-1"
-      >
-        <div
-          class="song-title d-flex align-items-center gap-2 d-none d-lg-flex"
-        >
-          <img
-            src="./assets/imgs/main/image-12.jpg"
-            alt=""
-            style="width: 50px"
-          />
+      <!-- AUDIO-PLAYER -->
+      <div id="audio-player" class="position-fixed bottom-0 w-100 p-3 bg-gray z-1 d-none">
+        <div class="song-title d-flex align-items-center gap-2 d-none d-lg-flex">
+          <img src="./assets/imgs/main/image-12.jpg" alt="" style="width: 50px" />
           <div class="">
             <h4 class="m-0 fs-5">Titolo brano</h4>
             <p class="m-0 fs-6">Artista brano</p>
@@ -188,8 +193,71 @@
           </button>
         </div>
       </div>
+    </main>
+    <footer class="px-3">
+      <section id="artisti" class="pb-5 border-bottom">
+        <h2 class="ps-5">Segui</h2>
+        <div id="artisti-scroll-row" class="d-flex gap-2 overflow-x-scroll py-3 ps-5">
+          
+        </div>
+      </section>
+      <section id="footer-links" class="container-fluid d-flex flex-column gap-2 pt-2">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 py-5 border-bottom">
+          <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+            <h6>Azienda</h6>
+            <a href="#">Chi siamo</a>
+            <a href="#">Opportunità di lavoro</a>
+            <a href="#">For the records</a>
+          </div>
+          <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+            <h6>Community</h6>
+            <a href="#">Per artisti</a>
+            <a href="#">Sviluppatori</a>
+            <a href="#">Pubblicità</a>
+            <a href="#">Investitori</a>
+            <a href="#">Venditori</a>
+          </div>
+          <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+            <h6>Link utili</h6>
+            <a href="#">Assistenza</a>
+            <a href="#">App per cellulare gratuita</a>
+            <a href="#">Diritti del consumatore</a>
+            <a href="#">Popolare per Paese</a>
+            <a href="#">Importa la tua musica</a>
+          </div>
+          <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+            <h6>Piani Spotify</h6>
+            <a href="#">Premium Individual</a>
+            <a href="#">Premium Duo</a>
+            <a href="#">Premium Family</a>
+            <a href="#">Premium Student</a>
+            <a href="#">Spotify Free</a>
+          </div>
+          <div class="col-md-12 d-flex gap-4 justify-content-center justify-content-lg-end">
+            <a href="#">
+              <i class="bi bi-facebook fs-1"></i>
+            </a>
+            <a href="#">
+              <i class="bi bi-twitter fs-1"></i>
+            </a>
+            <a href="#">
+              <i class="bi bi-instagram fs-1"></i>
+            </a>
+          </div>
+        </div>
+        <div class="row row-cols-1 row-cols-lg-2 py-5">
+          <div class="col">
+            <a href="#" class="mx-3 text-nowrap">Informazioni legali</a>
+            <a href="#" class="mx-3 text-nowrap">Sicurezza e Centro di controllo</a>
+            <a href="#" class="mx-3 text-nowrap">Informativa sulla Privacy</a>
+            <a href="#" class="mx-3 text-nowrap">Impostazioni Cookie</a>
+            <a href="#" class="mx-3 text-nowrap">Info e annunci</a>
+            <a href="#" class="mx-3 text-nowrap">Accessibilità</a>
+          </div>
+          <span id="date" class="col text-center text-lg-end pt-2 text-secondary">2026</span>
+        </div>
+      </section>
     </footer>
-
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
