@@ -204,9 +204,6 @@ popolaCarosello(secondoTerzo, secondoCarosello);
 popolaPiccoleCards(ultimoTerzo, smallCardsWrapper);
 popolaArtisti(arrayMischiato, artistiWrapper);
 
-//PER LA DATA NEL FOOTER
-const currentYear = new Date().getFullYear();
-document.getElementById("date").innerText = `@${currentYear} Spotify AB`;
 
 
 //CUORE ROSSO PREFE
@@ -216,10 +213,10 @@ if (favoriteIcon) {
   favoriteIcon.style.cursor = "pointer";
   favoriteIcon.style.transition = "all 0.1s ease";
   favoriteIcon.style.color = "#b3b3b3";
-
+  
   favoriteIcon.addEventListener("click", function () {
     const isLiked = this.classList.contains("bi-heart-fill");
-
+    
     if (isLiked) {
       this.classList.replace("bi-heart-fill", "bi-heart");
       this.style.color = "#b3b3b3";
@@ -233,16 +230,19 @@ if (favoriteIcon) {
       }, 200);
     }
   });
-
+  
   favoriteIcon.addEventListener("mouseenter", function () {
     if (!this.classList.contains("bi-heart-fill")) {
       this.style.color = "#ffffff";
     }
   });
-
+  
   favoriteIcon.addEventListener("mouseleave", function () {
     if (!this.classList.contains("bi-heart-fill")) {
       this.style.color = "#b3b3b3";
     }
   });
 }
+//PER LA DATA NEL FOOTER
+const currentYear = new Date().getFullYear();
+document.getElementById("date").innerText = `@${currentYear} Spotify AB`;
