@@ -28,7 +28,7 @@ class Playlist {
 
     // Method to remove a track by its ID
     removeTrack(id) {
-    this.tracks = this.tracks.filter(track => track.trackId !== id);
+        this.tracks = this.tracks.filter(track => track.trackId !== id);
     }
 }
 
