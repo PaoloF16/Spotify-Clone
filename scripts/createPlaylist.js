@@ -32,11 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 class Playlist {
 
-    constructor(title = "", creator = "", description = "") {
+    constructor(title = "", creator = "", description = "", image) {
         this.id = `pl-${Math.floor(Math.random() * 100000)}`;
         this.title = title;
         this.creator = creator;
         this.description = description;
+        this.img = image
         this.isPublic = true;
         this.createdAt = new Date().toISOString().split('T')[0];
         this.tracks = [];
@@ -120,9 +121,10 @@ const createPlaylist = function(e) {
 
     const playlistTitleInput = document.getElementById("playlistTitle").value
     const playlistDescriptionInput = document.getElementById("playlistDescription").value
+    const playlistImageInput = document.getElementById("playlistImage").value
     const isPlaylistPublic = document.getElementById("playlistPublicCheck").checked
 
-    const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput)
+    const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput, playlistImageInput)
     
     newPlaylist.isPublic = isPlaylistPublic
 
@@ -159,13 +161,14 @@ const displayAsidePlaylists = function() {
 
         userPlaylists.forEach((playlist) => {
             const card = document.createElement("div")
-            card.classList.add("card", "bg-dark", "text-white", "p-1", "my-2")
+            card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-4", "flex-start", "flex-row")
             card.innerHTML = `
+                <img src="${playlist.img}" class="rounded-start" style="width: 80px; object-fit: cover;" alt="...">
                 <div class="card-body">
-                    <h6 class="card-title mb-1">
+                    <h5 class="card-title mb-3">
                         <a class="text-decoration-none text-white" href="./album-page.html">${playlist.title}</a>
                     </h5>
-                    <p class="card-text text-secondary mb-1">${playlist.description}</p>
+                    <p class="card-text text-secondary mb-3">${playlist.description}</p>
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="card-text mb-1">${playlist.tracks.length} songs</p>
                         <a href="#" class="btn btn-sm btn-success px-3">Play</a>
