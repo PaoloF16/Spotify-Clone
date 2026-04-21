@@ -1,30 +1,30 @@
 //PER LO SCORRIMENTO DELLE CARDS
-const tracks = document.querySelectorAll(".carosello")
-const prevs = document.querySelectorAll(".prev")
-const nexts = document.querySelectorAll(".next")
+const tracks = document.querySelectorAll(".carosello");
+const prevs = document.querySelectorAll(".prev");
+const nexts = document.querySelectorAll(".next");
 
-const widthImage = 180
+const widthImage = 180;
 
 nexts.forEach((nextBtn, index) => {
   nextBtn.addEventListener("click", () => {
-    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" })
-  })
-})
+    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" });
+  });
+});
 
 prevs.forEach((prevBtn, index) => {
   prevBtn.addEventListener("click", () => {
-    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" })
-  })
-})
+    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" });
+  });
+});
 tracks.forEach((scrollRow) => {
   scrollRow.addEventListener("wheel", (e) => {
-    e.preventDefault()
-    scrollRow.scrollBy({ left: e.deltaY * 2, behavior: "smooth" })
-  })
-})
+    e.preventDefault();
+    scrollRow.scrollBy({ left: e.deltaY * 2, behavior: "smooth" });
+  });
+});
 const searchApiLink =
-  "https://striveschool-api.herokuapp.com/api/deezer/search?q="
-const artistLink = "https://striveschool-api.herokuapp.com/api/deezer/artist/"
+  "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
+const artistLink = "https://striveschool-api.herokuapp.com/api/deezer/artist/";
 
 const artisti = [
   "shakira",
@@ -71,47 +71,48 @@ const artisti = [
   "fiorella mannoia",
   "giorgia",
   "elisa",
-]
+];
 
-const linkArtist = "https://striveschool-api.herokuapp.com/api/deezer/artist/"
-const searchLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q="
+const linkArtist = "https://striveschool-api.herokuapp.com/api/deezer/artist/";
+const searchLink =
+  "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
 
-const albumGiaUsati = new Set()
+const albumGiaUsati = new Set();
 
 // primo carosello - primi 20 artisti random
 const artistiSceltiPrimo = [...artisti]
   .sort(() => Math.random() - 0.5)
-  .slice(0, 20)
+  .slice(0, 20);
 
 // secondo carosello - altri 20 artisti random (diversi dal primo)
-const artistiRimanenti = artisti.filter((a) => !artistiSceltiPrimo.includes(a))
+const artistiRimanenti = artisti.filter((a) => !artistiSceltiPrimo.includes(a));
 const artistiSceltiSecondo = [...artistiRimanenti]
   .sort(() => Math.random() - 0.5)
-  .slice(0, 20)
+  .slice(0, 20);
 
-const primoCarosello = document.getElementById("primo-carosello")
-const secondoCarosello = document.getElementById("secondo-carosello")
-const smallCardsWrapper = document.getElementById("small-cards-wrapper")
+const primoCarosello = document.getElementById("primo-carosello");
+const secondoCarosello = document.getElementById("secondo-carosello");
+const smallCardsWrapper = document.getElementById("small-cards-wrapper");
 
 function popolaCarosello(listaArtisti, carosello) {
   listaArtisti.forEach((artista) => {
     fetch(searchLink + artista)
       .then((response) => response.json())
       .then((data) => {
-        if (!data.data || data.data.length === 0) return
-        const artistaID = data.data[0].artist.id
-        return fetch(linkArtist + artistaID + "/albums")
+        if (!data.data || data.data.length === 0) return;
+        const artistaID = data.data[0].artist.id;
+        return fetch(linkArtist + artistaID + "/albums");
       })
       .then((response) => response.json())
       .then((data) => {
-        if (!data.data || data.data.length === 0) return
+        if (!data.data || data.data.length === 0) return;
         const albumFiltrati = data.data.filter(
           (album) => album.cover_medium && !albumGiaUsati.has(album.id),
-        )
-        if (albumFiltrati.length === 0) return
+        );
+        if (albumFiltrati.length === 0) return;
         const album =
-          albumFiltrati[Math.floor(Math.random() * albumFiltrati.length)]
-        albumGiaUsati.add(album.id)
+          albumFiltrati[Math.floor(Math.random() * albumFiltrati.length)];
+        albumGiaUsati.add(album.id);
         carosello.innerHTML += `
           <a href="album.html?id=${album.id}" class="text-decoration-none text-light">
             <div class="card text-light flex-shrink-0 border-0 overflow-hidden rounded-3" style="width: 160px">
@@ -122,16 +123,16 @@ function popolaCarosello(listaArtisti, carosello) {
               </div>
             </div>
           </a>
-        `
-        popolaPiccoleCards(album, smallCardsWrapper)
+        `;
+        popolaPiccoleCards(album, smallCardsWrapper);
       })
-      .catch((err) => console.log("errore", err))
-  })
+      .catch((err) => console.log("errore", err));
+  });
 }
 
 const popolaPiccoleCards = function (album, wrapper) {
   if (document.querySelectorAll("#small-cards-wrapper .col").length === 20) {
-    return
+    return;
   }
   wrapper.innerHTML += `
           <div class="col">
@@ -147,8 +148,46 @@ const popolaPiccoleCards = function (album, wrapper) {
           </div>
           </a>
           </div>
-          `
-}
+          `;
+};
 
-popolaCarosello(artistiSceltiPrimo, primoCarosello)
-popolaCarosello(artistiSceltiSecondo, secondoCarosello)
+popolaCarosello(artistiSceltiPrimo, primoCarosello);
+popolaCarosello(artistiSceltiSecondo, secondoCarosello);
+
+//CUORE ROSSO PREFE
+const favoriteIcon = document.getElementById("favorite-icon");
+
+if (favoriteIcon) {
+  favoriteIcon.style.cursor = "pointer";
+  favoriteIcon.style.transition = "all 0.1s ease";
+  favoriteIcon.style.color = "#b3b3b3";
+
+  favoriteIcon.addEventListener("click", function () {
+    const isLiked = this.classList.contains("bi-heart-fill");
+
+    if (isLiked) {
+      this.classList.replace("bi-heart-fill", "bi-heart");
+      this.style.color = "#b3b3b3";
+      this.style.transform = "scale(1)";
+    } else {
+      this.classList.replace("bi-heart", "bi-heart-fill");
+      this.style.color = "#ff0000";
+      this.style.transform = "scale(1.3)";
+      setTimeout(() => {
+        this.style.transform = "scale(1)";
+      }, 200);
+    }
+  });
+
+  favoriteIcon.addEventListener("mouseenter", function () {
+    if (!this.classList.contains("bi-heart-fill")) {
+      this.style.color = "#ffffff";
+    }
+  });
+
+  favoriteIcon.addEventListener("mouseleave", function () {
+    if (!this.classList.contains("bi-heart-fill")) {
+      this.style.color = "#b3b3b3";
+    }
+  });
+}
