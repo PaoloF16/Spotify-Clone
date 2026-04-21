@@ -15,11 +15,39 @@
 
     <style>
       body,
-      html,
-      main {
+      html {
         height: 100%;
         background-color: black;
         color: white;
+      }
+
+      /*  mainsidebar dinamica */
+      #main-sidebar {
+        width: 350px;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+      }
+
+      #main-sidebar.closed {
+        width: 85px;
+      }
+
+      /* elementi interni della sid */
+      .hide-on-closed {
+        display: block;
+      }
+      #main-sidebar.closed .hide-on-closed {
+        display: none !important;
+      }
+
+      /* chusura side */
+      #main-sidebar.closed .sidebar-header-content {
+        justify-content: center !important;
+        padding-left: 0 !important;
+      }
+
+      #main-sidebar.closed .sidebar-header-content i {
+        margin-right: 0 !important;
       }
 
       /* Main */
@@ -27,6 +55,11 @@
         flex-grow: 1;
         background-color: #121212;
         overflow-y: auto;
+      }
+
+      /* Form */
+      form {
+        background-color: #121212;
       }
 
       /*lo scroll*/
@@ -156,47 +189,162 @@
     </header>
 
     <main
-      class="container-fluid p-2 h-100 bg-black d-flex flex-column align-items-center justify-content-start"
+      class="container-fluid p-2 mt-4 h-100 bg-black d-flex align-items-start justify-content-between"
       id="main-content"
       class="custom-scroll"
     >
-      <form id="createPlaylistForm" class="p-2 m-4" style="width: 50%">
-        <div class="mb-3">
-          <label for="playlistTitle" class="form-label">Title</label>
-          <input
-            type="text"
-            class="form-control bg-dark text-white border-0 rounded-5"
-            id="playlistTitle"
-            aria-describedby="emailHelp"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="playlistDescription" class="form-label"
-            >Description</label
+      <aside id="main-sidebar" class="h-100">
+        <div
+          class="rounded-3 d-flex flex-column h-100 overflow-hidden"
+          style="background-color: #121212"
+        >
+          <div
+            id="toggle-sidebar"
+            class="p-3 d-flex justify-content-between align-items-center sidebar-header-content"
+            style="cursor: pointer"
           >
-          <input
-            type="text"
-            class="form-control bg-dark text-white border-0 rounded-5"
-            id="playlistDescription"
-          />
-        </div>
-        <div class="mb-3 form-check">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            id="playlistPublicCheck"
-          />
-          <label class="form-check-label" for="playlistPublicCheck"
-            >Make this playlist public</label
+            <div class="fw-bold text-secondary d-flex align-items-center">
+              <i class="bi bi-collection-play fs-4 me-3"></i>
+              <span class="hide-on-closed text-light">La tua libreria</span>
+            </div>
+            <div class="hide-on-closed text-secondary">
+              <i class="bi bi-plus-lg fs-5"></i>
+            </div>
+          </div>
+
+          <div
+            id="playlists"
+            class="flex-grow-1 overflow-y-auto px-3 custom-scroll"
           >
+            <div
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
+            >
+              <p class="fw-bold text-white mb-1">Crea la tua prima playlist</p>
+              <p class="text-light small mb-3 opacity-75">
+                È facile, ti aiuteremo
+              </p>
+              <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+                <a
+                  href="create-playlist.html"
+                  class="text-decoration-none text-black"
+                  >Crea playlist</a
+                >
+              </button>
+            </div>
+
+            <div
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+            >
+              <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
+              <button
+                class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+              >
+                Sfoglia i podcast
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 mt-auto hide-on-closed">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Informazioni legali</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Sicurezza e Centro sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Informativa sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Impostazioni cookie</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Info annuncia</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Accessibilità</a
+              >
+            </div>
+            <div class="mb-3">
+              <p
+                class="text-secondary small m-0 fw-bold text-light"
+                style="font-size: 14px"
+              >
+                Politica sui cookie
+              </p>
+            </div>
+            <button
+              class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold border-secondary"
+            >
+              <i class="bi bi-globe me-1"></i> Italiano
+            </button>
+          </div>
         </div>
-        <button type="submit" class="btn btn-success">Create Playlist</button>
-        <button type="button" class="btn btn-dark">Clear</button>
-      </form>
+      </aside>
+
+      <div style="min-width: 70%">
+        <form
+          id="createPlaylistForm"
+          class="p-5 mx-4 rounded-3"
+          style="width: 60%"
+        >
+          <div class="mb-3">
+            <label for="playlistTitle" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control bg-dark text-white border-0 rounded-5"
+              id="playlistTitle"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="playlistDescription" class="form-label"
+              >Description</label
+            >
+            <input
+              type="text"
+              class="form-control bg-dark text-white border-0 rounded-5"
+              id="playlistDescription"
+            />
+          </div>
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="playlistPublicCheck"
+            />
+            <label class="form-check-label" for="playlistPublicCheck"
+              >Make this playlist public</label
+            >
+          </div>
+          <button type="submit" class="btn btn-success">Create Playlist</button>
+          <button id="clearInputs" type="button" class="btn btn-dark">
+            Clear
+          </button>
+        </form>
+      </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/searchbarSpotify.js"></script>
-    <script src="searchbarPaolo/searchbar.js"></script>
+    <script src="./scripts/createPlaylist.js"></script>
   </body>
 </html>

@@ -5,7 +5,22 @@ const userPlaylists = []
 
 // DOM ELEMENTS
 
+const asidePlaylistList = document.getElementById("playlists")
+
 const createPlaylistForm = document.getElementById("createPlaylistForm")
+const clearFormButton = document.getElementById("clearInputs")
+
+
+// ASIDE 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("main-sidebar");
+    const toggleBtn = document.getElementById("toggle-sidebar");
+
+    toggleBtn.addEventListener("click", function () {
+        sidebar.classList.toggle("closed");
+    });
+});
 
 
 // INITIALIZE PLAYLIST CLASS
@@ -120,13 +135,42 @@ const deletePlaylist = function(id) {
 
 }
 
+
+const displayAsidePlaylists = function() {
+
+    let defaultContent = asidePlaylistList.innerHTML
+    if (userPlaylists.length !== 0) {
+        const list = document.createElement("div")
+
+        userPlaylists.forEach((playlist) => {
+            const card = document.createElement("div")
+            card.classList.add("card")
+            card.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">${playlist.title}</h5>
+                    <p class="card-text">${playlist.description}</p>
+                    <p class="card-text">${playlist.tracks.length} songs</p>
+                    <a href="#" class="btn btn-primary">Play</a>
+                </div>`
+        })
+        
+    }
+}
+
+const clearForm = function(e) {
+    e.preventDefault()
+    createPlaylistForm.reset()
+}
+
 // PUSH LIKED SONGS TO LOCAL STORAGE
 localStorage.setItem("userLikedSongs", likedSongs)
 
 
 //ADD EVENT LISTENERS
 createPlaylistForm.addEventListener("submit", createPlaylist)
+clearFormButton.addEventListener("click", clearForm)
 
 getAlbum()
 getArtist()
 
+displayAsidePlaylists()
