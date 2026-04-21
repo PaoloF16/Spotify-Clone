@@ -41,9 +41,6 @@ const formatDuration = (seconds) => {
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`
 }
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: estilos spotify para la caja sugerencias   */
-/* ========================================================= */
 const styleSuggestionsDropdown = () => {
   if (!dataList) return
 
@@ -64,11 +61,7 @@ const styleSuggestionsDropdown = () => {
   dataList.style.scrollbarWidth = "thin"
   dataList.style.scrollbarColor = "#8a8a8a transparent"
 }
-/* ========================================================= */
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: inyectar estilos scrollbar tipo spotify    */
-/* ========================================================= */
 const injectSuggestionScrollbarStyles = () => {
   if (document.getElementById("spotify-suggestion-scrollbar-styles")) return
 
@@ -99,11 +92,7 @@ const injectSuggestionScrollbarStyles = () => {
   `
   document.head.appendChild(style)
 }
-/* ========================================================= */
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: item sugerencia estilo spotify con imagen  */
-/* ========================================================= */
 const createSuggestionItem = (artistItem) => {
   const li = document.createElement("li")
   li.style.listStyle = "none"
@@ -154,11 +143,7 @@ const createSuggestionItem = (artistItem) => {
 
   return li
 }
-/* ========================================================= */
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: item de mensaje para vacío/error           */
-/* ========================================================= */
 const createMessageItem = (message, color = "#b3b3b3") => {
   const li = document.createElement("li")
   li.textContent = message
@@ -171,9 +156,7 @@ const createMessageItem = (message, color = "#b3b3b3") => {
   li.style.fontSize = "0.9rem"
   return li
 }
-/* ========================================================= */
 
-// Search and show suggestions in the navbar
 const searchArtistSuggestions = async (artist) => {
   try {
     const response = await fetch(apiUrl + encodeURIComponent(artist))
@@ -469,9 +452,6 @@ if (searchInput) {
   })
 }
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: cerrar sugerencias al hacer click afuera   */
-/* ========================================================= */
 document.addEventListener("click", (event) => {
   if (
     dataList &&
@@ -482,13 +462,21 @@ document.addEventListener("click", (event) => {
     dataList.innerHTML = ""
   }
 })
-/* ========================================================= */
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: carga inicial aleatoria de artista         */
-/* ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   injectSuggestionScrollbarStyles()
+
+  const params = new URLSearchParams(window.location.search)
+  const artistFromUrl = params.get("artist")
+
+  if (artistFromUrl && artistFromUrl.trim() !== "") {
+    if (searchInput) {
+      searchInput.value = artistFromUrl
+    }
+
+    renderArtistProfile(artistFromUrl)
+    return
+  }
 
   const randomArtists = [
     "Drake",
