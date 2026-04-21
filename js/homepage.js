@@ -23,6 +23,21 @@ tracks.forEach((scrollRow) => {
   });
 });
 
+const fetchConRetry = function (url, tentativi = 20) {
+  return fetch(url)
+    .then((response) => {
+      if (response.ok) return response.json();
+      throw new Error("risposta non ok");
+    })
+    .catch((error) => {
+      if (tentativi > 0) {
+        console.log(`riprovo... tentativi rimasti: ${tentativi}`);
+        return fetchConRetry(url, tentativi - 1);
+      }
+      throw error;
+    });
+};
+
 const artisti = [
   "shakira",
   "eminem",
@@ -70,20 +85,20 @@ const artisti = [
   "elisa",
 ];
 
-const linkArtist ="https://striveschool-api.herokuapp.com/api/deezer/artist/";
-const searchLink ="https://striveschool-api.herokuapp.com/api/deezer/search?q=";
+const linkArtist = "https://striveschool-api.herokuapp.com/api/deezer/artist/";
+const searchLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
 
 //CREO L'ARRAY CON LE INFO DEGLI ALBUM E LI SALVO NEL LOCAL STORAGE
 const createArray = function (callback) {
   const albumInfo = [];
   const promises = artisti.map((artista) => {
-    return fetch(searchLink + artista)
-      .then((response) => response.json())
+    return fetchConRetry(searchLink + artista)
+      // .then((response) => response.json())
       .then((data) => {
         if (!data.data || data.data.length === 0) return;
         const artistaData = data.data[0].artist;
-        return fetch(linkArtist + artistaData.id + "/albums")
-          .then((response) => response.json())
+        return fetchConRetry(linkArtist + artistaData.id + "/albums")
+          // .then((response) => response.json())
           .then((data) => {
             if (!data || !data.data) return;
             data.data.forEach((album) => {
@@ -108,7 +123,6 @@ const createArray = function (callback) {
   });
 
   Promise.allSettled(promises).then(() => {
-    // console.log("array completo", albumInfo.length);
     callback(albumInfo);
   });
 };
@@ -204,8 +218,6 @@ popolaCarosello(secondoTerzo, secondoCarosello);
 popolaPiccoleCards(ultimoTerzo, smallCardsWrapper);
 popolaArtisti(arrayMischiato, artistiWrapper);
 
-
-
 //CUORE ROSSO PREFE
 const favoriteIcon = document.getElementById("favorite-icon");
 
@@ -213,10 +225,10 @@ if (favoriteIcon) {
   favoriteIcon.style.cursor = "pointer";
   favoriteIcon.style.transition = "all 0.1s ease";
   favoriteIcon.style.color = "#b3b3b3";
-  
+
   favoriteIcon.addEventListener("click", function () {
     const isLiked = this.classList.contains("bi-heart-fill");
-    
+
     if (isLiked) {
       this.classList.replace("bi-heart-fill", "bi-heart");
       this.style.color = "#b3b3b3";
@@ -230,13 +242,13 @@ if (favoriteIcon) {
       }, 200);
     }
   });
-  
+
   favoriteIcon.addEventListener("mouseenter", function () {
     if (!this.classList.contains("bi-heart-fill")) {
       this.style.color = "#ffffff";
     }
   });
-  
+
   favoriteIcon.addEventListener("mouseleave", function () {
     if (!this.classList.contains("bi-heart-fill")) {
       this.style.color = "#b3b3b3";
