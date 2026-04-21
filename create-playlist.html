@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spotify - Pagina Artista</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body,
+      html {
+        height: 100%;
+        background-color: black;
+        color: white;
+      }
+
+      /*  mainsidebar dinamica */
+      #main-sidebar {
+        width: 350px;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+      }
+
+      #main-sidebar.closed {
+        width: 85px;
+      }
+
+      /* elementi interni della sid */
+      .hide-on-closed {
+        display: block;
+      }
+      #main-sidebar.closed .hide-on-closed {
+        display: none !important;
+      }
+
+      /* chusura side */
+      #main-sidebar.closed .sidebar-header-content {
+        justify-content: center !important;
+        padding-left: 0 !important;
+      }
+
+      #main-sidebar.closed .sidebar-header-content i {
+        margin-right: 0 !important;
+      }
+
+      /* Main */
+      #main-content {
+        flex-grow: 1;
+        background-color: #121212;
+        overflow-y: auto;
+      }
+
+      /* Form */
+      form {
+        background-color: #121212;
+      }
+
+      /*lo scroll*/
+      .custom-scroll::-webkit-scrollbar {
+        width: 10px;
+      }
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .hover-riga:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand p-0" href="./home-page.html">
+            <!--  <img
+              src="./assets/imgs/logo.svg"
+              alt="logo-spotify
+              
+              "
+          /> --><i class="bi bi-spotify text-light fs-1"></i
+          ></a>
+          <button
+            class="navbar-toggler text-light"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span><i class="bi bi-list fs-1"></i></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul
+              class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center align-items-sm-start gap-3"
+            >
+              <li class="nav-item">
+                <a href="./home-page.html" class="text-light border-1">
+                  <i
+                    class="bi bi-house-door-fill fs-4 px-2 px-2 pb-1 rounded rounded-circle bg-secondary"
+                  ></i>
+                </a>
+              </li>
+              <form
+                class="d-flex text-light btn-group border border-1 rounded-5"
+                role="search"
+              >
+                <button
+                  type="button"
+                  class="btn text-light w-auto"
+                  id="search-btn"
+                >
+                  <i class="bi bi-search"></i>
+                </button>
+                <div class="container-fluid d-flex justify-content-center">
+                  <div class="search-box">
+                    <div
+                      class="d-flex align-items-center bg-dark rounded-pill px-3"
+                      style="height: 40px"
+                    >
+                      <input
+                        id="inputSearch"
+                        class="bg-transparent w-auto text-light border-0 w-100"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
+                    </div>
+                    <ul id="listaData"></ul>
+                  </div>
+                </div>
+
+                <button type="button" class="btn">
+                  <i class="bi bi-archive text-light"></i>
+                </button>
+              </form>
+            </ul>
+            <section
+              class="d-flex flex-column flex-md-row align-items-md-center"
+            >
+              <div
+                class="d-flex flex-column flex-md-row align-items-md-center gap-3 border-end border-2 px-0 px-md-3"
+              >
+                <a href="#" class="text-light fw-bold text-decoration-none">
+                  Premium</a
+                >
+                <a href="#" class="text-light fw-bold text-decoration-none">
+                  Support</a
+                >
+                <a
+                  href="#"
+                  class="text-light fw-bold text-decoration-none mb-3 mb-md-0"
+                  >Download
+                </a>
+              </div>
+              <div
+                class="d-flex flex-column flex-md-row align-items-md-center gap-3 px-0 px-md-3"
+              >
+                <a href="#" class="text-light fw-bold text-decoration-none"
+                  ><i class="bi bi-arrow-down-circle-fill"></i> Install App</a
+                >
+                <a href="#" class="text-light fw-bold text-decoration-none">
+                  Sign Up</a
+                >
+                <button
+                  type="button"
+                  class="btn text-dark border border-1 bg-light rounded-4 p-2 flex-shrink-1"
+                  id="search-btn"
+                >
+                  <a href="#" class="text-decoration-none fw-bold text-black"
+                    >Log in</a
+                  >
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </nav>
+      <!-- esempio nav -->
+    </header>
+
+    <main
+      class="container-fluid p-2 mt-4 h-100 bg-black d-flex align-items-start justify-content-between custom-scroll"
+      id="main-content"
+    >
+      <aside id="main-sidebar" class="h-100">
+        <div
+          class="rounded-3 d-flex flex-column h-100 overflow-hidden"
+          style="background-color: #121212"
+        >
+          <div
+            id="toggle-sidebar"
+            class="p-3 d-flex justify-content-between align-items-center sidebar-header-content"
+            style="cursor: pointer"
+          >
+            <div class="fw-bold text-secondary d-flex align-items-center">
+              <i class="bi bi-collection-play fs-4 me-3"></i>
+              <span class="hide-on-closed text-light">La tua libreria</span>
+            </div>
+            <div class="hide-on-closed text-secondary">
+              <i class="bi bi-plus-lg fs-5"></i>
+            </div>
+          </div>
+
+          <div
+            id="playlists"
+            class="flex-grow-1 overflow-y-auto px-3 custom-scroll"
+          >
+            <div
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
+            >
+              <p class="fw-bold text-white mb-1">Crea la tua prima playlist</p>
+              <p class="text-light small mb-3 opacity-75">
+                È facile, ti aiuteremo
+              </p>
+              <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+                <a
+                  href="create-playlist.html"
+                  class="text-decoration-none text-black"
+                  >Crea playlist</a
+                >
+              </button>
+            </div>
+
+            <div
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+            >
+              <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
+              <button
+                class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+              >
+                Sfoglia i podcast
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 mt-auto hide-on-closed">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Informazioni legali</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Sicurezza e Centro sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Informativa sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Impostazioni cookie</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Info annuncia</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none small"
+                style="font-size: 11px"
+                >Accessibilità</a
+              >
+            </div>
+            <div class="mb-3">
+              <p
+                class="text-secondary small m-0 fw-bold text-light"
+                style="font-size: 14px"
+              >
+                Politica sui cookie
+              </p>
+            </div>
+            <button
+              class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold border-secondary"
+            >
+              <i class="bi bi-globe me-1"></i> Italiano
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <div class="flex-grow-1 d-flex justify-content-center align-items-start">
+        <form id="createPlaylistForm" class="p-5 rounded-3 w-75">
+          <div class="mb-3">
+            <label for="playlistTitle" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control bg-dark text-white border-0 rounded-5"
+              id="playlistTitle"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="playlistDescription" class="form-label"
+              >Description</label
+            >
+            <input
+              type="text"
+              class="form-control bg-dark text-white border-0 rounded-5"
+              id="playlistDescription"
+            />
+          </div>
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="playlistPublicCheck"
+            />
+            <label
+              class="form-check-label text-secondary"
+              for="playlistPublicCheck"
+              >Make this playlist public</label
+            >
+          </div>
+          <button type="submit" class="btn btn-success">Create Playlist</button>
+          <button id="clearInputs" type="button" class="btn btn-dark">
+            Clear
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/searchbarSpotify.js"></script>
+    <script src="./scripts/createPlaylist.js"></script>
+  </body>
+</html>
