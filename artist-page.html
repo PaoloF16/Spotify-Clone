@@ -288,7 +288,7 @@
         </aside>
 
         <main id="main-content" class="custom-scroll">
-          <section id="hero-artista">
+          <section id="cardArtist">
             <div>
               <div class="d-flex align-items-center gap-2 mb-2 mt-2 ms-3">
                 <i
@@ -322,40 +322,13 @@
             </button>
             <i class="bi bi-three-dots text-secondary fs-3 clickable-btn"></i>
           </div>
-
-          <div
-            class="track-row d-flex align-items-center justify-content-between"
-          >
-            <div class="d-flex align-items-center flex-grow-1">
-              <div
-                class="track-index text-spotify-grey me-3"
-                style="width: 30px; text-align: center"
-              >
-                <span class="track-num">1</span>
-                <i class="bi bi-play-fill track-play-icon d-none fs-5"></i>
-              </div>
-
-              <img
-                src=""
-                class="rounded me-3"
-                style="width: 40px; height: 40px; object-fit: cover"
-              />
-
-              <div class="text-truncate">
-                <p class="track-title text-truncate">Titolo della Canzone</p>
-              </div>
-            </div>
-
-            <div class="d-flex align-items-center text-spotify-grey">
-              <div class="d-none d-md-block me-4">0</div>
-              <div style="width: 50px; text-align: right">0</div>
-            </div>
-          </div>
+          <div id="cardSongs" class="px-4 pb-5"></div>
         </main>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./searchbarPaolo/searchbar.js"></script>
 
     <script>
       // LOGICA APERTURA/CHIUSURA SIDEBAR
