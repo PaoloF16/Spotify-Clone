@@ -189,9 +189,8 @@
     </header>
 
     <main
-      class="container-fluid p-2 mt-4 h-100 bg-black d-flex align-items-start justify-content-between"
+      class="container-fluid p-2 mt-4 h-100 bg-black d-flex align-items-start justify-content-between custom-scroll"
       id="main-content"
-      class="custom-scroll"
     >
       <aside id="main-sidebar" class="h-100">
         <div
@@ -300,12 +299,8 @@
         </div>
       </aside>
 
-      <div style="min-width: 70%">
-        <form
-          id="createPlaylistForm"
-          class="p-5 mx-4 rounded-3"
-          style="width: 60%"
-        >
+      <div class="flex-grow-1 d-flex justify-content-center align-items-start">
+        <form id="createPlaylistForm" class="p-5 rounded-3 w-75">
           <div class="mb-3">
             <label for="playlistTitle" class="form-label">Title</label>
             <input
@@ -331,7 +326,9 @@
               class="form-check-input"
               id="playlistPublicCheck"
             />
-            <label class="form-check-label" for="playlistPublicCheck"
+            <label
+              class="form-check-label text-secondary"
+              for="playlistPublicCheck"
               >Make this playlist public</label
             >
           </div>

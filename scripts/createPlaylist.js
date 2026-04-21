@@ -1,6 +1,6 @@
 
 const likedSongs = []
-const userPlaylists = []
+const userPlaylists = JSON.parse(localStorage.getItem("userPlaylists")) || []
 
 
 // DOM ELEMENTS
@@ -10,8 +10,13 @@ const asidePlaylistList = document.getElementById("playlists")
 const createPlaylistForm = document.getElementById("createPlaylistForm")
 const clearFormButton = document.getElementById("clearInputs")
 
+// CLEAR FORM
+const clearForm = function(e) {
+    if (e) e.preventDefault()
+    createPlaylistForm.reset()
+}
 
-// ASIDE 
+// ASIDE EXPAND AND CONTRACT
 
 document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("main-sidebar");
@@ -62,9 +67,10 @@ class Artist {
 
 // GET ARTIST FETCH FUNCTION 
 
+/* 
 const getArtist = function(artist) {
 
-    fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artist}`)
+    fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/`)
 
     .then((response) => { 
         if (response.ok) {
@@ -88,7 +94,7 @@ const getArtist = function(artist) {
 
 const getAlbum = function(album) {
 
-    fetch(`https://striveschool-api.herokuapp.com/api/deezer/album/${album}`)
+    fetch(`https://striveschool-api.herokuapp.com/api/deezer/album/`)
 
     .then((response) => { 
         if (response.ok) {
@@ -106,7 +112,7 @@ const getAlbum = function(album) {
     .catch((error) => console.log(error))
 
     }
-
+*/
 
 const createPlaylist = function(e) {
 
@@ -115,7 +121,6 @@ const createPlaylist = function(e) {
     const playlistTitleInput = document.getElementById("playlistTitle").value
     const playlistDescriptionInput = document.getElementById("playlistDescription").value
     const isPlaylistPublic = document.getElementById("playlistPublicCheck").checked
-    newPlaylist.isPublic = isPlaylistPublic
 
     const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput)
     
@@ -123,10 +128,15 @@ const createPlaylist = function(e) {
 
     userPlaylists.push(newPlaylist)
 
+    clearForm()
+
+    console.log(userPlaylists)
+
 
     // PUSH PLAYLISTS TO LOCAL STORAGE
 
     localStorage.setItem("userPlaylists", JSON.stringify(userPlaylists))
+    displayAsidePlaylists()
 
 }
 
@@ -139,28 +149,40 @@ const deletePlaylist = function(id) {
 const displayAsidePlaylists = function() {
 
     let defaultContent = asidePlaylistList.innerHTML
+
     if (userPlaylists.length !== 0) {
+
+        asidePlaylistList.innerHTML = ""
+
         const list = document.createElement("div")
+        list.classList.add("hide-on-closed")
 
         userPlaylists.forEach((playlist) => {
             const card = document.createElement("div")
-            card.classList.add("card")
+            card.classList.add("card", "bg-dark", "text-white", "p-1", "my-2")
             card.innerHTML = `
                 <div class="card-body">
-                    <h5 class="card-title">${playlist.title}</h5>
-                    <p class="card-text">${playlist.description}</p>
-                    <p class="card-text">${playlist.tracks.length} songs</p>
-                    <a href="#" class="btn btn-primary">Play</a>
+                    <h6 class="card-title mb-1">
+                        <a class="text-decoration-none text-white" href="./album-page.html">${playlist.title}</a>
+                    </h5>
+                    <p class="card-text text-secondary mb-1">${playlist.description}</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <p class="card-text mb-1">${playlist.tracks.length} songs</p>
+                        <a href="#" class="btn btn-sm btn-success px-3">Play</a>
+                    </div>
                 </div>`
+            list.appendChild(card)
         })
-        
+
+        asidePlaylistList.appendChild(list)
+
+    } else {
+
+        asidePlaylistList.innerHTML = defaultContent
+
     }
 }
 
-const clearForm = function(e) {
-    e.preventDefault()
-    createPlaylistForm.reset()
-}
 
 // PUSH LIKED SONGS TO LOCAL STORAGE
 localStorage.setItem("userLikedSongs", likedSongs)
@@ -170,7 +192,7 @@ localStorage.setItem("userLikedSongs", likedSongs)
 createPlaylistForm.addEventListener("submit", createPlaylist)
 clearFormButton.addEventListener("click", clearForm)
 
-getAlbum()
-getArtist()
+//getAlbum()
+//getArtist()
 
 displayAsidePlaylists()
