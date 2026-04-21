@@ -25,6 +25,8 @@
       #audio-player {
         display: grid;
         grid-template-columns: 1fr;
+        left: 0;
+        right: 0;
       }
       .bg-gray {
         background-color: #222222;
