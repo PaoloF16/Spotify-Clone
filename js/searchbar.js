@@ -41,14 +41,137 @@ const formatDuration = (seconds) => {
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`
 }
 
-// Search and show suggestions in the navbar
-const createSuggestionItem = (artistName) => {
+/* ========================================================= */
+/* CAMBIO BLOQUE: estilos spotify para la caja sugerencias   */
+/* ========================================================= */
+const styleSuggestionsDropdown = () => {
+  if (!dataList) return
+
+  dataList.className = "position-absolute mt-2 w-100 z-3"
+  dataList.style.maxHeight = "420px"
+  dataList.style.overflowY = "auto"
+  dataList.style.overflowX = "hidden"
+  dataList.style.listStyle = "none"
+  dataList.style.margin = "0"
+  dataList.style.padding = "8px"
+  dataList.style.paddingLeft = "8px"
+  dataList.style.background =
+    "linear-gradient(180deg, rgba(36,36,36,0.98) 0%, rgba(24,24,24,0.98) 100%)"
+  dataList.style.borderRadius = "12px"
+  dataList.style.boxShadow = "0 16px 40px rgba(0,0,0,0.55)"
+  dataList.style.border = "none"
+  dataList.style.backdropFilter = "blur(10px)"
+  dataList.style.scrollbarWidth = "thin"
+  dataList.style.scrollbarColor = "#8a8a8a transparent"
+}
+/* ========================================================= */
+
+/* ========================================================= */
+/* CAMBIO BLOQUE: inyectar estilos scrollbar tipo spotify    */
+/* ========================================================= */
+const injectSuggestionScrollbarStyles = () => {
+  if (document.getElementById("spotify-suggestion-scrollbar-styles")) return
+
+  const style = document.createElement("style")
+  style.id = "spotify-suggestion-scrollbar-styles"
+  style.textContent = `
+    #listaData::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    #listaData::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 10px;
+    }
+
+    #listaData::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #8c8c8c 0%, #6f6f6f 100%);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    #listaData::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #a5a5a5 0%, #818181 100%);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+  `
+  document.head.appendChild(style)
+}
+/* ========================================================= */
+
+/* ========================================================= */
+/* CAMBIO BLOQUE: item sugerencia estilo spotify con imagen  */
+/* ========================================================= */
+const createSuggestionItem = (artistItem) => {
   const li = document.createElement("li")
-  li.textContent = artistName
-  li.className = "list-group-item bg-dark text-white border-secondary"
+  li.style.listStyle = "none"
   li.style.cursor = "pointer"
+  li.style.border = "none"
+  li.style.backgroundColor = "transparent"
+  li.style.borderRadius = "10px"
+  li.style.padding = "10px 12px"
+  li.style.transition = "background-color 0.2s ease"
+  li.style.marginBottom = "2px"
+
+  li.innerHTML = `
+    <div class="d-flex align-items-center gap-3 overflow-hidden">
+      <img
+        src="${
+          artistItem.picture_small ||
+          artistItem.picture_medium ||
+          artistItem.picture ||
+          "https://via.placeholder.com/48"
+        }"
+        alt="${artistItem.name}"
+        style="width: 48px; height: 48px; object-fit: cover; border-radius: 50%; flex-shrink: 0;"
+      />
+      <div class="d-flex flex-column overflow-hidden">
+        <span
+          class="text-white fw-bold text-truncate"
+          style="font-size: 0.95rem; line-height: 1.2;"
+        >
+          ${artistItem.name}
+        </span>
+        <span
+          class="text-secondary text-truncate"
+          style="font-size: 0.85rem; line-height: 1.2;"
+        >
+          Artista
+        </span>
+      </div>
+    </div>
+  `
+
+  li.addEventListener("mouseenter", () => {
+    li.style.backgroundColor = "#2a2a2a"
+  })
+
+  li.addEventListener("mouseleave", () => {
+    li.style.backgroundColor = "transparent"
+  })
+
   return li
 }
+/* ========================================================= */
+
+/* ========================================================= */
+/* CAMBIO BLOQUE: item de mensaje para vacío/error           */
+/* ========================================================= */
+const createMessageItem = (message, color = "#b3b3b3") => {
+  const li = document.createElement("li")
+  li.textContent = message
+  li.style.listStyle = "none"
+  li.style.padding = "12px"
+  li.style.borderRadius = "10px"
+  li.style.border = "none"
+  li.style.backgroundColor = "transparent"
+  li.style.color = color
+  li.style.fontSize = "0.9rem"
+  return li
+}
+/* ========================================================= */
 
 // Search and show suggestions in the navbar
 const searchArtistSuggestions = async (artist) => {
@@ -61,13 +184,8 @@ const searchArtistSuggestions = async (artist) => {
     const data = await response.json()
     dataList.innerHTML = ""
 
-    dataList.className = "list-group position-absolute mt-2 w-100 z-3"
-    dataList.style.maxHeight = "240px"
-    dataList.style.overflowY = "auto"
-    dataList.style.listStyle = "none"
-    dataList.style.paddingLeft = "0"
+    styleSuggestionsDropdown()
 
-    // Show the artist not repeated
     const uniqueArtists = []
     const artistIds = new Set()
 
@@ -78,8 +196,8 @@ const searchArtistSuggestions = async (artist) => {
       }
     })
 
-    uniqueArtists.slice(0, 5).forEach((artistItem) => {
-      const li = createSuggestionItem(artistItem.name)
+    uniqueArtists.slice(0, 8).forEach((artistItem) => {
+      const li = createSuggestionItem(artistItem)
 
       li.addEventListener("click", () => {
         searchInput.value = artistItem.name
@@ -89,10 +207,17 @@ const searchArtistSuggestions = async (artist) => {
 
       dataList.appendChild(li)
     })
+
+    if (!uniqueArtists.length) {
+      dataList.appendChild(createMessageItem("Nessun artista trovato"))
+    }
   } catch (error) {
     console.error(error)
-    dataList.innerHTML =
-      '<li class="list-group-item bg-dark text-danger border-secondary">Error al buscar artista</li>'
+    dataList.innerHTML = ""
+    styleSuggestionsDropdown()
+    dataList.appendChild(
+      createMessageItem("Errore al buscar artista", "#ff6b6b"),
+    )
   }
 }
 
@@ -279,7 +404,6 @@ const renderCenterArtistInfo = (artistInfo, firstSong) => {
   }
 }
 
-// CORRECCIÓN: faltaba esta función completa
 const renderArtistProfile = async (artist) => {
   try {
     const response = await fetch(apiUrl + encodeURIComponent(artist))
@@ -318,7 +442,6 @@ const renderArtistProfile = async (artist) => {
   }
 }
 
-// suggestion nav bar
 if (searchInput) {
   searchInput.addEventListener("input", () => {
     const artistName = searchInput.value.trim()
@@ -332,7 +455,6 @@ if (searchInput) {
   })
 }
 
-// when press enter show the info
 if (searchInput) {
   searchInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -348,9 +470,26 @@ if (searchInput) {
 }
 
 /* ========================================================= */
+/* CAMBIO BLOQUE: cerrar sugerencias al hacer click afuera   */
+/* ========================================================= */
+document.addEventListener("click", (event) => {
+  if (
+    dataList &&
+    searchInput &&
+    !dataList.contains(event.target) &&
+    event.target !== searchInput
+  ) {
+    dataList.innerHTML = ""
+  }
+})
+/* ========================================================= */
+
+/* ========================================================= */
 /* CAMBIO BLOQUE: carga inicial aleatoria de artista         */
 /* ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
+  injectSuggestionScrollbarStyles()
+
   const randomArtists = [
     "Drake",
     "The Weeknd",
@@ -442,4 +581,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderArtistProfile(selectedArtist)
 })
-/* ========================================================= */
