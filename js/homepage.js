@@ -207,10 +207,7 @@ popolaArtisti(arrayMischiato, artistiWrapper);
 //PER LA DATA NEL FOOTER
 const currentYear = new Date().getFullYear();
 document.getElementById("date").innerText = `@${currentYear} Spotify AB`;
-};
 
-popolaCarosello(artistiSceltiPrimo, primoCarosello);
-popolaCarosello(artistiSceltiSecondo, secondoCarosello);
 
 //CUORE ROSSO PREFE
 const favoriteIcon = document.getElementById("favorite-icon");
