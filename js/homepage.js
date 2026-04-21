@@ -1,21 +1,21 @@
 //PER LO SCORRIMENTO DELLE CARDS
-const tracks = document.querySelectorAll(".carosello");
-const prevs = document.querySelectorAll(".prev");
-const nexts = document.querySelectorAll(".next");
+const tracks = document.querySelectorAll(".carosello")
+const prevs = document.querySelectorAll(".prev")
+const nexts = document.querySelectorAll(".next")
 
-const widthImage = 180;
+const widthImage = 180
 
 nexts.forEach((nextBtn, index) => {
   nextBtn.addEventListener("click", () => {
-    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" });
-  });
-});
+    tracks[index].scrollBy({ left: widthImage, behavior: "smooth" })
+  })
+})
 
 prevs.forEach((prevBtn, index) => {
   prevBtn.addEventListener("click", () => {
-    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" });
-  });
-});
+    tracks[index].scrollBy({ left: -widthImage, behavior: "smooth" })
+  })
+})
 tracks.forEach((scrollRow) => {
   scrollRow.addEventListener("wheel", (e) => {
     e.preventDefault();
@@ -70,10 +70,10 @@ const artisti = [
   "fiorella mannoia",
   "giorgia",
   "elisa",
-];
+]
 
-const linkArtist = "https://striveschool-api.herokuapp.com/api/deezer/artist/";
-const searchLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q=";
+const linkArtist = "https://striveschool-api.herokuapp.com/api/deezer/artist/"
+const searchLink = "https://striveschool-api.herokuapp.com/api/deezer/search?q="
 
 //CREO L'ARRAY CON LE INFO DEGLI ALBUM E LI SALVO NEL LOCAL STORAGE
 const createArray = function (callback) {

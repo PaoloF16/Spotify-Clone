@@ -69,6 +69,50 @@
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
       }
+
+      #right-sidebar {
+        width: 25vw;
+        min-width: 280px;
+        max-width: 380px;
+
+        transition: all 0.3s;
+        flex-shrink: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      #right-sidebar.closed {
+        width: 0px;
+        min-width: 0px;
+        margin-left: 0;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (max-width: 992px) {
+        #right-sidebar {
+          position: fixed;
+          right: 0;
+          top: 0;
+          height: 100vh;
+          z-index: 1050;
+          width: 320px;
+          background-color: black;
+          box-shadow: -10px 0 15px rgba(0, 0, 0, 0.5);
+        }
+      }
+      #intestazione-artista {
+        min-height: 320px;
+        background-color: #282828;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: end;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
     </style>
   </head>
   <body>
@@ -204,7 +248,7 @@
               </div>
             </div>
 
-            <div class="flex-grow-1 overflow-y-auto px-3 custom-scroll">
+            <div class="px-3 custom-scroll">
               <div
                 class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
               >
@@ -215,7 +259,11 @@
                   È facile, ti aiuteremo
                 </p>
                 <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
-                  Crea playlist
+                  <a
+                    href="create-playlist.html"
+                    class="text-decoration-none text-black"
+                    >Crea playlist</a
+                  >
                 </button>
               </div>
 
@@ -230,8 +278,11 @@
                 </button>
               </div>
             </div>
-
-            <div class="p-3 mt-auto hide-on-closed">
+            <div
+              id="artistSidebarRail"
+              class="d-flex flex-column gap-3 mt-3"
+            ></div>
+            <div class="p-3 hide-on-closed">
               <div class="d-flex flex-wrap gap-2 mb-3">
                 <a
                   href="#"
@@ -288,26 +339,20 @@
         </aside>
 
         <main id="main-content" class="custom-scroll">
-          <section id="cardArtist">
-            <div>
-              <div class="d-flex align-items-center gap-2 mb-2 mt-2 ms-3">
-                <i
-                  class="bi bi-patch-check-fill verificato-icon text-primary"
-                ></i>
+          <section id="intestazione-artista">
+            <div class="position-relative z-1">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="bi bi-patch-check-fill text-primary fs-5"></i>
                 <span class="small fw-bold">Artista verificato</span>
               </div>
               <h1 id="nome-artista" class="display-1 fw-bold m-0">
                 Nome Artista
               </h1>
-              <p
-                id="ascoltatori-mensili"
-                class="mt-3 ms-4 fw-semibold opacity-75"
-              >
+              <p id="ascoltatori-mensili" class="mt-3 fw-semibold opacity-75">
                 0 ascoltatori mensili
               </p>
             </div>
           </section>
-
           <div class="p-4 d-flex align-items-center gap-4">
             <div
               class="bg-success rounded-circle d-flex align-items-center justify-content-center shadow"
@@ -322,24 +367,268 @@
             </button>
             <i class="bi bi-three-dots text-secondary fs-3 clickable-btn"></i>
           </div>
-          <div id="cardSongs" class="px-4 pb-5"></div>
+          <section class="px-4 pb-5">
+            <h2 class="mb-4 text-white">Popular</h2>
+            <div id="cardSongs"></div>
+          </section>
         </main>
+        <button class="btn text-secondary d-flex pt-3" id="open-right-sidebar">
+          <i class="bi bi-layout-sidebar-reverse fs-4"></i>
+        </button>
+        <aside id="right-sidebar" class="h-100">
+          <div
+            class="rounded-3 d-flex flex-column h-100 overflow-hidden"
+            style="background-color: #000000"
+          >
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-layout-sidebar-reverse text-white"></i>
+                <span class="fw-bold text-light" id="side-bar-main-title"
+                  >Artist Name</span
+                >
+              </div>
+              <div class="text-secondary">
+                <i
+                  class="bi bi-three-dots fs-5 me-2"
+                  style="cursor: pointer"
+                ></i>
+                <i
+                  class="bi bi-x-lg fs-5"
+                  id="close-right-sidebar"
+                  style="cursor: pointer"
+                ></i>
+              </div>
+            </div>
+
+            <div
+              id="dynamic-credits"
+              class="flex-grow-1 overflow-y-auto px-3 custom-scroll"
+            >
+              <div
+                class="position-relative mb-4 overflow-hidden rounded-4"
+                style="height: 420px; min-height: 420px"
+              >
+                <img
+                  id="side-poster-img"
+                  src="https://via.placeholder.com/400x600"
+                  class="position-absolute top-0 start-0 w-100 h-100"
+                  style="object-fit: cover"
+                  alt="Artist poster"
+                />
+
+                <div class="d-flex justify-content-between align-items-end">
+                  <div>
+                    <h2
+                      id="side-song-title"
+                      class="fw-bold text-white mb-0"
+                      style="font-size: 1.8rem"
+                    >
+                      Nome Artista
+                    </h2>
+                    <p
+                      id="side-song-artist"
+                      class="text-light opacity-75 mb-0 fs-5"
+                    >
+                      Artista
+                    </p>
+                  </div>
+                  <button class="btn text-white p-0 fs-3">
+                    <i class="bi bi-plus-circle"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="rounded-4 p-3 mb-3" style="background-color: #121212">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4"
+                >
+                  <h6 class="fw-bold text-white m-0">Riconoscimenti</h6>
+                  <span
+                    class="text-secondary small fw-bold"
+                    style="cursor: pointer"
+                    >Mostra tutto</span
+                  >
+                </div>
+
+                <div class="d-flex align-items-center mb-3">
+                  <div class="me-3">
+                    <img
+                      id="credit-artist-img"
+                      src="https://via.placeholder.com/48"
+                      class="rounded-circle"
+                      style="width: 48px; height: 48px; object-fit: cover"
+                      alt="Artist avatar"
+                    />
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="fw-bold text-white mb-0" id="credit-artist-name">
+                      Luchè
+                    </h6>
+                    <p class="text-secondary small mb-0">
+                      Artista Principale • Parti Vocali
+                    </p>
+                  </div>
+                  <button
+                    class="btn btn-outline-light btn-sm rounded-pill px-3 fw-bold border-secondary"
+                  >
+                    Segui
+                  </button>
+                </div>
+
+                <div class="mb-2 ps-1">
+                  <h6 class="fw-bold text-white mb-0">Davide Petrella</h6>
+                  <p class="text-secondary small mb-0">Paroliere</p>
+                </div>
+              </div>
+
+              <div class="rounded-4 p-3 mb-4" style="background-color: #121212">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h6 class="fw-bold text-white m-0">Prossimo in coda</h6>
+                  <span class="text-secondary small fw-bold">Apri coda</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <img
+                    id="right-sidebar-next-img"
+                    src="https://via.placeholder.com/50"
+                    class="rounded-2"
+                    width="50"
+                    height="50"
+                    alt="Next track"
+                  />
+                  <div>
+                    <h6
+                      id="right-sidebar-next-title"
+                      class="m-0 fw-bold text-white small"
+                    >
+                      Nessun brano
+                    </h6>
+                    <p
+                      id="right-sidebar-next-artist"
+                      class="m-0 text-secondary small"
+                    >
+                      Nessun artista
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
-
+    <footer>
+      <div
+        id="audio-player"
+        class="position-fixed d-flex justify-content-center justify-content-lg-between bottom-0 w-100 p-3 bg-black z-1"
+      >
+        <div
+          class="song-title d-flex align-items-center gap-2 d-none d-lg-flex"
+        >
+          <img
+            src="./assets/imgs/main/image-12.jpg"
+            alt=""
+            style="width: 50px"
+          />
+          <div class="">
+            <h4 class="m-0 fs-5">Titolo brano</h4>
+            <p class="m-0 fs-6">Artista brano</p>
+          </div>
+          <div class="ms-2">
+            <i class="bi bi-heart fs-4 clickable-btn" id="favorite-icon"></i>
+          </div>
+        </div>
+        <div class="player-control d-flex flex-column justify-self-center">
+          <div id="control-btns" class="d-flex justify-content-center">
+            <button
+              class="border-0 bg-transparent text-secondary clickable-btn"
+            >
+              <i class="fs-4 bi bi-shuffle"></i>
+            </button>
+            <button
+              class="border-0 bg-transparent text-secondary clickable-btn"
+            >
+              <i class="fs-4 bi bi-skip-start-fill"></i>
+            </button>
+            <button class="border-0 bg-transparent text-light">
+              <i class="fs-1 bi bi-play-circle-fill"></i>
+            </button>
+            <button
+              class="border-0 bg-transparent text-secondary clickable-btn"
+            >
+              <i class="fs-4 bi bi-skip-end-fill"></i>
+            </button>
+            <button
+              class="border-0 bg-transparent text-secondary clickable-btn"
+            >
+              <i class="fs-4 bi bi-repeat"></i>
+            </button>
+          </div>
+          <div id="time-bar">
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-secondary small">123</span>
+              <input type="range" id="range-bar" />
+              <span class="text-secondary small">123</span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="volume d-flex align-items-center justify-content-end gap-1 d-none d-lg-flex"
+        >
+          <button class="border-0 bg-transparent text-light clickable-btn">
+            <i class="fs-5 bi bi-mic"></i>
+          </button>
+          <button class="border-0 bg-transparent text-light clickable-btn">
+            <i class="fs-5 bi bi-menu-button-wide-fill"></i>
+          </button>
+          <button class="border-0 bg-transparent text-light clickable-btn">
+            <i class="fs-5 bi bi-music-player"></i>
+          </button>
+          <div class="d-flex align-items-center gap-1">
+            <label for="">
+              <i class="fs-5 bi bi-volume-up"></i>
+            </label>
+            <input type="range" id="volume-bar" />
+          </div>
+          <button class="border-0 bg-transparent text-light">
+            <i class="bi bi-arrows-angle-expand"></i>
+          </button>
+        </div>
+      </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./searchbarPaolo/searchbar.js"></script>
+    <script src="./js/searchbar.js"></script>
 
     <script>
-      // LOGICA APERTURA/CHIUSURA SIDEBAR
       document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.getElementById("main-sidebar");
-        const toggleBtn = document.getElementById("toggle-sidebar");
+        // --- SIDEBAR SINISTRA ---
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
 
-        toggleBtn.addEventListener("click", function () {
-          sidebar.classList.toggle("closed");
-        });
-      });
+        if (toggleMainBtn) {
+          toggleMainBtn.addEventListener("click", () => {
+            mainSidebar.classList.toggle("closed")
+          })
+        }
+
+        // --- SIDEBAR DESTRA ---
+        const rightSidebar = document.getElementById("right-sidebar")
+        const closeRightBtn = document.getElementById("close-right-sidebar")
+        const openBtn = document.getElementById("open-right-sidebar")
+
+        if (closeRightBtn) {
+          closeRightBtn.addEventListener("click", () => {
+            rightSidebar.classList.add("closed")
+          })
+        }
+
+        if (openBtn) {
+          openBtn.addEventListener("click", () => {
+            rightSidebar.classList.remove("closed")
+          })
+        }
+      })
     </script>
   </body>
 </html>
