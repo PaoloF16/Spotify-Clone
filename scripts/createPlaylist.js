@@ -204,7 +204,6 @@ let defaultContent = `
 
 const displayAsidePlaylists = function() {
 
-
     if (userPlaylists.length !== 0) {
 
         asidePlaylistList.innerHTML = ""
