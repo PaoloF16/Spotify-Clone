@@ -214,7 +214,11 @@
                 <a href="#" class="text-light fw-bold text-decoration-none"
                   ><i class="bi bi-arrow-down-circle-fill"></i> Install App</a
                 >
-                <a href="#" class="text-light fw-bold text-decoration-none">
+                <a
+                  href="./registrazione.html"
+                  target="_blank"
+                  class="text-light fw-bold text-decoration-none"
+                >
                   Sign Up</a
                 >
                 <button
@@ -222,7 +226,10 @@
                   class="btn text-dark border border-1 bg-light rounded-4 p-2 flex-shrink-1"
                   id="search-btn"
                 >
-                  <a href="#" class="text-decoration-none fw-bold text-black"
+                  <a
+                    href="./loginpage.html"
+                    target="_blank"
+                    class="text-decoration-none fw-bold text-black"
                     >Log in</a
                   >
                 </button>
@@ -715,7 +722,7 @@
             </label>
             <input type="range" id="volume-bar" />
           </div>
-          <button class="border-0 bg-transparent text-light">
+          <button id="chiudi-player" class="border-0 bg-transparent text-light">
             <i class="bi bi-arrows-angle-expand"></i>
           </button>
         </div>
@@ -728,33 +735,72 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // --- SIDEBAR SINISTRA ---
-        const mainSidebar = document.getElementById("main-sidebar")
-        const toggleMainBtn = document.getElementById("toggle-sidebar")
+        const mainSidebar = document.getElementById("main-sidebar");
+        const toggleMainBtn = document.getElementById("toggle-sidebar");
 
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed")
-          })
+            mainSidebar.classList.toggle("closed");
+          });
         }
 
         // --- SIDEBAR DESTRA ---
-        const rightSidebar = document.getElementById("right-sidebar")
-        const closeRightBtn = document.getElementById("close-right-sidebar")
-        const openBtn = document.getElementById("open-right-sidebar")
+        const rightSidebar = document.getElementById("right-sidebar");
+        const closeRightBtn = document.getElementById("close-right-sidebar");
+        const openBtn = document.getElementById("open-right-sidebar");
 
         if (closeRightBtn) {
           closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed")
-          })
+            rightSidebar.classList.add("closed");
+          });
         }
 
         if (openBtn) {
           openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed")
-          })
+            rightSidebar.classList.remove("closed");
+          });
         }
-      })
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const favoriteIcon = document.getElementById("favorite-icon");
+
+        const initFavoriteHeart = () => {
+          if (!favoriteIcon) return;
+
+          favoriteIcon.style.cursor = "pointer";
+          favoriteIcon.style.transition = "all 0.1s ease";
+          favoriteIcon.style.color = "#b3b3b3";
+
+          favoriteIcon.addEventListener("click", function () {
+            const isLiked = this.classList.contains("bi-heart-fill");
+
+            if (isLiked) {
+              this.classList.replace("bi-heart-fill", "bi-heart");
+              this.style.color = "#b3b3b3";
+            } else {
+              this.classList.replace("bi-heart", "bi-heart-fill");
+              this.style.color = "#ff0000";
+            }
+          });
+
+          favoriteIcon.addEventListener("mouseenter", function () {
+            if (!this.classList.contains("bi-heart-fill")) {
+              this.style.color = "#ffffff";
+            }
+          });
+
+          favoriteIcon.addEventListener("mouseleave", function () {
+            if (!this.classList.contains("bi-heart-fill")) {
+              this.style.color = "#b3b3b3";
+            }
+          });
+        };
+
+        initFavoriteHeart();
+      });
     </script>
     <script src="./js/player.js"></script>
+    <script src="./js/main.js"></script>
   </body>
 </html>

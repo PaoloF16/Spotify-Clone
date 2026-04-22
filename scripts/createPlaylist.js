@@ -30,9 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // INITIALIZE PLAYLIST CLASS
 
+const defaultPlaylistImage = "https://images.pexels.com/photos/20385069/pexels-photo-20385069.jpeg"
+
 class Playlist {
 
-    constructor(title = "", creator = "", description = "", image) {
+    constructor(title = "", creator = "", description = "", image = defaultPlaylistImage) {
         this.id = `pl-${Math.floor(Math.random() * 100000)}`;
         this.title = title;
         this.creator = creator;
@@ -115,6 +117,21 @@ const getAlbum = function(album) {
     }
 */
 
+// handle discard changes button
+const discardBtn = document.getElementById("discardButton")
+
+if (discardBtn) discardBtn.addEventListener("click", function(e) {
+    e.preventDefault()
+    editingId = null
+    document.querySelector("h1").innerText = "Create your playlist"
+    document.querySelector("button[type=submit]").innerText = "Create Playlist"
+    discardBtn.style.display = "none"
+    clearForm()
+})
+
+
+// CREATE PLAYLIST MAIN FUNCTION
+
 const createPlaylist = function(e) {
 
     e.preventDefault()
@@ -124,33 +141,68 @@ const createPlaylist = function(e) {
     const playlistImageInput = document.getElementById("playlistImage").value
     const isPlaylistPublic = document.getElementById("playlistPublicCheck").checked
 
-    const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput, playlistImageInput)
-    
-    newPlaylist.isPublic = isPlaylistPublic
+    if (editingId) {
 
-    userPlaylists.push(newPlaylist)
+        // find playlist with matching id
+        const playlistToEdit = userPlaylists.find(pl => pl.id === editingId)
+        if (!playlistToEdit) return
 
+        // re-assign playlist attributes
+        playlistToEdit.title = playlistTitleInput
+        playlistToEdit.description = playlistDescriptionInput
+        playlistToEdit.img = playlistImageInput || defaultPlaylistImage
+        playlistToEdit.isPublic = isPlaylistPublic
+
+        // reset editingId and UI after successful save
+        editingId = null
+        document.querySelector("h1").innerText = "Create your playlist"
+        document.querySelector("button[type=submit]").innerText = "Create Playlist"
+        discardBtn.style.display = "none"
+
+    } else {
+
+        // if editingId is null, create new playlist
+        const newPlaylist = new Playlist(playlistTitleInput, "User", playlistDescriptionInput, playlistImageInput)
+        newPlaylist.isPublic = isPlaylistPublic
+        userPlaylists.push(newPlaylist)
+
+    }
+
+    // clear form after submitting
     clearForm()
 
-    console.log(userPlaylists)
-
-
-    // PUSH PLAYLISTS TO LOCAL STORAGE
-
+    // push updated playlists to local storage
     localStorage.setItem("userPlaylists", JSON.stringify(userPlaylists))
+
+    // display updates in the aside section
     displayAsidePlaylists()
 
 }
-
 
 const deletePlaylist = function(id) {
 
 }
 
 
-const displayAsidePlaylists = function() {
+// DISPLAY PLAYLIST CARDS FUNCTION
 
-    let defaultContent = asidePlaylistList.innerHTML
+// stores default content in case there are no user  playlist currently saved
+let defaultContent = `
+    <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed">
+        <p class="fw-bold text-white mb-1">
+            Crea la tua prima playlist
+        </p>
+        <p class="text-light small mb-3 opacity-75">
+            È facile, ti aiuteremo
+        </p>
+        <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
+            <a href="#" class="text-decoration-none text-black">
+                Crea playlist
+            </a>
+        </button>
+    </div>`
+
+const displayAsidePlaylists = function() {
 
     if (userPlaylists.length !== 0) {
 
@@ -160,8 +212,14 @@ const displayAsidePlaylists = function() {
         list.classList.add("hide-on-closed")
 
         userPlaylists.forEach((playlist) => {
+            // create card
             const card = document.createElement("div")
-            card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-4", "flex-start", "flex-row")
+            card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-4", "d-flex", "flex-row")
+
+            // store playlist id in card
+            card.dataset.id = playlist.id
+
+            // card innerHTML
             card.innerHTML = `
                 <img src="${playlist.img}" class="rounded-start" style="width: 80px; object-fit: cover;" alt="...">
                 <div class="card-body">
@@ -171,19 +229,53 @@ const displayAsidePlaylists = function() {
                     <p class="card-text text-secondary mb-3">${playlist.description}</p>
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="card-text mb-1">${playlist.tracks.length} songs</p>
-                        <a href="#" class="btn btn-sm btn-success px-3">Play</a>
+                        <a href="#" class="edit-playlist-btn btn btn-sm btn-dark px-3">Edit</a>
+                        <a href="#" class="play-playlist-btn btn btn-sm btn-success px-3 fw-bold">Play</a>
                     </div>
                 </div>`
+
+            // append card to list  
             list.appendChild(card)
+
         })
 
+        // append list to div
         asidePlaylistList.appendChild(list)
 
     } else {
-
+        // show default content if there are no playlists
         asidePlaylistList.innerHTML = defaultContent
 
     }
+}
+
+
+// EDIT PLAYLIST FUNCTION -> FETCHES PLAYLIST DETAILS, POPULATES THE FORM, STORES EDITING ID, 
+// THEN REDIRECTS TO "CREATEPLAYLIST" IN EDITING MODE
+
+let editingId = null
+
+const editPlaylist = function(e) {
+
+    e.preventDefault()
+
+    let card = e.target.closest(".card")
+    const playlistId = card.dataset.id
+
+    // find playlist with matching id
+    const playlistToEdit = userPlaylists.find((p) => p.id === playlistId)
+
+    if (!playlistToEdit) return
+
+    // re-populate the form with playlist details
+    document.getElementById("playlistTitle").value = playlistToEdit.title
+    document.getElementById("playlistDescription").value = playlistToEdit.description
+    document.getElementById("playlistImage").value = playlistToEdit.img
+    document.getElementById("playlistPublicCheck").checked = playlistToEdit.isPublic
+
+    // remember which playlist we're editing
+    editingId = playlistId  
+
 }
 
 
@@ -192,8 +284,16 @@ localStorage.setItem("userLikedSongs", likedSongs)
 
 
 //ADD EVENT LISTENERS
-createPlaylistForm.addEventListener("submit", createPlaylist)
-clearFormButton.addEventListener("click", clearForm)
+
+createPlaylistForm.addEventListener("submit", createPlaylist) // create playlist
+
+clearFormButton.addEventListener("click", clearForm) // clear form 
+
+asidePlaylistList.addEventListener("click", function(e) {
+    if (e.target.classList.contains("edit-playlist-btn")) {
+        editPlaylist(e)
+    }
+})
 
 //getAlbum()
 //getArtist()

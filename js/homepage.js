@@ -13,21 +13,6 @@ const artistSidebarRail = document.getElementById("artistSidebarRail");
 
 const favoriteIcon = document.getElementById("favorite-icon");
 
-const fetchConRetry = function (url, tentativi = 20) {
-  return fetch(url)
-    .then((response) => {
-      if (response.ok) return response.json();
-      throw new Error("risposta non ok");
-    })
-    .catch((error) => {
-      if (tentativi > 0) {
-        console.log(`riprovo... tentativi rimasti: ${tentativi}`);
-        return fetchConRetry(url, tentativi - 1);
-      }
-      throw error;
-    });
-};
-
 const artisti = [
   "shakira",
   "eminem",
@@ -549,9 +534,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const albumSalvati = await getAlbumData();
 
   const unTerzo = Math.floor(albumSalvati.length / 3);
-  const primoTerzo = albumSalvati.slice(0, unTerzo).sort(() => Math.random() - 0.5);
-  const secondoTerzo = albumSalvati.slice(unTerzo, unTerzo * 2).sort(() => Math.random() - 0.5);
-  const ultimoTerzo = albumSalvati.slice(unTerzo * 2).sort(() => Math.random() - 0.5);
+  const primoTerzo = albumSalvati
+    .slice(0, unTerzo)
+    .sort(() => Math.random() - 0.5);
+  const secondoTerzo = albumSalvati
+    .slice(unTerzo, unTerzo * 2)
+    .sort(() => Math.random() - 0.5);
+  const ultimoTerzo = albumSalvati
+    .slice(unTerzo * 2)
+    .sort(() => Math.random() - 0.5);
   const arrayMischiato = [...albumSalvati].sort(() => Math.random() - 0.5);
 
   popolaCarosello(primoTerzo, primoCarosello);
