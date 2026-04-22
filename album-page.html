@@ -14,7 +14,6 @@
     />
     <link rel="stylesheet" href="./assets/css/audioplayer.css" />
 
-
     <style>
       body,
       html {
@@ -115,6 +114,22 @@
         position: relative;
         overflow: hidden;
       }
+
+      /*stile per il modale premium*/
+      #due-mesi {
+        background-color: #ffd2d7;
+      }
+      #due-mesi:hover {
+        transform: scale(1.1);
+        padding: 5%;
+        background-color: white;
+        transition: all 0.3s ease;
+      }
+      #piano:hover {
+        transform: scale(1.1);
+        padding: 5%;
+        transition: all 0.3s ease;
+      }
     </style>
   </head>
   <body>
@@ -209,7 +224,11 @@
                 <a href="#" class="text-light fw-bold text-decoration-none"
                   ><i class="bi bi-arrow-down-circle-fill"></i> Install App</a
                 >
-                <a href="#" class="text-light fw-bold text-decoration-none">
+                <a
+                  href="./registrazione.html"
+                  target="_blank"
+                  class="text-light fw-bold text-decoration-none"
+                >
                   Sign Up</a
                 >
                 <button
@@ -217,7 +236,10 @@
                   class="btn text-dark border border-1 bg-light rounded-4 p-2 flex-shrink-1"
                   id="search-btn"
                 >
-                  <a href="#" class="text-decoration-none fw-bold text-black"
+                  <a
+                    href="./loginpage.html"
+                    target="_blank"
+                    class="text-decoration-none fw-bold text-black"
                     >Log in</a
                   >
                 </button>
@@ -379,9 +401,10 @@
             <div class="p-3 d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-layout-sidebar-reverse text-white"></i>
-                <span class="fw-bold text-light" id="side-bar-main-title"
-                  >Artist Name</span
-                >
+                <span
+                  class="fw-bold text-light"
+                  id="side-bar-main-title"
+                ></span>
               </div>
               <div class="text-secondary">
                 <i
@@ -418,15 +441,7 @@
                       id="side-song-title"
                       class="fw-bold text-white mb-0"
                       style="font-size: 1.8rem"
-                    >
-                      Nome Artista
-                    </h2>
-                    <p
-                      id="side-song-artist"
-                      class="text-light opacity-75 mb-0 fs-5"
-                    >
-                      Artista
-                    </p>
+                    ></h2>
                   </div>
                   <button class="btn text-white p-0 fs-3">
                     <i class="bi bi-plus-circle"></i>
@@ -457,9 +472,10 @@
                     />
                   </div>
                   <div class="flex-grow-1">
-                    <h6 class="fw-bold text-white mb-0" id="credit-artist-name">
-                      Luchè
-                    </h6>
+                    <h6
+                      class="fw-bold text-white mb-0"
+                      id="credit-artist-name"
+                    ></h6>
                     <p class="text-secondary small mb-0">
                       Artista Principale • Parti Vocali
                     </p>
@@ -472,8 +488,8 @@
                 </div>
 
                 <div class="mb-2 ps-1">
-                  <h6 class="fw-bold text-white mb-0">Davide Petrella</h6>
-                  <p class="text-secondary small mb-0">Paroliere</p>
+                  <h6 class="fw-bold text-white mb-0"></h6>
+                  <p class="text-secondary small mb-0"></p>
                 </div>
               </div>
 
@@ -582,19 +598,243 @@
             <i class="fs-5 bi bi-music-player"></i>
           </button>
           <div class="d-flex align-items-center gap-1">
-            <label for="">
+            <label for="volume-bar">
               <i class="fs-5 bi bi-volume-up"></i>
             </label>
             <input type="range" id="volume-bar" />
           </div>
-          <button class="border-0 bg-transparent text-light">
+          <button id="chiudi-player" class="border-0 bg-transparent text-light">
             <i class="bi bi-arrows-angle-expand"></i>
           </button>
         </div>
       </div>
     </footer>
+    <!--MODALE PER ABBONAMENTO PREMIUM-->
+    <button
+      type="button"
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      data-bs-target="#modale-abbonamento"
+    >
+      Testa Modale (Apri ora)
+    </button>
+    <div
+      class="modal fade"
+      id="modale-abbonamento"
+      tabindex="-1"
+      aria-labelledby="googleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div
+          class="modal-content bg-dark text-dark border-secondary shadow-lg"
+          style="border-radius: 15px"
+        >
+          <div class="modal-header border-0 pb-0">
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div
+            class="modal-body text-center p-4"
+            style="background-color: #9a8183"
+          >
+            <h5 class="fw-bold mb-3 fs-3 text-light" id="ModalLabel">
+              Ascolta senza limiti. Prova 2 mesi di Premium Individual a 0 €.
+            </h5>
+
+            <p class="text-light small mb-4 text-light fw-bold">
+              Dopo, solo 11,99 €/mese. Annulla quando vuoi.
+            </p>
+
+            <div class="d-flex justify-content-center gap-2">
+              <button
+                type="button"
+                class="btn btn-outline-light rounded-pill fw-bold py-2 border-dark text-dark"
+                id="due-mesi"
+              >
+                <a
+                  class="text-decoration-none text-dark"
+                  href="./registrazione.html"
+                  target="_blank"
+                  >Prova 2 mesi a 0 €</a
+                >
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-dark rounded-pill fw-bold py-2 text-light bg-dark border-dark"
+                data-bs-dismiss="modal"
+                data-bs-toggle="modal"
+                data-bs-target="#modalPiani"
+                id="piano"
+              >
+                Visualizza tutti i piani
+              </button>
+            </div>
+            <p class="mt-3" style="font-size: 10px">
+              Solo per Premium Individual. 0 € per 2 mesi, poi 11,99 € al mese.
+              Offerta disponibile solo se non hai ancora provato Premium. Si
+              applicano termini e condizioni. L'offerta termina il giorno 27
+              aprile 2026.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modalPiani" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div
+          class="modal-content"
+          style="
+            background-color: #121212;
+            color: white;
+            border-radius: 20px;
+            border: 1px solid #333;
+          "
+        >
+          <div class="modal-header border-0">
+            <h4 class="modal-title fw-bold" style="padding-left: 10px">
+              Scegli il tuo piano Premium
+            </h4>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body p-4">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div
+                  id="due-mesi"
+                  style="
+                    background-color: #242424;
+                    padding: 25px;
+                    border-radius: 15px;
+                    border: 1px solid transparent;
+                    transition: 0.3s;
+                    cursor: pointer;
+                  "
+                >
+                  <span
+                    class="badge"
+                    style="
+                      background-color: #1db954;
+                      color: black;
+                      margin-bottom: 10px;
+                    "
+                    >2 mesi gratis</span
+                  >
+                  <h5 class="fw-bold">Individual</h5>
+                  <p style="color: #b3b3b3; font-size: 0.9rem">
+                    9,99 € / mese dopo il periodo dell'offerta
+                  </p>
+                  <hr style="border-color: #444" />
+                  <ul
+                    style="
+                      list-style: none;
+                      padding: 0;
+                      font-size: 0.85rem;
+                      color: #b3b3b3;
+                    "
+                  >
+                    <li>
+                      <i class="bi bi-check-lg text-success me-2"></i> 1 account
+                      Premium
+                    </li>
+                    <li>
+                      <i class="bi bi-check-lg text-success me-2"></i> Ascolta
+                      offline
+                    </li>
+                    <li>
+                      <i class="bi bi-check-lg text-success me-2"></i> Musica
+                      senza pubblicità
+                    </li>
+                  </ul>
+                  <button
+                    class="btn btn-outline-success w-100 rounded-pill fw-bold py-2 mt-3"
+                    style="color: white"
+                  >
+                    <a
+                      class="text-decoration-none text-light"
+                      href="./registrazione.html"
+                      target="_blank"
+                    >
+                      PROVA 2 MESI GRATIS
+                    </a>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div
+                  style="
+                    background-color: #242424;
+                    padding: 25px;
+                    border-radius: 15px;
+                    border: 1px solid #333;
+                    transition: 0.3s;
+                    cursor: pointer;
+                  "
+                >
+                  <span
+                    class="badge border border-light"
+                    style="margin-bottom: 10px"
+                    >Solo Universitari</span
+                  >
+                  <h5 class="fw-bold">Student</h5>
+                  <p style="color: #b3b3b3; font-size: 0.9rem">5,99 € / mese</p>
+                  <hr style="border-color: #444" />
+                  <ul
+                    style="
+                      list-style: none;
+                      padding: 0;
+                      font-size: 0.85rem;
+                      color: #b3b3b3;
+                    "
+                  >
+                    <li>
+                      <i class="bi bi-check-lg text-light me-2"></i> Sconto
+                      speciale per studenti
+                    </li>
+                    <li>
+                      <i class="bi bi-check-lg text-light me-2"></i> Qualità
+                      audio altissima
+                    </li>
+                    <li>
+                      <i class="bi bi-check-lg text-light me-2"></i> Annulla
+                      quando vuoi
+                    </li>
+                  </ul>
+                  <button
+                    class="btn btn-outline-light w-100 rounded-pill fw-bold py-2 mt-3"
+                  >
+                    SCOPRI L'OFFERTA
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0 justify-content-center">
+            <p style="font-size: 11px; color: #727272; text-align: center">
+              Offerta valida solo per utenti che non hanno mai provato il
+              Premium. <br />
+              Si applicano Termini e Condizioni.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/album-page.js"></script>
+    <script src="./js/audio-player.js"></script>
     <!--   <script src="./js/searchbar.js"></script> -->
 
     <script>
@@ -626,6 +866,59 @@
           })
         }
       })
+      document.addEventListener("DOMContentLoaded", function () {
+        const favoriteIcon = document.getElementById("favorite-icon")
+
+        const initFavoriteHeart = () => {
+          if (!favoriteIcon) return
+
+          favoriteIcon.style.cursor = "pointer"
+          favoriteIcon.style.transition = "all 0.1s ease"
+          favoriteIcon.style.color = "#b3b3b3"
+
+          favoriteIcon.addEventListener("click", function () {
+            const isLiked = this.classList.contains("bi-heart-fill")
+
+            if (isLiked) {
+              this.classList.replace("bi-heart-fill", "bi-heart")
+              this.style.color = "#b3b3b3"
+            } else {
+              this.classList.replace("bi-heart", "bi-heart-fill")
+              this.style.color = "#ff0000"
+            }
+          })
+
+          favoriteIcon.addEventListener("mouseenter", function () {
+            if (!this.classList.contains("bi-heart-fill")) {
+              this.style.color = "#ffffff"
+            }
+          })
+
+          favoriteIcon.addEventListener("mouseleave", function () {
+            if (!this.classList.contains("bi-heart-fill")) {
+              this.style.color = "#b3b3b3"
+            }
+          })
+        }
+
+        initFavoriteHeart()
+      })
+    </script>
+
+    <!--SCRIPT PER IL MODALE PREMIUM!-->
+    <script>
+      const sideImg = document.getElementById("side-poster-img")
+
+      if (sideImg) {
+        sideImg.style.cursor = "pointer"
+
+        sideImg.addEventListener("click", () => {
+          const myModal = new bootstrap.Modal(
+            document.getElementById("modale-abbonamento"),
+          )
+          myModal.show()
+        })
+      }
     </script>
   </body>
 </html>

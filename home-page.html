@@ -73,7 +73,7 @@
   </head>
   <body
     class="text-light bg-black d-flex flex-column"
-    style="height: 100vh; overflow: hidden"
+    style="min-height: 100vh"
   >
     <!-- HEADER -->
     <header>
@@ -180,7 +180,10 @@
     </header>
 
     <!-- LAYOUT PRINCIPALE -->
-    <div class="d-flex flex-grow-1 gap-2 p-2 overflow-hidden">
+    <div
+      class="d-flex flex-grow-1 gap-2 p-2 overflow-hidden"
+      id="big-container"
+    >
       <!-- SIDEBAR -->
       <aside id="main-sidebar" class="h-100 flex-shrink-0">
         <div
@@ -410,6 +413,15 @@
       </div>
     </div>
 
+    <div id="generi" class="d-none">
+      <div class="container-fluid">
+        <div
+          class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 gy-4"
+          id="generi-wrapper"
+        ></div>
+      </div>
+    </div>
+
     <!-- AUDIO PLAYER -->
     <div
       id="audio-player"
@@ -493,5 +505,6 @@
       })
     </script>
     <script src="./js/main.js"></script>
+    <script src="./js/audio-player.js"></script>
   </body>
 </html>

@@ -1,39 +1,89 @@
-      /* PER AUDIOPLAYER */
-      input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        opacity: 0;
-      }
-      #range-bar {
-        -webkit-appearance: none;
-        appearance: none;
-        height: 4px;
-        background: linear-gradient(to right, white 80%, #535353 10%);
-        border-radius: 2px;
-        min-width: 300px;
-        width: 100%;
-      }
-      #volume-bar {
-        -webkit-appearance: none;
-        appearance: none;
-        height: 4px;
-        background: linear-gradient(to right, white 80%, #535353 10%);
-        border-radius: 2px;
-      }
-      .clickable-btn:hover {
-        color: green !important;
-      }
-      #audio-player {
-        display: grid;
-        grid-template-columns: 1fr;
-        left: 0;
-        right: 0;
-      }
-      .bg-gray {
-        background-color: #222222;
-      }
-      @media screen and (min-width: 992px) {
-        #audio-player {
-          grid-template-columns: 1fr auto 1fr;
-        }
-      }
-      /* PER AUDIOPLAYER */
+#range-bar,
+#volume-bar {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  outline: none;
+  background: #4d4d4d;
+  cursor: pointer;
+}
+
+#range-bar {
+  width: 320px;
+  min-width: 320px;
+}
+
+#volume-bar {
+  width: 90px;
+  min-width: 90px;
+}
+
+#range-bar::-webkit-slider-thumb,
+#volume-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#range-bar:hover::-webkit-slider-thumb,
+#volume-bar:hover::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+#range-bar::-moz-range-thumb,
+#volume-bar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+}
+
+#range-bar::-webkit-slider-runnable-track,
+#volume-bar::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+}
+
+#range-bar::-moz-range-track,
+#volume-bar::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.clickable-btn:hover {
+  color: green !important;
+}
+
+#audio-player {
+  display: grid;
+  grid-template-columns: 1fr;
+  left: 0;
+  right: 0;
+}
+
+.bg-gray {
+  background-color: #222222;
+}
+
+@media screen and (min-width: 992px) {
+  #audio-player {
+    grid-template-columns: 1fr auto 1fr;
+  }
+}
+#volume-bar {
+  width: 90px !important;
+  max-width: 90px;
+  flex: 0 0 auto;
+}
+.volume {
+  flex: 0 0 auto;
+}

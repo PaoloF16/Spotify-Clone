@@ -85,16 +85,12 @@ const fetchArtistAlbums = async (artistId) => {
 
 const goToArtistPage = (artistName) => {
   if (!artistName) return
-  window.location.href = `./artist-page.html?artist=${encodeURIComponent(
-    artistName,
-  )}`
+  window.location.href = `./artist-page.html?artist=${encodeURIComponent(artistName)}`
 }
 
 const goToAlbumPage = (albumId) => {
   if (!albumId) return
-  window.location.href = `./album-page.html?albumId=${encodeURIComponent(
-    albumId,
-  )}`
+  window.location.href = `./album-page.html?albumId=${encodeURIComponent(albumId)}`
 }
 
 const styleSuggestionsDropdown = () => {
@@ -179,9 +175,7 @@ const createSuggestionItem = (item, type) => {
       <img
         src="${imageSrc}"
         alt="${title}"
-        style="width: 48px; height: 48px; object-fit: cover; border-radius: ${
-          type === "artist" ? "50%" : "6px"
-        }; flex-shrink: 0;"
+        style="width: 48px; height: 48px; object-fit: cover; border-radius: ${type === "artist" ? "50%" : "6px"}; flex-shrink: 0;"
       />
       <div class="d-flex flex-column overflow-hidden">
         <span class="text-white fw-bold text-truncate" style="font-size: 0.95rem; line-height: 1.2;">
@@ -386,6 +380,8 @@ const popolaArtisti = (array, wrapper) => {
 
   wrapper.innerHTML = ""
 
+  //CUORE ROSSO PREFE
+  const favoriteIcon = document.getElementById("favorite-icon")
   const artistiUsati = new Set()
 
   array.forEach((album) => {
@@ -395,9 +391,7 @@ const popolaArtisti = (array, wrapper) => {
     artistiUsati.add(album.idArtista)
 
     wrapper.innerHTML += `
-      <a href="./artist-page.html?artist=${encodeURIComponent(
-        album.artista,
-      )}" class="card text-decoration-none text-light bg-black border-0 flex-shrink-0">
+      <a href="./artist-page.html?artist=${encodeURIComponent(album.artista)}" class="card text-decoration-none text-light bg-black border-0 flex-shrink-0">
         <img src="${album.imgArtistaMedium}" class="rounded-circle object-fit-cover" style="width: 140px; height: 140px" />
         <div class="py-1">
           <h6 class="m-0">${album.artista}</h6>
