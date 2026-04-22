@@ -10,7 +10,10 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css"
+    />
     <link rel="stylesheet" href="./assets/css/audioplayer.css" />
     <style>
       .carosello {
@@ -68,7 +71,10 @@
       }
     </style>
   </head>
-  <body class="text-light bg-black d-flex flex-column" style="min-height: 100vh; ">
+  <body
+    class="text-light bg-black d-flex flex-column"
+    style="min-height: 100vh"
+  >
     <!-- HEADER -->
     <header>
       <nav class="navbar navbar-expand-lg bg-black">
@@ -88,20 +94,40 @@
             <span><i class="bi bi-list fs-1"></i></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center align-items-sm-start gap-3">
+            <ul
+              class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center align-items-sm-start gap-3"
+            >
               <li class="nav-item">
                 <a href="./home-page.html" class="text-light border-1">
-                  <i class="bi bi-house-door-fill fs-4 px-2 pb-1 rounded rounded-circle bg-secondary"></i>
+                  <i
+                    class="bi bi-house-door-fill fs-4 px-2 pb-1 rounded rounded-circle bg-secondary"
+                  ></i>
                 </a>
               </li>
-              <form class="d-flex text-light btn-group border border-1 rounded-5" role="search">
-                <button type="button" class="btn text-light w-auto" id="search-btn">
+              <form
+                class="d-flex text-light btn-group border border-1 rounded-5"
+                role="search"
+              >
+                <button
+                  type="button"
+                  class="btn text-light w-auto"
+                  id="search-btn"
+                >
                   <i class="bi bi-search"></i>
                 </button>
                 <div class="container-fluid d-flex justify-content-center">
                   <div class="search-box">
-                    <div class="d-flex align-items-center bg-dark rounded-pill px-3" style="height: 40px">
-                      <input id="inputSearch" class="bg-transparent w-auto text-light border-0 w-100" type="search" placeholder="Search" aria-label="Search" />
+                    <div
+                      class="d-flex align-items-center bg-dark rounded-pill px-3"
+                      style="height: 40px"
+                    >
+                      <input
+                        id="inputSearch"
+                        class="bg-transparent w-auto text-light border-0 w-100"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
                     </div>
                     <ul id="listaData"></ul>
                   </div>
@@ -111,17 +137,40 @@
                 </button>
               </form>
             </ul>
-            <section class="d-flex flex-column flex-md-row align-items-md-center">
-              <div class="d-flex flex-column flex-md-row align-items-md-center gap-3 border-end border-2 px-0 px-md-3">
-                <a href="#" class="text-light fw-bold text-decoration-none">Premium</a>
-                <a href="#" class="text-light fw-bold text-decoration-none">Support</a>
-                <a href="#" class="text-light fw-bold text-decoration-none mb-3 mb-md-0">Download</a>
+            <section
+              class="d-flex flex-column flex-md-row align-items-md-center"
+            >
+              <div
+                class="d-flex flex-column flex-md-row align-items-md-center gap-3 border-end border-2 px-0 px-md-3"
+              >
+                <a href="#" class="text-light fw-bold text-decoration-none"
+                  >Premium</a
+                >
+                <a href="#" class="text-light fw-bold text-decoration-none"
+                  >Support</a
+                >
+                <a
+                  href="#"
+                  class="text-light fw-bold text-decoration-none mb-3 mb-md-0"
+                  >Download</a
+                >
               </div>
-              <div class="d-flex flex-column flex-md-row align-items-md-center gap-3 px-0 px-md-3">
-                <a href="#" class="text-light fw-bold text-decoration-none"><i class="bi bi-arrow-down-circle-fill"></i> Install App</a>
-                <a href="#" class="text-light fw-bold text-decoration-none">Sign Up</a>
-                <button type="button" class="btn text-dark border border-1 bg-light rounded-4 p-2 flex-shrink-1">
-                  <a href="#" class="text-decoration-none fw-bold text-black">Log in</a>
+              <div
+                class="d-flex flex-column flex-md-row align-items-md-center gap-3 px-0 px-md-3"
+              >
+                <a href="#" class="text-light fw-bold text-decoration-none"
+                  ><i class="bi bi-arrow-down-circle-fill"></i> Install App</a
+                >
+                <a href="#" class="text-light fw-bold text-decoration-none"
+                  >Sign Up</a
+                >
+                <button
+                  type="button"
+                  class="btn text-dark border border-1 bg-light rounded-4 p-2 flex-shrink-1"
+                >
+                  <a href="#" class="text-decoration-none fw-bold text-black"
+                    >Log in</a
+                  >
                 </button>
               </div>
             </section>
@@ -131,11 +180,21 @@
     </header>
 
     <!-- LAYOUT PRINCIPALE -->
-    <div class="d-flex flex-grow-1 gap-2 p-2 overflow-hidden" id="big-container">
+    <div
+      class="d-flex flex-grow-1 gap-2 p-2 overflow-hidden"
+      id="big-container"
+    >
       <!-- SIDEBAR -->
       <aside id="main-sidebar" class="h-100 flex-shrink-0">
-        <div class="rounded-3 d-flex flex-column h-100 overflow-hidden" style="background-color: #121212">
-          <div id="toggle-sidebar" class="p-3 d-flex justify-content-between align-items-center sidebar-header-content" style="cursor: pointer">
+        <div
+          class="rounded-3 d-flex flex-column h-100 overflow-hidden"
+          style="background-color: #121212"
+        >
+          <div
+            id="toggle-sidebar"
+            class="p-3 d-flex justify-content-between align-items-center sidebar-header-content"
+            style="cursor: pointer"
+          >
             <div class="fw-bold text-secondary d-flex align-items-center">
               <i class="bi bi-collection-play fs-4 me-3"></i>
               <span class="hide-on-closed text-light">La tua libreria</span>
@@ -145,28 +204,74 @@
             </div>
           </div>
           <div class="px-3 custom-scroll overflow-y-auto">
-            <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed">
+            <div
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
+            >
               <p class="fw-bold text-white mb-1">Crea la tua prima playlist</p>
-              <p class="text-light small mb-3 opacity-75">È facile, ti aiuteremo</p>
+              <p class="text-light small mb-3 opacity-75">
+                È facile, ti aiuteremo
+              </p>
               <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
-                <a href="create-playlist.html" class="text-decoration-none text-black">Crea playlist</a>
+                <a
+                  href="create-playlist.html"
+                  class="text-decoration-none text-black"
+                  >Crea playlist</a
+                >
               </button>
             </div>
-            <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed">
+            <div
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+            >
               <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
-              <button class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2">Sfoglia i podcast</button>
+              <button
+                class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+              >
+                Sfoglia i podcast
+              </button>
             </div>
           </div>
-          <div id="artistSidebarRail" class="d-flex flex-column gap-3 mt-3"></div>
+          <div
+            id="artistSidebarRail"
+            class="d-flex flex-column gap-3 mt-3"
+          ></div>
           <div class="p-3 hide-on-closed">
             <div class="d-flex flex-wrap gap-2 mb-3">
-              <a href="#" class="text-secondary text-decoration-none" style="font-size: 11px">Informazioni legali</a>
-              <a href="#" class="text-secondary text-decoration-none" style="font-size: 11px">Sicurezza e Centro sulla privacy</a>
-              <a href="#" class="text-secondary text-decoration-none" style="font-size: 11px">Informativa sulla privacy</a>
-              <a href="#" class="text-secondary text-decoration-none" style="font-size: 11px">Impostazioni cookie</a>
-              <a href="#" class="text-secondary text-decoration-none" style="font-size: 11px">Accessibilità</a>
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 11px"
+                >Informazioni legali</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 11px"
+                >Sicurezza e Centro sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 11px"
+                >Informativa sulla privacy</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 11px"
+                >Impostazioni cookie</a
+              >
+              <a
+                href="#"
+                class="text-secondary text-decoration-none"
+                style="font-size: 11px"
+                >Accessibilità</a
+              >
             </div>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold border-secondary"><i class="bi bi-globe me-1"></i> Italiano</button>
+            <button
+              class="btn btn-outline-secondary btn-sm rounded-pill text-white px-3 fw-bold border-secondary"
+            >
+              <i class="bi bi-globe me-1"></i> Italiano
+            </button>
           </div>
         </div>
       </aside>
@@ -177,30 +282,47 @@
           <!-- SMALL CARDS -->
           <section class="container" id="playlist-wrapper">
             <h2 class="my-4 text-center text-lg-start">Buonasera</h2>
-            <div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-3" id="small-cards-wrapper"></div>
+            <div
+              class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-3"
+              id="small-cards-wrapper"
+            ></div>
           </section>
           <!-- PRIMO CAROSELLO -->
           <section class="my-4">
             <div class="position-relative" id="first-scroll-row">
-              <button class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-md-block">
+              <button
+                class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-md-block"
+              >
                 <i class="bi bi-chevron-left text-light fs-3"></i>
               </button>
-              <button class="next btn rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-md-block">
+              <button
+                class="next btn rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-md-block"
+              >
                 <i class="bi bi-chevron-right text-light fs-3"></i>
               </button>
-              <div class="d-flex gap-3 px-5 carosello" id="primo-carosello"></div>
+              <div
+                class="d-flex gap-3 px-5 carosello"
+                id="primo-carosello"
+              ></div>
             </div>
           </section>
           <!-- SECONDO CAROSELLO -->
           <section class="my-4">
             <div class="position-relative" id="second-scroll-row">
-              <button class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-md-block">
+              <button
+                class="prev btn rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-md-block"
+              >
                 <i class="bi bi-chevron-left text-light fs-3"></i>
               </button>
-              <button class="next btn rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-md-block">
+              <button
+                class="next btn rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-md-block"
+              >
                 <i class="bi bi-chevron-right text-light fs-3"></i>
               </button>
-              <div class="d-flex gap-3 px-5 carosello" id="secondo-carosello"></div>
+              <div
+                class="d-flex gap-3 px-5 carosello"
+                id="secondo-carosello"
+              ></div>
             </div>
           </section>
         </main>
@@ -209,17 +331,29 @@
         <footer class="px-3 bg-black">
           <section id="artisti" class="pb-5 border-bottom">
             <h2 class="ps-5">Segui</h2>
-            <div id="artisti-scroll-row" class="d-flex gap-2 overflow-x-scroll py-3 ps-5"></div>
+            <div
+              id="artisti-scroll-row"
+              class="d-flex gap-2 overflow-x-scroll py-3 ps-5"
+            ></div>
           </section>
-          <section id="footer-links" class="container-fluid d-flex flex-column gap-2 pt-2">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 py-5 border-bottom">
-              <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+          <section
+            id="footer-links"
+            class="container-fluid d-flex flex-column gap-2 pt-2"
+          >
+            <div
+              class="row row-cols-1 row-cols-md-2 row-cols-lg-5 py-5 border-bottom"
+            >
+              <div
+                class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1"
+              >
                 <h6>Azienda</h6>
                 <a href="#">Chi siamo</a>
                 <a href="#">Opportunità di lavoro</a>
                 <a href="#">For the records</a>
               </div>
-              <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+              <div
+                class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1"
+              >
                 <h6>Community</h6>
                 <a href="#">Per artisti</a>
                 <a href="#">Sviluppatori</a>
@@ -227,7 +361,9 @@
                 <a href="#">Investitori</a>
                 <a href="#">Venditori</a>
               </div>
-              <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+              <div
+                class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1"
+              >
                 <h6>Link utili</h6>
                 <a href="#">Assistenza</a>
                 <a href="#">App per cellulare gratuita</a>
@@ -235,7 +371,9 @@
                 <a href="#">Popolare per Paese</a>
                 <a href="#">Importa la tua musica</a>
               </div>
-              <div class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1">
+              <div
+                class="col d-flex flex-column text-center text-lg-start gap-lg-2 my-1"
+              >
                 <h6>Piani Spotify</h6>
                 <a href="#">Premium Individual</a>
                 <a href="#">Premium Duo</a>
@@ -243,7 +381,9 @@
                 <a href="#">Premium Student</a>
                 <a href="#">Spotify Free</a>
               </div>
-              <div class="col-md-12 d-flex gap-4 justify-content-center justify-content-lg-end">
+              <div
+                class="col-md-12 d-flex gap-4 justify-content-center justify-content-lg-end"
+              >
                 <a href="#"><i class="bi bi-facebook fs-1"></i></a>
                 <a href="#"><i class="bi bi-twitter fs-1"></i></a>
                 <a href="#"><i class="bi bi-instagram fs-1"></i></a>
@@ -252,27 +392,41 @@
             <div class="row row-cols-1 row-cols-lg-2 py-5 d-lg-none">
               <div class="col">
                 <a href="#" class="mx-3 text-nowrap">Informazioni legali</a>
-                <a href="#" class="mx-3 text-nowrap">Sicurezza e Centro di controllo</a>
-                <a href="#" class="mx-3 text-nowrap">Informativa sulla Privacy</a>
+                <a href="#" class="mx-3 text-nowrap"
+                  >Sicurezza e Centro di controllo</a
+                >
+                <a href="#" class="mx-3 text-nowrap"
+                  >Informativa sulla Privacy</a
+                >
                 <a href="#" class="mx-3 text-nowrap">Impostazioni Cookie</a>
                 <a href="#" class="mx-3 text-nowrap">Info e annunci</a>
                 <a href="#" class="mx-3 text-nowrap">Accessibilità</a>
               </div>
-              <span id="date" class="col text-center text-lg-end pt-2 text-secondary">2026</span>
+              <span
+                id="date"
+                class="col text-center text-lg-end pt-2 text-secondary"
+                >2026</span
+              >
             </div>
           </section>
         </footer>
       </div>
     </div>
 
-    <div id="generi" class="d-none" >
+    <div id="generi" class="d-none">
       <div class="container-fluid">
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 gy-4" id="generi-wrapper"></div>
+        <div
+          class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 gy-4"
+          id="generi-wrapper"
+        ></div>
       </div>
     </div>
 
     <!-- AUDIO PLAYER -->
-    <div id="audio-player" class="position-fixed justify-content-center justify-content-lg-between bottom-0 start-0 end-0 p-3 bg-black z-3">
+    <div
+      id="audio-player"
+      class="position-fixed justify-content-center justify-content-lg-between bottom-0 start-0 end-0 p-3 bg-black z-3"
+    >
       <div class="song-title d-flex align-items-center gap-2 d-none d-lg-flex">
         <img src="./assets/imgs/main/image-12.jpg" alt="" style="width: 50px" />
         <div class="">
@@ -309,7 +463,9 @@
           </div>
         </div>
       </div>
-      <div class="volume d-flex align-items-center justify-content-end gap-1 d-none d-lg-flex">
+      <div
+        class="volume d-flex align-items-center justify-content-end gap-1 d-none d-lg-flex"
+      >
         <button class="border-0 bg-transparent text-light clickable-btn">
           <i class="fs-5 bi bi-mic"></i>
         </button>
@@ -339,15 +495,16 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
+            mainSidebar.classList.toggle("closed")
+          })
         }
-      });
+      })
     </script>
     <script src="./js/main.js"></script>
+    <script src="./js/audio-player.js"></script>
   </body>
 </html>

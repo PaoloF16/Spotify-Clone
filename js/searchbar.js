@@ -219,27 +219,6 @@ const getUniqueSongs = (songs) => {
   return uniqueSongs
 }
 
-/* ========================================================= */
-/* CAMBIO BLOQUE: helper para convertir canciones al player  */
-/* ========================================================= */
-const mapSongsToPlayerQueue = (songs) => {
-  return songs
-    .filter((song) => song && song.preview)
-    .map((song) => ({
-      id: song.id,
-      title: song.title,
-      artist: song.artist?.name || "Artista sconosciuto",
-      preview: song.preview,
-      cover:
-        song.album?.cover_medium ||
-        song.album?.cover_small ||
-        song.album?.cover ||
-        "./assets/imgs/fallback/fallback-cover.png",
-      duration: song.duration || 30,
-    }))
-}
-/* ========================================================= */
-
 const renderSongsList = (songs) => {
   if (!cardSongs) return
 
@@ -251,6 +230,24 @@ const renderSongsList = (songs) => {
     const row = document.createElement("div")
     row.className =
       "d-flex align-items-center justify-content-between py-2 px-2 rounded hover-riga"
+
+    row.dataset.trackIndex = index
+    row.dataset.trackId = song.id || ""
+    row.dataset.trackTitle = song.title || ""
+    row.dataset.trackArtist = song.artist?.name || ""
+    row.dataset.trackCover =
+      song.album?.cover_medium ||
+      song.album?.cover_small ||
+      song.album?.cover ||
+      "./assets/imgs/fallback/fallback-cover.png"
+    row.dataset.trackDuration = song.duration || 0
+    row.dataset.trackRank = song.rank || 0
+
+    if (song.preview) {
+      row.dataset.trackSrc = song.preview
+    }
+
+    row.style.cursor = song.preview ? "pointer" : "default"
 
     row.innerHTML = `
       <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
@@ -280,30 +277,14 @@ const renderSongsList = (songs) => {
       </div>
     `
 
-    /* ========================================================= */
-    /* CAMBIO BLOQUE: click en canción -> player global          */
-    /* ========================================================= */
-    row.style.cursor = song.preview ? "pointer" : "default"
-
-    row.addEventListener("click", () => {
-      if (!song.preview) return
-      if (!window.spotifyPlayer) return
-
-      const visibleSongs = songs.slice(0, 10)
-      const queue = mapSongsToPlayerQueue(visibleSongs)
-
-      const clickedTrackIndex = queue.findIndex((track) => track.id === song.id)
-      if (clickedTrackIndex === -1) return
-
-      window.spotifyPlayer.setQueue(queue, clickedTrackIndex)
-      window.spotifyPlayer.playTrack(queue[clickedTrackIndex])
-    })
-    /* ========================================================= */
-
     songsWrapper.appendChild(row)
   })
 
   cardSongs.appendChild(songsWrapper)
+
+  if (window.GlobalPlayer) {
+    window.GlobalPlayer.rebuildQueueFromDOM()
+  }
 }
 
 const renderRightSidebar = (artistInfo, songs) => {

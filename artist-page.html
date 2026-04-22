@@ -730,7 +730,7 @@
             <i class="fs-5 bi bi-music-player"></i>
           </button>
           <div class="d-flex align-items-center gap-1">
-            <label for="">
+            <label for="volume-bar">
               <i class="fs-5 bi bi-volume-up"></i>
             </label>
             <input type="range" id="volume-bar" />
@@ -966,92 +966,90 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/searchbar.js"></script>
-    <script src="./js/homepage.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // --- SIDEBAR SINISTRA ---
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
 
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
+            mainSidebar.classList.toggle("closed")
+          })
         }
 
         // --- SIDEBAR DESTRA ---
-        const rightSidebar = document.getElementById("right-sidebar");
-        const closeRightBtn = document.getElementById("close-right-sidebar");
-        const openBtn = document.getElementById("open-right-sidebar");
+        const rightSidebar = document.getElementById("right-sidebar")
+        const closeRightBtn = document.getElementById("close-right-sidebar")
+        const openBtn = document.getElementById("open-right-sidebar")
 
         if (closeRightBtn) {
           closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed");
-          });
+            rightSidebar.classList.add("closed")
+          })
         }
 
         if (openBtn) {
           openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed");
-          });
+            rightSidebar.classList.remove("closed")
+          })
         }
-      });
+      })
 
       document.addEventListener("DOMContentLoaded", function () {
-        const favoriteIcon = document.getElementById("favorite-icon");
+        const favoriteIcon = document.getElementById("favorite-icon")
 
         const initFavoriteHeart = () => {
-          if (!favoriteIcon) return;
+          if (!favoriteIcon) return
 
-          favoriteIcon.style.cursor = "pointer";
-          favoriteIcon.style.transition = "all 0.1s ease";
-          favoriteIcon.style.color = "#b3b3b3";
+          favoriteIcon.style.cursor = "pointer"
+          favoriteIcon.style.transition = "all 0.1s ease"
+          favoriteIcon.style.color = "#b3b3b3"
 
           favoriteIcon.addEventListener("click", function () {
-            const isLiked = this.classList.contains("bi-heart-fill");
+            const isLiked = this.classList.contains("bi-heart-fill")
 
             if (isLiked) {
-              this.classList.replace("bi-heart-fill", "bi-heart");
-              this.style.color = "#b3b3b3";
+              this.classList.replace("bi-heart-fill", "bi-heart")
+              this.style.color = "#b3b3b3"
             } else {
-              this.classList.replace("bi-heart", "bi-heart-fill");
-              this.style.color = "#ff0000";
+              this.classList.replace("bi-heart", "bi-heart-fill")
+              this.style.color = "#ff0000"
             }
-          });
+          })
 
           favoriteIcon.addEventListener("mouseenter", function () {
             if (!this.classList.contains("bi-heart-fill")) {
-              this.style.color = "#ffffff";
+              this.style.color = "#ffffff"
             }
-          });
+          })
 
           favoriteIcon.addEventListener("mouseleave", function () {
             if (!this.classList.contains("bi-heart-fill")) {
-              this.style.color = "#b3b3b3";
+              this.style.color = "#b3b3b3"
             }
-          });
-        };
+          })
+        }
 
-        initFavoriteHeart();
-      });
+        initFavoriteHeart()
+      })
     </script>
-    <script src="./js/player.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="./js/searchbar.js"></script>
+    <script src="./js/audio-player.js"></script>
 
     <script>
-      const sideImg = document.getElementById("side-poster-img");
+      const sideImg = document.getElementById("side-poster-img")
 
       if (sideImg) {
-        sideImg.style.cursor = "pointer";
+        sideImg.style.cursor = "pointer"
 
         sideImg.addEventListener("click", () => {
           const myModal = new bootstrap.Modal(
             document.getElementById("modale-abbonamento"),
-          );
-          myModal.show();
-        });
+          )
+          myModal.show()
+        })
       }
     </script>
   </body>

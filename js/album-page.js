@@ -47,6 +47,57 @@ const formatReleaseDate = (dateString) => {
     day: "numeric",
   }).format(date)
 }
+const styleSuggestionsDropdown = () => {
+  if (!dataList) return
+
+  dataList.className = "position-absolute mt-2 w-100 z-3"
+  dataList.style.maxHeight = "420px"
+  dataList.style.overflowY = "auto"
+  dataList.style.overflowX = "hidden"
+  dataList.style.listStyle = "none"
+  dataList.style.margin = "0"
+  dataList.style.padding = "8px"
+  dataList.style.paddingLeft = "8px"
+  dataList.style.background =
+    "linear-gradient(180deg, rgba(36,36,36,0.98) 0%, rgba(24,24,24,0.98) 100%)"
+  dataList.style.borderRadius = "12px"
+  dataList.style.boxShadow = "0 16px 40px rgba(0,0,0,0.55)"
+  dataList.style.border = "none"
+  dataList.style.backdropFilter = "blur(10px)"
+  dataList.style.scrollbarWidth = "thin"
+  dataList.style.scrollbarColor = "#8a8a8a transparent"
+}
+
+const injectSuggestionScrollbarStyles = () => {
+  if (document.getElementById("spotify-suggestion-scrollbar-styles")) return
+
+  const style = document.createElement("style")
+  style.id = "spotify-suggestion-scrollbar-styles"
+  style.textContent = `
+    #listaData::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    #listaData::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 10px;
+    }
+
+    #listaData::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #8c8c8c 0%, #6f6f6f 100%);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    #listaData::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #a5a5a5 0%, #818181 100%);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+  `
+  document.head.appendChild(style)
+}
 
 const fetchSearchResults = async (query) => {
   const response = await fetch(SEARCH_API + encodeURIComponent(query))
@@ -89,18 +140,46 @@ const goToAlbumPage = (albumId) => {
   window.location.href = `./album-page.html?albumId=${encodeURIComponent(albumId)}`
 }
 
-const createSuggestionItem = (label) => {
+const createSuggestionItem = (item) => {
   const li = document.createElement("li")
-  li.textContent = label
-
-  li.style.padding = "10px 12px"
-  li.style.borderRadius = "8px"
-  li.style.backgroundColor = "transparent"
-  li.style.color = "white"
-  li.style.border = "none"
   li.style.listStyle = "none"
   li.style.cursor = "pointer"
+  li.style.border = "none"
+  li.style.backgroundColor = "transparent"
+  li.style.borderRadius = "10px"
+  li.style.padding = "10px 12px"
   li.style.transition = "background-color 0.2s ease"
+  li.style.marginBottom = "2px"
+
+  const cover =
+    item.album?.cover_small ||
+    item.album?.cover_medium ||
+    item.album?.cover ||
+    "./assets/imgs/fallback/fallback-cover.png"
+
+  li.innerHTML = `
+    <div class="d-flex align-items-center gap-3 overflow-hidden">
+      <img
+        src="${cover}"
+        alt="${item.album?.title || item.title}"
+        style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px; flex-shrink: 0;"
+      />
+      <div class="d-flex flex-column overflow-hidden">
+        <span
+          class="text-white fw-bold text-truncate"
+          style="font-size: 0.95rem; line-height: 1.2;"
+        >
+          ${item.album?.title || "Album"}
+        </span>
+        <span
+          class="text-secondary text-truncate"
+          style="font-size: 0.85rem; line-height: 1.2;"
+        >
+          Album • ${item.artist?.name || "Artista"}
+        </span>
+      </div>
+    </div>
+  `
 
   li.addEventListener("mouseenter", () => {
     li.style.backgroundColor = "#2a2a2a"
@@ -118,19 +197,7 @@ const searchAlbumSuggestions = async (query) => {
     const results = await fetchSearchResults(query)
 
     dataList.innerHTML = ""
-
-    dataList.className = "position-absolute mt-2 w-100 z-3"
-    dataList.style.maxHeight = "240px"
-    dataList.style.overflowY = "auto"
-    dataList.style.listStyle = "none"
-    dataList.style.margin = "0"
-    dataList.style.padding = "6px"
-    dataList.style.backgroundColor = "#121212"
-    dataList.style.borderRadius = "12px"
-    dataList.style.boxShadow = "0 8px 24px rgba(0,0,0,0.5)"
-    dataList.style.border = "none"
-    dataList.style.paddingLeft = "6px"
-    dataList.style.overflowX = "hidden"
+    styleSuggestionsDropdown()
 
     const uniqueAlbums = []
     const albumIds = new Set()
@@ -142,14 +209,13 @@ const searchAlbumSuggestions = async (query) => {
       }
     })
 
-    uniqueAlbums.slice(0, 6).forEach((item) => {
-      const label = `${item.album.title} — ${item.artist.name}`
-      const li = createSuggestionItem(label)
+    uniqueAlbums.slice(0, 8).forEach((item) => {
+      const li = createSuggestionItem(item)
 
       li.addEventListener("click", () => {
-        searchInput.value = item.album.title
+        searchInput.value = item.album?.title || ""
         dataList.innerHTML = ""
-        goToAlbumPage(item.album.id)
+        goToAlbumPage(item.album?.id)
       })
 
       dataList.appendChild(li)
@@ -158,39 +224,30 @@ const searchAlbumSuggestions = async (query) => {
     if (!uniqueAlbums.length) {
       const emptyItem = document.createElement("li")
       emptyItem.textContent = "Nessun album trovato"
-      emptyItem.style.padding = "10px 12px"
-      emptyItem.style.borderRadius = "8px"
+      emptyItem.style.listStyle = "none"
+      emptyItem.style.padding = "12px"
+      emptyItem.style.borderRadius = "10px"
+      emptyItem.style.border = "none"
       emptyItem.style.backgroundColor = "transparent"
       emptyItem.style.color = "#b3b3b3"
-      emptyItem.style.border = "none"
-      emptyItem.style.listStyle = "none"
+      emptyItem.style.fontSize = "0.9rem"
       dataList.appendChild(emptyItem)
     }
   } catch (error) {
     console.error("searchAlbumSuggestions error:", error)
 
     dataList.innerHTML = ""
-
-    dataList.className = "position-absolute mt-2 w-100 z-3"
-    dataList.style.maxHeight = "240px"
-    dataList.style.overflowY = "auto"
-    dataList.style.listStyle = "none"
-    dataList.style.margin = "0"
-    dataList.style.padding = "6px"
-    dataList.style.backgroundColor = "#121212"
-    dataList.style.borderRadius = "12px"
-    dataList.style.boxShadow = "0 8px 24px rgba(0,0,0,0.5)"
-    dataList.style.border = "none"
-    dataList.style.paddingLeft = "6px"
+    styleSuggestionsDropdown()
 
     const errorItem = document.createElement("li")
     errorItem.textContent = "Errore al cercare album"
-    errorItem.style.padding = "10px 12px"
-    errorItem.style.borderRadius = "8px"
+    errorItem.style.listStyle = "none"
+    errorItem.style.padding = "12px"
+    errorItem.style.borderRadius = "10px"
+    errorItem.style.border = "none"
     errorItem.style.backgroundColor = "transparent"
     errorItem.style.color = "#ff6b6b"
-    errorItem.style.border = "none"
-    errorItem.style.listStyle = "none"
+    errorItem.style.fontSize = "0.9rem"
 
     dataList.appendChild(errorItem)
   }
@@ -272,6 +329,22 @@ const renderAlbumTracks = (albumData) => {
     row.className =
       "d-flex align-items-center justify-content-between py-2 px-2 rounded hover-riga"
 
+    row.dataset.trackIndex = index
+    row.dataset.trackId = track.id || ""
+    row.dataset.trackTitle = track.title || ""
+    row.dataset.trackArtist = albumData.artist?.name || ""
+    row.dataset.trackCover =
+      albumData.cover_medium ||
+      albumData.cover_small ||
+      albumData.cover_big ||
+      albumData.cover ||
+      ""
+    if (track.preview) {
+      row.dataset.trackSrc = track.preview
+    }
+    row.dataset.trackDuration = track.duration || 0
+    row.dataset.trackRank = track.rank || 0
+
     row.innerHTML = `
       <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
         <div
@@ -309,6 +382,10 @@ const renderAlbumTracks = (albumData) => {
   })
 
   cardSongs.appendChild(tracksWrapper)
+
+  if (window.GlobalPlayer) {
+    window.GlobalPlayer.rebuildQueueFromDOM()
+  }
 }
 
 const renderAlbumRightSidebar = (albumData, artistDetail) => {
@@ -499,6 +576,8 @@ document.addEventListener("click", (event) => {
 })
 
 document.addEventListener("DOMContentLoaded", async () => {
+  injectSuggestionScrollbarStyles()
+
   const params = new URLSearchParams(window.location.search)
   const albumIdFromUrl = params.get("albumId")
 
