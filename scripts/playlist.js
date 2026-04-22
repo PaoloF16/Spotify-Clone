@@ -305,23 +305,23 @@ const displayAsidePlaylists = () => {
       <img
         src="${escapeHtml(playlist.img)}"
         class="rounded-start"
-        style="width: 80px; min-width: 80px; object-fit: cover;"
+        style="width: 80px; min-width: 80px; max-height: 150px; object-fit: cover;"
         alt="Cover for ${escapeHtml(playlist.title)}"
         onerror="this.src='${DEFAULT_PLAYLIST_IMAGE}'"
       >
       <div class="card-body">
-        <h5 class="card-title mb-2">
+        <h6 class="card-title mb-1">
           <a
             class="text-decoration-none text-white"
             href="./album-page.html?id=${encodeURIComponent(playlist.id)}"
           >${escapeHtml(playlist.title)}</a>
-        </h5>
-        <p class="card-text text-secondary mb-2">
+        </h6>
+        <p class="card-text text-secondary mb-1">
             <i>${escapeHtml(playlist.description)}</i>
         </p>
-        <div class="d-flex align-items-center justify-content-start mb-3 gap-2">
-          <small class="text-secondary mb-3">${playlist.tracks.length} songs</small>
-          <small class="text-secondary fw-bold mb-3">
+        <div class="d-flex align-items-center justify-content-start mb-1 gap-2">
+          <small class="text-secondary mb-1">${playlist.tracks.length} songs</small>
+          <small class="text-secondary fw-bold mb-1">
             ${playlist.isPublic ? "Public" : "Private"}
           </small>
         </div>
@@ -392,7 +392,7 @@ if (discardBtn) {
 }
 
 // Delete playlist
-deletePlaylistBtn.addEventListener("click", () => {
+if (deletePlaylistBtn) deletePlaylistBtn.addEventListener("click", () => {
     deletePlaylist(editingId)
 } )
 
