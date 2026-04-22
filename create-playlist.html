@@ -21,6 +21,10 @@
         color: white;
       }
 
+      label {
+        font-size: 20px;
+      }
+
       /*  mainsidebar dinamica */
       #main-sidebar {
         width: 350px;
@@ -239,7 +243,7 @@
             </div>
           </div>
           <div
-            class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+            class="bg-secondary bg-opacity-10 rounded-3 border border-5 border-dark p-3 mx-2 mb-3 hide-on-closed"
           >
             <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
             <button class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2">
@@ -303,8 +307,12 @@
         </div>
       </aside>
 
-      <div class="flex-grow-1 d-flex justify-content-center align-items-start">
-        <form id="createPlaylistForm" class="p-5 rounded-3 w-75">
+      <div
+        class="container-fluid flex-grow-1 d-flex justify-content-center align-items-start"
+      >
+        <form id="createPlaylistForm" class="p-5 rounded-3" style="width: 100%">
+          <h1 class="mb-5">Crea la tua playlist</h1>
+
           <div class="mb-3">
             <label for="playlistTitle" class="form-label">Title</label>
             <input
@@ -344,9 +352,27 @@
               >Make this playlist public</label
             >
           </div>
-          <button type="submit" class="btn btn-success">Create Playlist</button>
-          <button id="clearInputs" type="button" class="btn btn-dark">
+          <button type="submit" class="btn btn-success me-2">
+            Create Playlist
+          </button>
+          <button id="clearInputs" type="button" class="btn btn-dark me-2">
             Clear
+          </button>
+          <button
+            id="discardChangesButton"
+            type="button"
+            class="btn btn-dark me-5"
+            style="display: none"
+          >
+            Discard Changes
+          </button>
+          <button
+            id="deletePlaylistButton"
+            type="button"
+            class="btn btn-danger"
+            style="display: none"
+          >
+            Delete Playlist
           </button>
         </form>
       </div>
@@ -354,6 +380,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/searchbarSpotify.js"></script>
-    <script src="./scripts/createPlaylist.js"></script>
+    <script src="./scripts/playlist.js"></script>
   </body>
 </html>
