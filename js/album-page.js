@@ -10,6 +10,7 @@ const albumNameElement = document.getElementById("nome-album")
 const albumMetaElement = document.getElementById("ascoltatori-mensili")
 const cardSongs = document.getElementById("cardSongs")
 const artistSidebarRail = document.getElementById("artistSidebarRail")
+const dynamicCredits = document.getElementById("dynamic-credits")
 
 const rightSidebarMainTitle = document.getElementById("side-bar-main-title")
 const rightSidebarPosterImg = document.getElementById("side-poster-img")
@@ -26,12 +27,13 @@ const rightSidebarNextArtist = document.getElementById(
 )
 
 const formatNumber = (value) => {
-  return new Intl.NumberFormat("it-IT").format(value || 0)
+  return new Intl.NumberFormat("it-IT").format(Number(value) || 0)
 }
 
 const formatDuration = (seconds) => {
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
+  const totalSeconds = Number(seconds) || 0
+  const minutes = Math.floor(totalSeconds / 60)
+  const remainingSeconds = totalSeconds % 60
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`
 }
 
@@ -47,6 +49,18 @@ const formatReleaseDate = (dateString) => {
     day: "numeric",
   }).format(date)
 }
+
+const stripHtml = (html = "") => {
+  const temp = document.createElement("div")
+  temp.innerHTML = html
+  return (temp.textContent || temp.innerText || "").trim()
+}
+
+const truncateText = (text = "", maxLength = 260) => {
+  if (!text) return ""
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text
+}
+
 const styleSuggestionsDropdown = () => {
   if (!dataList) return
 
@@ -250,6 +264,135 @@ const searchAlbumSuggestions = async (query) => {
     errorItem.style.fontSize = "0.9rem"
 
     dataList.appendChild(errorItem)
+  }
+}
+
+const ensureAlbumExtraContainer = () => {
+  if (!dynamicCredits) return null
+
+  let extraContainer = document.getElementById("album-lastfm-extra")
+
+  if (!extraContainer) {
+    extraContainer = document.createElement("div")
+    extraContainer.id = "album-lastfm-extra"
+    extraContainer.className = "rounded-4 p-3 mb-4"
+    extraContainer.style.backgroundColor = "#121212"
+    dynamicCredits.appendChild(extraContainer)
+  }
+
+  return extraContainer
+}
+
+const renderAlbumLastFmExtra = (albumInfo, artistInfo, similarArtists = []) => {
+  const extraContainer = ensureAlbumExtraContainer()
+  if (!extraContainer) return
+
+  const albumSummary = truncateText(
+    stripHtml(albumInfo?.wiki?.summary || "Descrizione album non disponibile."),
+    280,
+  )
+
+  const artistBio = truncateText(
+    stripHtml(artistInfo?.bio?.summary || "Bio artista non disponibile."),
+    260,
+  )
+
+  const tags = albumInfo?.tags?.tag || []
+
+  extraContainer.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h6 class="fw-bold text-white m-0">Info album</h6>
+      <span class="text-secondary small fw-bold">Last.fm</span>
+    </div>
+
+    <p class="text-secondary small mb-3">${albumSummary}</p>
+
+    <div class="d-flex flex-wrap gap-3 mb-3">
+      <span class="text-secondary small">
+        <strong class="text-white">Listeners:</strong> ${formatNumber(
+          albumInfo?.listeners || 0,
+        )}
+      </span>
+      <span class="text-secondary small">
+        <strong class="text-white">Playcount:</strong> ${formatNumber(
+          albumInfo?.playcount || 0,
+        )}
+      </span>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      ${
+        tags.length
+          ? tags
+              .slice(0, 6)
+              .map(
+                (tag) => `
+              <span class="badge rounded-pill text-bg-dark border border-secondary">
+                ${tag.name}
+              </span>
+            `,
+              )
+              .join("")
+          : `<span class="text-secondary small">Nessun tag disponibile</span>`
+      }
+    </div>
+
+    <div class="mb-4">
+      <h6 class="fw-bold text-white mb-2">Artista</h6>
+      <p class="text-secondary small mb-0">${artistBio}</p>
+    </div>
+
+    <div>
+      <h6 class="fw-bold text-white mb-3">Artisti simili</h6>
+      <div class="d-flex flex-column gap-2">
+        ${
+          similarArtists.length
+            ? similarArtists
+                .slice(0, 4)
+                .map(
+                  (artist) => `
+                <div class="d-flex justify-content-between gap-3">
+                  <span class="text-white text-truncate">${artist.name}</span>
+                  <span class="text-secondary small">similar</span>
+                </div>
+              `,
+                )
+                .join("")
+            : `<span class="text-secondary small">Nessun artista simile disponibile</span>`
+        }
+      </div>
+    </div>
+  `
+}
+
+const enrichAlbumSidebarWithLastFm = async (albumData) => {
+  if (!window.LastFmAPI) return
+
+  try {
+    const [albumInfoRes, artistInfoRes, similarRes] = await Promise.allSettled([
+      window.LastFmAPI.fetchLastFmAlbumInfo(
+        albumData.artist?.name || "",
+        albumData.title || "",
+      ),
+      window.LastFmAPI.fetchLastFmArtistInfo(albumData.artist?.name || ""),
+      window.LastFmAPI.fetchLastFmArtistSimilar(
+        albumData.artist?.name || "",
+        6,
+      ),
+    ])
+
+    const albumInfo =
+      albumInfoRes.status === "fulfilled" ? albumInfoRes.value?.album : null
+    const artistInfo =
+      artistInfoRes.status === "fulfilled" ? artistInfoRes.value?.artist : null
+    const similarArtists =
+      similarRes.status === "fulfilled"
+        ? similarRes.value?.similarartists?.artist || []
+        : []
+
+    renderAlbumLastFmExtra(albumInfo, artistInfo, similarArtists)
+  } catch (error) {
+    console.error("Last.fm album sidebar error:", error)
   }
 }
 
@@ -521,12 +664,9 @@ const renderAlbumPage = async (albumId) => {
 
     renderAlbumHeader(albumData)
     renderAlbumTracks(albumData)
-    renderAlbumRightSidebar(albumData, artistDetail)
     renderAlbumSidebarRail(albumData)
-
-    if (searchInput) {
-      searchInput.value = albumData.title || ""
-    }
+    renderAlbumRightSidebar(albumData, artistDetail)
+    await enrichAlbumSidebarWithLastFm(albumData)
   } catch (error) {
     console.error("renderAlbumPage error:", error)
     renderAlbumError()
@@ -535,31 +675,31 @@ const renderAlbumPage = async (albumId) => {
 
 if (searchInput) {
   searchInput.addEventListener("input", () => {
-    const value = searchInput.value.trim()
+    const query = searchInput.value.trim()
 
-    if (!value) {
+    if (!query) {
       if (dataList) dataList.innerHTML = ""
       return
     }
 
-    searchAlbumSuggestions(value)
+    searchAlbumSuggestions(query)
   })
 
   searchInput.addEventListener("keydown", async (event) => {
     if (event.key === "Enter") {
       event.preventDefault()
 
-      const value = searchInput.value.trim()
-      if (!value) return
+      const query = searchInput.value.trim()
+      if (!query) return
 
       try {
-        const results = await fetchSearchResults(value)
+        const results = await fetchSearchResults(query)
         const firstAlbum = results.find((item) => item.album?.id)
 
-        if (!firstAlbum?.album?.id) return
-
-        if (dataList) dataList.innerHTML = ""
-        goToAlbumPage(firstAlbum.album.id)
+        if (firstAlbum?.album?.id) {
+          dataList.innerHTML = ""
+          goToAlbumPage(firstAlbum.album.id)
+        }
       } catch (error) {
         console.error("album enter search error:", error)
       }
@@ -582,22 +722,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   injectSuggestionScrollbarStyles()
 
   const params = new URLSearchParams(window.location.search)
-  const albumIdFromUrl = params.get("albumId")
+  let albumId = params.get("albumId")
 
-  try {
-    if (albumIdFromUrl) {
-      await renderAlbumPage(albumIdFromUrl)
-    } else {
-      const randomAlbumId = await getRandomAlbumId()
-      history.replaceState(
-        null,
-        "",
-        `./album-page.html?albumId=${encodeURIComponent(randomAlbumId)}`,
-      )
-      await renderAlbumPage(randomAlbumId)
+  if (!albumId) {
+    try {
+      albumId = await getRandomAlbumId()
+    } catch (error) {
+      console.error(error)
+      renderAlbumError()
+      return
     }
-  } catch (error) {
-    console.error("initial album load error:", error)
-    renderAlbumError()
   }
+
+  renderAlbumPage(albumId)
 })
