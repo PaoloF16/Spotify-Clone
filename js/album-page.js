@@ -339,11 +339,14 @@ const renderAlbumTracks = (albumData) => {
       albumData.cover_big ||
       albumData.cover ||
       ""
+    row.dataset.trackDuration = track.duration || 0
+    row.dataset.trackRank = track.rank || 0
+
     if (track.preview) {
       row.dataset.trackSrc = track.preview
     }
-    row.dataset.trackDuration = track.duration || 0
-    row.dataset.trackRank = track.rank || 0
+
+    row.style.cursor = track.preview ? "pointer" : "default"
 
     row.innerHTML = `
       <div class="d-flex align-items-center flex-grow-1 overflow-hidden">

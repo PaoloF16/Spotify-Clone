@@ -60,6 +60,8 @@ const styleSuggestionsDropdown = () => {
   dataList.style.backdropFilter = "blur(10px)"
   dataList.style.scrollbarWidth = "thin"
   dataList.style.scrollbarColor = "#8a8a8a transparent"
+  dataList.style.top = "100%"
+  dataList.style.left = "0"
 }
 
 const injectSuggestionScrollbarStyles = () => {
@@ -173,10 +175,36 @@ const searchArtistSuggestions = async (artist) => {
     const artistIds = new Set()
 
     data.data.forEach((song) => {
-      if (!artistIds.has(song.artist.id)) {
+      if (song.artist?.id && !artistIds.has(song.artist.id)) {
         artistIds.add(song.artist.id)
         uniqueArtists.push(song.artist)
       }
+    })
+
+    const queryLower = artist.trim().toLowerCase()
+
+    uniqueArtists.sort((a, b) => {
+      const aName = (a.name || "").toLowerCase()
+      const bName = (b.name || "").toLowerCase()
+
+      const aExact =
+        aName === queryLower
+          ? 3
+          : aName.startsWith(queryLower)
+            ? 2
+            : aName.includes(queryLower)
+              ? 1
+              : 0
+      const bExact =
+        bName === queryLower
+          ? 3
+          : bName.startsWith(queryLower)
+            ? 2
+            : bName.includes(queryLower)
+              ? 1
+              : 0
+
+      return bExact - aExact
     })
 
     uniqueArtists.slice(0, 8).forEach((artistItem) => {

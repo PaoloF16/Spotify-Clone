@@ -69,6 +69,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return `${minutes}:${secs.toString().padStart(2, "0")}`
     }
 
+    function paintRange(input, percentage) {
+      if (!input) return
+
+      const safePercentage = Math.max(0, Math.min(100, percentage))
+      input.style.background = `linear-gradient(to right, #1ed760 0%, #1ed760 ${safePercentage}%, #4d4d4d ${safePercentage}%, #4d4d4d 100%)`
+    }
+
     function getTimeLabels() {
       const spans = document.querySelectorAll("#time-bar span")
       return {
@@ -267,19 +274,23 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateTimeUI() {
       const labels = getTimeLabels()
 
+      const duration = Number.isFinite(audio.duration) ? audio.duration : 30
+      const current = Number.isFinite(audio.currentTime) ? audio.currentTime : 0
+
       if (els.rangeBar) {
-        els.rangeBar.max = Number.isFinite(audio.duration)
-          ? Math.floor(audio.duration)
-          : 0
-        els.rangeBar.value = Math.floor(audio.currentTime || 0)
+        els.rangeBar.max = duration
+        els.rangeBar.value = current
+
+        const percentage = duration > 0 ? (current / duration) * 100 : 0
+        paintRange(els.rangeBar, percentage)
       }
 
       if (labels.current) {
-        labels.current.textContent = formatTime(audio.currentTime)
+        labels.current.textContent = formatTime(current)
       }
 
       if (labels.duration) {
-        labels.duration.textContent = formatTime(audio.duration)
+        labels.duration.textContent = formatTime(duration)
       }
     }
 
@@ -445,10 +456,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (els.rangeBar) {
         els.rangeBar.min = 0
+        els.rangeBar.max = 30
+        els.rangeBar.step = 0.1
         els.rangeBar.value = 0
 
+        paintRange(els.rangeBar, 0)
+
         els.rangeBar.addEventListener("input", () => {
-          audio.currentTime = Number(els.rangeBar.value || 0)
+          const value = Number(els.rangeBar.value || 0)
+          const max = Number(els.rangeBar.max || 30)
+
+          audio.currentTime = value
+
+          const percentage = max > 0 ? (value / max) * 100 : 0
+          paintRange(els.rangeBar, percentage)
+
+          const labels = getTimeLabels()
+          if (labels.current) {
+            labels.current.textContent = formatTime(value)
+          }
         })
       }
 
@@ -457,20 +483,21 @@ document.addEventListener("DOMContentLoaded", () => {
         els.volumeBar.max = 100
         els.volumeBar.step = 1
         els.volumeBar.value = state.volume * 100
+
         audio.volume = state.volume
+        paintRange(els.volumeBar, state.volume * 100)
         updateVolumeIcon()
 
-        const updateVolumeFromBar = () => {
+        els.volumeBar.addEventListener("input", () => {
           const rawValue = Number(els.volumeBar.value || 0)
           const normalizedVolume = Math.max(0, Math.min(1, rawValue / 100))
 
           state.volume = normalizedVolume
           audio.volume = normalizedVolume
-          updateVolumeIcon()
-        }
 
-        els.volumeBar.addEventListener("input", updateVolumeFromBar)
-        els.volumeBar.addEventListener("change", updateVolumeFromBar)
+          paintRange(els.volumeBar, rawValue)
+          updateVolumeIcon()
+        })
       }
 
       if (els.heroPlayButton) {
@@ -550,10 +577,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const labels = getTimeLabels()
       if (labels.current) labels.current.textContent = "0:00"
-      if (labels.duration) labels.duration.textContent = "0:00"
+      if (labels.duration) labels.duration.textContent = "0:30"
 
       if (els.volumeBar) {
         els.volumeBar.value = state.volume * 100
+        paintRange(els.volumeBar, state.volume * 100)
+      }
+
+      if (els.rangeBar) {
+        els.rangeBar.value = 0
+        els.rangeBar.max = 30
+        paintRange(els.rangeBar, 0)
       }
     }
 
