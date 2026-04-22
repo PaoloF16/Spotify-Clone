@@ -495,17 +495,18 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar")
-        const toggleMainBtn = document.getElementById("toggle-sidebar")
+        const mainSidebar = document.getElementById("main-sidebar");
+        const toggleMainBtn = document.getElementById("toggle-sidebar");
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed")
-          })
+            mainSidebar.classList.toggle("closed");
+          });
         }
-      })
+      });
     </script>
     <script src="./js/last-fm.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/audio-player.js"></script>
+    <script src="./scripts/playlist.js"></script>
   </body>
 </html>
