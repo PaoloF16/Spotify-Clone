@@ -125,7 +125,8 @@ const saveLikedSongs = () =>
 const asidePlaylistList = document.getElementById("playlists");
 const createPlaylistForm = document.getElementById("createPlaylistForm");
 const clearFormButton = document.getElementById("clearInputs");
-const discardBtn = document.getElementById("discardButton");
+const discardBtn = document.getElementById("discardChangesButton");
+const deletePlaylistBtn = document.getElementById("deletePlaylistButton");
 const formHeading = document.querySelector("h1");
 const submitBtn = createPlaylistForm ? createPlaylistForm.querySelector("button[type=submit]") : null;
 
@@ -154,14 +155,18 @@ const enterCreateMode = () => {
   editingId = null;
   if (formHeading) formHeading.innerText = "Create your playlist";
   if (submitBtn)   submitBtn.innerText   = "Create Playlist";
+  if (clearFormButton) clearFormButton.style.display = "inline-block"
   if (discardBtn)  discardBtn.style.display = "none";
+  if (deletePlaylistBtn) deletePlaylistBtn.style.display = "none"
 };
 
 /** Switch UI into EDIT mode. */
 const enterEditMode = () => {
   if (formHeading) formHeading.innerText = "Edit your playlist";
-  if (submitBtn)   submitBtn.innerText   = "Save Changes";
-  if (discardBtn)  discardBtn.style.display = "inline-block";
+  if (submitBtn) submitBtn.innerText   = "Save Changes";
+  if (clearFormButton) clearFormButton.style.display = "none"
+  if (discardBtn) discardBtn.style.display = "inline-block";
+  if (deletePlaylistBtn) deletePlaylistBtn.style.display = "inline-block"
 };
 
 /** Basic validation — returns an error string or null if valid. */
@@ -172,36 +177,11 @@ const validateForm = (title) => {
 };
 
 
-// ─── API HELPERS (ready to use, currently commented out) ─────
-
-/*
-const getArtist = async (artistId) => {
-  try {
-    const res = await fetch(`https://striveschool-api.herokuapp.com/api/deezer/artist/${artistId}`);
-    if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-    return await res.json();
-  } catch (err) {
-    console.error("getArtist error:", err);
-    return null;
-  }
-};
-
-const getAlbum = async (albumId) => {
-  try {
-    const res = await fetch(`https://striveschool-api.herokuapp.com/api/deezer/album/${albumId}`);
-    if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-    return await res.json();
-  } catch (err) {
-    console.error("getAlbum error:", err);
-    return null;
-  }
-};
-*/
-
 
 // ─── CREATE / EDIT PLAYLIST ──────────────────────────────────
 
 const createPlaylist = (e) => {
+
   e.preventDefault();
 
   const title = document.getElementById("playlistTitle").value;
@@ -218,6 +198,7 @@ const createPlaylist = (e) => {
   }
 
   if (editingId) {
+
     // ── EDIT MODE ──
     const playlist = userPlaylists.find(pl => pl.id === editingId);
 
@@ -250,27 +231,28 @@ const createPlaylist = (e) => {
 // ─── DELETE PLAYLIST ─────────────────────────────────────────
 
 const deletePlaylist = (id) => {
-  const index = userPlaylists.findIndex(pl => pl.id === id);
-  if (index === -1) {
-    console.warn(`deletePlaylist: no playlist with id "${id}"`);
-    return;
-  }
+    
+    if (!id) return;
 
-  const confirmed = window.confirm(
-    `Delete "${userPlaylists[index].title}"? This cannot be undone.`
-  );
-  if (!confirmed) return;
+    const deletingIndex = userPlaylists.findIndex(pl => pl.id === id);
+    if (deletingIndex === -1) return;
 
-  // If we're currently editing this playlist, exit edit mode
-  if (editingId === id) {
+    const confirmed = window.confirm(
+        `Delete "${userPlaylists[deletingIndex].title}"? This cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    userPlaylists.splice(deletingIndex, 1);
+
+    savePlaylists();
     enterCreateMode();
     clearForm();
-  }
+    displayAsidePlaylists();
 
-  userPlaylists.splice(index, 1);
-  savePlaylists();
-  displayAsidePlaylists();
+    editingId = null;
 };
+
 
 
 // ─── EDIT PLAYLIST ───────────────────────────────────────────
@@ -295,9 +277,8 @@ const editPlaylist = (e) => {
   editingId = playlistId;
   enterEditMode();
 
-  // Scroll form into view so the user knows it was populated
-  createPlaylistForm.scrollIntoView({ behavior: "smooth", block: "start" });
 };
+
 
 
 // ─── DISPLAY ASIDE PLAYLISTS ─────────────────────────────────
@@ -410,6 +391,11 @@ if (discardBtn) {
   });
 }
 
+// Delete playlist
+deletePlaylistBtn.addEventListener("click", () => {
+    deletePlaylist(editingId)
+} )
+
 // Delegated clicks on aside playlist cards
 
 if (asidePlaylistList) {
@@ -418,13 +404,6 @@ if (asidePlaylistList) {
     // Edit
     if (e.target.classList.contains("edit-playlist-btn")) {
       editPlaylist(e);
-    }
-
-    // Delete
-    if (e.target.classList.contains("delete-playlist-btn")) {
-      e.preventDefault();
-      const card = e.target.closest(".card");
-      if (card?.dataset.id) deletePlaylist(card.dataset.id);
     }
 
     // Play (stub — wire up your audio player here)
