@@ -728,32 +728,33 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // --- SIDEBAR SINISTRA ---
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
 
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
+            mainSidebar.classList.toggle("closed")
+          })
         }
 
         // --- SIDEBAR DESTRA ---
-        const rightSidebar = document.getElementById("right-sidebar");
-        const closeRightBtn = document.getElementById("close-right-sidebar");
-        const openBtn = document.getElementById("open-right-sidebar");
+        const rightSidebar = document.getElementById("right-sidebar")
+        const closeRightBtn = document.getElementById("close-right-sidebar")
+        const openBtn = document.getElementById("open-right-sidebar")
 
         if (closeRightBtn) {
           closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed");
-          });
+            rightSidebar.classList.add("closed")
+          })
         }
 
         if (openBtn) {
           openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed");
-          });
+            rightSidebar.classList.remove("closed")
+          })
         }
-      });
+      })
     </script>
+    <script src="./js/player.js"></script>
   </body>
 </html>
