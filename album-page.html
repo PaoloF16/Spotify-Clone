@@ -632,6 +632,43 @@
           });
         }
       });
+      document.addEventListener("DOMContentLoaded", function () {
+        const favoriteIcon = document.getElementById("favorite-icon");
+
+        const initFavoriteHeart = () => {
+          if (!favoriteIcon) return;
+
+          favoriteIcon.style.cursor = "pointer";
+          favoriteIcon.style.transition = "all 0.1s ease";
+          favoriteIcon.style.color = "#b3b3b3";
+
+          favoriteIcon.addEventListener("click", function () {
+            const isLiked = this.classList.contains("bi-heart-fill");
+
+            if (isLiked) {
+              this.classList.replace("bi-heart-fill", "bi-heart");
+              this.style.color = "#b3b3b3";
+            } else {
+              this.classList.replace("bi-heart", "bi-heart-fill");
+              this.style.color = "#ff0000";
+            }
+          });
+
+          favoriteIcon.addEventListener("mouseenter", function () {
+            if (!this.classList.contains("bi-heart-fill")) {
+              this.style.color = "#ffffff";
+            }
+          });
+
+          favoriteIcon.addEventListener("mouseleave", function () {
+            if (!this.classList.contains("bi-heart-fill")) {
+              this.style.color = "#b3b3b3";
+            }
+          });
+        };
+
+        initFavoriteHeart();
+      });
     </script>
   </body>
 </html>
