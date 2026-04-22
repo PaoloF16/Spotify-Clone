@@ -733,75 +733,76 @@
     <script src="./js/homepage.js"></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // --- SIDEBAR SINISTRA ---
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+            document.addEventListener("DOMContentLoaded", function () {
+              // --- SIDEBAR SINISTRA ---
+              const mainSidebar = document.getElementById("main-sidebar")
+              const toggleMainBtn = document.getElementById("toggle-sidebar")
 
-        if (toggleMainBtn) {
-          toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
-        }
+              if (toggleMainBtn) {
+                toggleMainBtn.addEventListener("click", () => {
+                  mainSidebar.classList.toggle("closed")
+                })
+              }
 
-        // --- SIDEBAR DESTRA ---
-        const rightSidebar = document.getElementById("right-sidebar");
-        const closeRightBtn = document.getElementById("close-right-sidebar");
-        const openBtn = document.getElementById("open-right-sidebar");
+              // --- SIDEBAR DESTRA ---
+              const rightSidebar = document.getElementById("right-sidebar")
+              const closeRightBtn = document.getElementById("close-right-sidebar")
+              const openBtn = document.getElementById("open-right-sidebar")
 
-        if (closeRightBtn) {
-          closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed");
-          });
-        }
+              if (closeRightBtn) {
+                closeRightBtn.addEventListener("click", () => {
+                  rightSidebar.classList.add("closed")
+                })
+              }
 
-        if (openBtn) {
-          openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed");
-          });
-        }
-      });
-<<<<<<< Updated upstream
-=======
+              if (openBtn) {
+                openBtn.addEventListener("click", () => {
+                  rightSidebar.classList.remove("closed")
+                })
+              }
+            });
+      <<<<<<< Updated upstream
+      =======
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const favoriteIcon = document.getElementById("favorite-icon");
+            document.addEventListener("DOMContentLoaded", function () {
+              const favoriteIcon = document.getElementById("favorite-icon");
 
-        const initFavoriteHeart = () => {
-          if (!favoriteIcon) return;
+              const initFavoriteHeart = () => {
+                if (!favoriteIcon) return;
 
-          favoriteIcon.style.cursor = "pointer";
-          favoriteIcon.style.transition = "all 0.1s ease";
-          favoriteIcon.style.color = "#b3b3b3";
+                favoriteIcon.style.cursor = "pointer";
+                favoriteIcon.style.transition = "all 0.1s ease";
+                favoriteIcon.style.color = "#b3b3b3";
 
-          favoriteIcon.addEventListener("click", function () {
-            const isLiked = this.classList.contains("bi-heart-fill");
+                favoriteIcon.addEventListener("click", function () {
+                  const isLiked = this.classList.contains("bi-heart-fill");
 
-            if (isLiked) {
-              this.classList.replace("bi-heart-fill", "bi-heart");
-              this.style.color = "#b3b3b3";
-            } else {
-              this.classList.replace("bi-heart", "bi-heart-fill");
-              this.style.color = "#ff0000";
-            }
-          });
+                  if (isLiked) {
+                    this.classList.replace("bi-heart-fill", "bi-heart");
+                    this.style.color = "#b3b3b3";
+                  } else {
+                    this.classList.replace("bi-heart", "bi-heart-fill");
+                    this.style.color = "#ff0000";
+                  }
+                });
 
-          favoriteIcon.addEventListener("mouseenter", function () {
-            if (!this.classList.contains("bi-heart-fill")) {
-              this.style.color = "#ffffff";
-            }
-          });
+                favoriteIcon.addEventListener("mouseenter", function () {
+                  if (!this.classList.contains("bi-heart-fill")) {
+                    this.style.color = "#ffffff";
+                  }
+                });
 
-          favoriteIcon.addEventListener("mouseleave", function () {
-            if (!this.classList.contains("bi-heart-fill")) {
-              this.style.color = "#b3b3b3";
-            }
-          });
-        };
+                favoriteIcon.addEventListener("mouseleave", function () {
+                  if (!this.classList.contains("bi-heart-fill")) {
+                    this.style.color = "#b3b3b3";
+                  }
+                });
+              };
 
-        initFavoriteHeart();
-      });
->>>>>>> Stashed changes
+              initFavoriteHeart();
+            });
+      >>>>>>> Stashed changes
     </script>
+    <script src="./js/player.js"></script>
   </body>
 </html>
