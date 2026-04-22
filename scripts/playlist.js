@@ -163,7 +163,7 @@ const enterCreateMode = () => {
 /** Switch UI into EDIT mode. */
 const enterEditMode = () => {
   if (formHeading) formHeading.innerText = "Edit your playlist";
-  if (submitBtn) submitBtn.innerText   = "Save Changes";
+  if (submitBtn) submitBtn.innerText = "Save Changes";
   if (clearFormButton) clearFormButton.style.display = "none"
   if (discardBtn) discardBtn.style.display = "inline-block";
   if (deletePlaylistBtn) deletePlaylistBtn.style.display = "inline-block"
@@ -231,7 +231,7 @@ const createPlaylist = (e) => {
 // ─── DELETE PLAYLIST ─────────────────────────────────────────
 
 const deletePlaylist = (id) => {
-    
+
     if (!id) return;
 
     const deletingIndex = userPlaylists.findIndex(pl => pl.id === id);
