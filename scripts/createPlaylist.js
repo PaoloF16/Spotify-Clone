@@ -230,7 +230,7 @@ const displayAsidePlaylists = function() {
                     <div class="d-flex align-items-center justify-content-between">
                         <p class="card-text mb-1">${playlist.tracks.length} songs</p>
                         <a href="#" class="edit-playlist-btn btn btn-sm btn-dark px-3">Edit</a>
-                        <a href="#" class="play-playlist-btn btn btn-sm btn-success px-3">Play</a>
+                        <a href="#" class="play-playlist-btn btn btn-sm btn-success px-3 fw-bold">Play</a>
                     </div>
                 </div>`
 
