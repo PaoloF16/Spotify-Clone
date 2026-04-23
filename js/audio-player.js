@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function paintRange(input, percentage) {
       if (!input) return
-
       const safePercentage = Math.max(0, Math.min(100, percentage))
       input.style.background = `linear-gradient(to right, #1ed760 0%, #1ed760 ${safePercentage}%, #4d4d4d ${safePercentage}%, #4d4d4d 100%)`
     }
@@ -116,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
           track.cover ||
           "./assets/imgs/main/image-12.jpg",
         rank: Number(track.rank || track.trackRank || 0),
-        duration: Number(track.duration || track.trackDuration || 0),
+        duration: Number(track.duration || track.trackDuration || 30),
         src,
       }
     }
@@ -146,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const rows = Array.from(
         els.cardSongs.querySelectorAll("[data-track-src]"),
       )
+
       state.queue = rows.map(buildTrackFromRow).filter(Boolean)
 
       if (!state.queue.length) {
@@ -285,13 +285,8 @@ document.addEventListener("DOMContentLoaded", () => {
         paintRange(els.rangeBar, percentage)
       }
 
-      if (labels.current) {
-        labels.current.textContent = formatTime(current)
-      }
-
-      if (labels.duration) {
-        labels.duration.textContent = formatTime(duration)
-      }
+      if (labels.current) labels.current.textContent = formatTime(current)
+      if (labels.duration) labels.duration.textContent = formatTime(duration)
     }
 
     function clearActiveRows() {
@@ -459,7 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
         els.rangeBar.max = 30
         els.rangeBar.step = 0.1
         els.rangeBar.value = 0
-
         paintRange(els.rangeBar, 0)
 
         els.rangeBar.addEventListener("input", () => {

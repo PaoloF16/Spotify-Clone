@@ -1,8 +1,5 @@
 const searchInput = document.getElementById("inputSearch")
 const dataList = document.getElementById("listaData")
-const containerProfileArtist =
-  document.getElementById("cardArtist") ||
-  document.getElementById("intestazione-artista")
 
 const cardSongs =
   document.getElementById("cardSongs") ||
@@ -30,21 +27,36 @@ const rightSidebarNextTitle = document.getElementById(
 const rightSidebarNextArtist = document.getElementById(
   "right-sidebar-next-artist",
 )
+const dynamicCredits = document.getElementById("dynamic-credits")
 
 const formatNumber = (value) => {
-  return new Intl.NumberFormat("it-IT").format(value || 0)
+  return new Intl.NumberFormat("it-IT").format(Number(value) || 0)
 }
 
 const formatDuration = (seconds) => {
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
+  const totalSeconds = Number(seconds) || 0
+  const minutes = Math.floor(totalSeconds / 60)
+  const remainingSeconds = totalSeconds % 60
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`
+}
+
+const stripHtml = (html = "") => {
+  const temp = document.createElement("div")
+  temp.innerHTML = html
+  return (temp.textContent || temp.innerText || "").trim()
+}
+
+const truncateText = (text = "", maxLength = 260) => {
+  if (!text) return ""
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text
 }
 
 const styleSuggestionsDropdown = () => {
   if (!dataList) return
 
   dataList.className = "position-absolute mt-2 w-100 z-3"
+  dataList.style.top = "100%"
+  dataList.style.left = "0"
   dataList.style.maxHeight = "420px"
   dataList.style.overflowY = "auto"
   dataList.style.overflowX = "hidden"
@@ -60,8 +72,6 @@ const styleSuggestionsDropdown = () => {
   dataList.style.backdropFilter = "blur(10px)"
   dataList.style.scrollbarWidth = "thin"
   dataList.style.scrollbarColor = "#8a8a8a transparent"
-  dataList.style.top = "100%"
-  dataList.style.left = "0"
 }
 
 const injectSuggestionScrollbarStyles = () => {
@@ -159,6 +169,15 @@ const createMessageItem = (message, color = "#b3b3b3") => {
   return li
 }
 
+const getArtistPriority = (artistName, queryLower) => {
+  const name = (artistName || "").toLowerCase()
+
+  if (name === queryLower) return 4
+  if (name.startsWith(queryLower)) return 3
+  if (name.includes(queryLower)) return 2
+  return 1
+}
+
 const searchArtistSuggestions = async (artist) => {
   try {
     const response = await fetch(apiUrl + encodeURIComponent(artist))
@@ -167,8 +186,9 @@ const searchArtistSuggestions = async (artist) => {
     }
 
     const data = await response.json()
-    dataList.innerHTML = ""
+    if (!dataList) return
 
+    dataList.innerHTML = ""
     styleSuggestionsDropdown()
 
     const uniqueArtists = []
@@ -184,34 +204,20 @@ const searchArtistSuggestions = async (artist) => {
     const queryLower = artist.trim().toLowerCase()
 
     uniqueArtists.sort((a, b) => {
-      const aName = (a.name || "").toLowerCase()
-      const bName = (b.name || "").toLowerCase()
+      const priorityA = getArtistPriority(a.name, queryLower)
+      const priorityB = getArtistPriority(b.name, queryLower)
 
-      const aExact =
-        aName === queryLower
-          ? 3
-          : aName.startsWith(queryLower)
-            ? 2
-            : aName.includes(queryLower)
-              ? 1
-              : 0
-      const bExact =
-        bName === queryLower
-          ? 3
-          : bName.startsWith(queryLower)
-            ? 2
-            : bName.includes(queryLower)
-              ? 1
-              : 0
-
-      return bExact - aExact
+      if (priorityB !== priorityA) return priorityB - priorityA
+      return (a.name || "").localeCompare(b.name || "")
     })
 
     uniqueArtists.slice(0, 8).forEach((artistItem) => {
       const li = createSuggestionItem(artistItem)
 
       li.addEventListener("click", () => {
-        searchInput.value = artistItem.name
+        if (searchInput) {
+          searchInput.value = artistItem.name
+        }
         dataList.innerHTML = ""
         renderArtistProfile(artistItem.name)
       })
@@ -224,6 +230,8 @@ const searchArtistSuggestions = async (artist) => {
     }
   } catch (error) {
     console.error(error)
+    if (!dataList) return
+
     dataList.innerHTML = ""
     styleSuggestionsDropdown()
     dataList.appendChild(
@@ -237,7 +245,7 @@ const getUniqueSongs = (songs) => {
   const usedKeys = new Set()
 
   songs.forEach((song) => {
-    const key = `${song.title}-${song.album.id}`
+    const key = `${song.title}-${song.album?.id}`
     if (!usedKeys.has(key)) {
       usedKeys.add(key)
       uniqueSongs.push(song)
@@ -245,6 +253,155 @@ const getUniqueSongs = (songs) => {
   })
 
   return uniqueSongs
+}
+
+const ensureArtistExtraContainer = () => {
+  if (!dynamicCredits) return null
+
+  let extraContainer = document.getElementById("artist-lastfm-extra")
+
+  if (!extraContainer) {
+    extraContainer = document.createElement("div")
+    extraContainer.id = "artist-lastfm-extra"
+    extraContainer.className = "rounded-4 p-3 mb-4"
+    extraContainer.style.backgroundColor = "#121212"
+    dynamicCredits.appendChild(extraContainer)
+  }
+
+  return extraContainer
+}
+
+const renderArtistLastFmExtra = (
+  artistInfo,
+  similarArtists = [],
+  topAlbums = [],
+) => {
+  const extraContainer = ensureArtistExtraContainer()
+  if (!extraContainer) return
+
+  const bio = truncateText(
+    stripHtml(artistInfo?.bio?.summary || "Biografia non disponibile."),
+    320,
+  )
+
+  const listeners = formatNumber(artistInfo?.stats?.listeners || 0)
+  const playcount = formatNumber(artistInfo?.stats?.playcount || 0)
+  const tags = artistInfo?.tags?.tag || []
+
+  extraContainer.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h6 class="fw-bold text-white m-0">Info artista</h6>
+      <span class="text-secondary small fw-bold">Last.fm</span>
+    </div>
+
+    <p class="text-secondary small mb-3">${bio}</p>
+
+    <div class="d-flex flex-wrap gap-3 mb-3">
+      <span class="text-secondary small">
+        <strong class="text-white">Listeners:</strong> ${listeners}
+      </span>
+      <span class="text-secondary small">
+        <strong class="text-white">Playcount:</strong> ${playcount}
+      </span>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      ${
+        tags.length
+          ? tags
+              .slice(0, 6)
+              .map(
+                (tag) => `
+              <span class="badge rounded-pill text-bg-dark border border-secondary">
+                ${tag.name}
+              </span>
+            `,
+              )
+              .join("")
+          : `<span class="text-secondary small">Nessun tag disponibile</span>`
+      }
+    </div>
+
+    <div class="mb-4">
+      <h6 class="fw-bold text-white mb-3">Artisti simili</h6>
+      <div class="d-flex flex-column gap-2">
+        ${
+          similarArtists.length
+            ? similarArtists
+                .slice(0, 4)
+                .map(
+                  (artist) => `
+                <div class="d-flex align-items-center justify-content-between gap-3">
+                  <div class="overflow-hidden">
+                    <div class="text-white fw-bold text-truncate">${artist.name}</div>
+                    <div class="text-secondary small">Artista simile</div>
+                  </div>
+                </div>
+              `,
+                )
+                .join("")
+            : `<span class="text-secondary small">Nessun artista simile disponibile</span>`
+        }
+      </div>
+    </div>
+
+    <div>
+      <h6 class="fw-bold text-white mb-3">Top albums</h6>
+      <div class="d-flex flex-column gap-2">
+        ${
+          topAlbums.length
+            ? topAlbums
+                .slice(0, 4)
+                .map(
+                  (album) => `
+                <div class="d-flex justify-content-between gap-3">
+                  <span class="text-white text-truncate">${album.name}</span>
+                  <span class="text-secondary small">${formatNumber(album.playcount || 0)}</span>
+                </div>
+              `,
+                )
+                .join("")
+            : `<span class="text-secondary small">Nessun album disponibile</span>`
+        }
+      </div>
+    </div>
+  `
+}
+
+const enrichArtistWithLastFm = async (artistName) => {
+  if (!window.LastFmAPI || !artistName) return
+
+  try {
+    const [artistInfoRes, similarRes, topAlbumsRes] = await Promise.allSettled([
+      window.LastFmAPI.fetchLastFmArtistInfo(artistName),
+      window.LastFmAPI.fetchLastFmArtistSimilar(artistName, 6),
+      window.LastFmAPI.fetchLastFmArtistTopAlbums(artistName, 6),
+    ])
+
+    const artistInfo =
+      artistInfoRes.status === "fulfilled" ? artistInfoRes.value.artist : null
+    const similarArtists =
+      similarRes.status === "fulfilled"
+        ? similarRes.value?.similarartists?.artist || []
+        : []
+    const topAlbums =
+      topAlbumsRes.status === "fulfilled"
+        ? topAlbumsRes.value?.topalbums?.album || []
+        : []
+
+    if (artistInfo && monthlyListenersElement) {
+      const listeners = Number(artistInfo?.stats?.listeners || 0)
+      if (listeners > 0) {
+        monthlyListenersElement.textContent = `${formatNumber(
+          listeners,
+        )} ascoltatori mensili`
+      }
+    }
+
+    renderArtistLastFmExtra(artistInfo, similarArtists, topAlbums)
+  } catch (error) {
+    console.error("Last.fm artist error:", error)
+  }
 }
 
 const renderSongsList = (songs) => {
@@ -287,7 +444,11 @@ const renderSongsList = (songs) => {
         </div>
 
         <img
-          src="${song.album.cover_small || song.album.cover_medium || song.album.cover}"
+          src="${
+            song.album?.cover_small ||
+            song.album?.cover_medium ||
+            song.album?.cover
+          }"
           class="rounded me-3"
           style="width: 40px; height: 40px; object-fit: cover"
           alt="${song.title}"
@@ -295,13 +456,15 @@ const renderSongsList = (songs) => {
 
         <div class="text-truncate">
           <p class="mb-0 text-white fw-bold text-truncate">${song.title}</p>
-          <small class="text-secondary">${song.artist.name}</small>
+          <small class="text-secondary">${song.artist?.name || ""}</small>
         </div>
       </div>
 
       <div class="d-flex align-items-center text-secondary ms-3">
         <div class="d-none d-md-block me-4">${formatNumber(song.rank)}</div>
-        <div style="width: 50px; text-align: right">${formatDuration(song.duration)}</div>
+        <div style="width: 50px; text-align: right">${formatDuration(
+          song.duration,
+        )}</div>
       </div>
     `
 
@@ -355,14 +518,14 @@ const renderRightSidebar = (artistInfo, songs) => {
   }
 
   if (rightSidebarWriter) {
-    rightSidebarWriter.textContent = firstSong.artist.name || "—"
+    rightSidebarWriter.textContent = firstSong.artist?.name || "—"
   }
 
   if (rightSidebarNextImg) {
     rightSidebarNextImg.src =
-      secondSong.album.cover_small ||
-      secondSong.album.cover_medium ||
-      secondSong.album.cover
+      secondSong.album?.cover_small ||
+      secondSong.album?.cover_medium ||
+      secondSong.album?.cover
     rightSidebarNextImg.alt = secondSong.title || "Next track"
   }
 
@@ -372,7 +535,7 @@ const renderRightSidebar = (artistInfo, songs) => {
 
   if (rightSidebarNextArtist) {
     rightSidebarNextArtist.textContent =
-      secondSong.artist.name || "Nessun artista"
+      secondSong.artist?.name || "Nessun artista"
   }
 }
 
@@ -469,6 +632,7 @@ const renderArtistProfile = async (artist) => {
     renderCenterArtistInfo(artistInfo, firstSong)
     renderSongsList(uniqueSongs)
     renderRightSidebar(artistInfo, uniqueSongs)
+    await enrichArtistWithLastFm(artistInfo.name)
   } catch (error) {
     console.error(error)
     renderArtistError()

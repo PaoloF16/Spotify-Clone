@@ -15,7 +15,13 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css"
     />
     <link rel="stylesheet" href="./assets/css/audioplayer.css" />
+
     <style>
+      .flex-grow-1.overflow-y-auto.custom-scroll.rounded-3.bg-black {
+        background: #152331;
+        background: -webkit-linear-gradient(to top, #000000, #152331);
+        background: linear-gradient(to top, #000000, #152331);
+      }
       .carosello {
         overflow-x: scroll;
         overflow-y: hidden;
@@ -68,6 +74,257 @@
       }
       #artisti-scroll-row {
         scrollbar-width: none;
+      }
+      .carosello {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .carosello::-webkit-scrollbar {
+        display: none;
+      }
+      #artisti a:hover {
+        transform: scale(1.1);
+        z-index: 10;
+        transition: all 0.15s linear;
+      }
+      #footer-links a {
+        text-decoration: none;
+        color: gray;
+      }
+      #footer-links a:hover {
+        color: white;
+      }
+      #main-sidebar {
+        width: 350px;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+      }
+      #main-sidebar.closed {
+        width: 85px;
+      }
+      .hide-on-closed {
+        display: block;
+      }
+      #main-sidebar.closed .hide-on-closed {
+        display: none !important;
+      }
+      #main-sidebar.closed .sidebar-header-content {
+        justify-content: center !important;
+      }
+      #main-sidebar.closed .sidebar-header-content i {
+        margin-right: 0 !important;
+      }
+      .custom-scroll::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      #artisti-scroll-row::-webkit-scrollbar {
+        display: none;
+      }
+      #artisti-scroll-row {
+        scrollbar-width: none;
+      }
+      /* ===== SMALL CARDS PRO ===== */
+      .spotify-small-card {
+        position: relative;
+        min-height: 82px;
+        border-radius: 10px;
+        overflow: hidden;
+        text-decoration: none;
+        display: block;
+        background: linear-gradient(
+          90deg,
+          rgba(70, 70, 70, 0.55) 0%,
+          rgba(35, 35, 35, 0.95) 100%
+        );
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          filter 0.22s ease,
+          background 0.35s ease;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+          0 4px 14px rgba(0, 0, 0, 0.18);
+        isolation: isolate;
+      }
+
+      .spotify-small-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.08) 0%,
+          rgba(255, 255, 255, 0.02) 35%,
+          rgba(0, 0, 0, 0.18) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .spotify-small-card::after {
+        content: "";
+        position: absolute;
+        inset: auto -10% -65% auto;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.14) 0%,
+          rgba(255, 255, 255, 0.03) 35%,
+          transparent 70%
+        );
+        z-index: 1;
+        pointer-events: none;
+        transform: scale(0.95);
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+        opacity: 0.7;
+      }
+
+      .spotify-small-card:hover {
+        transform: translateY(-2px) scale(1.018);
+        box-shadow:
+          0 12px 28px rgba(0, 0, 0, 0.34),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        filter: brightness(1.05);
+      }
+
+      .spotify-small-card:hover::after {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+
+      .spotify-small-card-inner {
+        position: relative;
+        z-index: 2;
+      }
+
+      .spotify-small-card-cover {
+        width: 82px;
+        min-width: 82px;
+        height: 82px;
+        object-fit: cover;
+        display: block;
+        box-shadow: 0 0 18px rgba(0, 0, 0, 0.22);
+      }
+
+      .spotify-small-card-text {
+        min-width: 0;
+      }
+
+      .spotify-small-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #fff;
+        margin: 0 0 4px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-small-card-artist {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.74);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-small-card-play {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 50%;
+        border: none;
+        background: #1ed760;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+          0 8px 18px rgba(30, 215, 96, 0.28),
+          0 0 16px rgba(30, 215, 96, 0.18);
+        opacity: 0;
+        transform: translateY(10px) scale(0.96);
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease,
+          box-shadow 0.22s ease;
+        margin-right: 14px;
+        pointer-events: none;
+      }
+
+      .spotify-small-card:hover .spotify-small-card-play {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .spotify-small-card-play:hover {
+        box-shadow:
+          0 10px 24px rgba(30, 215, 96, 0.35),
+          0 0 18px rgba(30, 215, 96, 0.22);
+      }
+
+      .spotify-small-card-play i {
+        font-size: 1.1rem;
+        margin-left: 2px;
+      }
+
+      @media (max-width: 991.98px) {
+        .spotify-small-card-cover {
+          width: 76px;
+          min-width: 76px;
+          height: 76px;
+        }
+
+        .spotify-small-card-play {
+          width: 42px;
+          height: 42px;
+          min-width: 42px;
+          margin-right: 10px;
+        }
+
+        .spotify-small-card-title {
+          font-size: 0.95rem;
+        }
+
+        .spotify-small-card-artist {
+          font-size: 0.82rem;
+        }
+      }
+
+      @media (max-width: 575.98px) {
+        .spotify-small-card {
+          min-height: 72px;
+          border-radius: 8px;
+        }
+
+        .spotify-small-card-cover {
+          width: 72px;
+          min-width: 72px;
+          height: 72px;
+        }
+
+        .spotify-small-card-title {
+          font-size: 0.9rem;
+        }
+
+        .spotify-small-card-artist {
+          font-size: 0.78rem;
+        }
+
+        .spotify-small-card-play {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -132,7 +389,7 @@
                     <ul id="listaData"></ul>
                   </div>
                 </div>
-                <button type="button" class="btn">
+                <button type="button" class="btn" id="open-browse-btn">
                   <i class="bi bi-archive text-light"></i>
                 </button>
               </form>
@@ -185,7 +442,7 @@
       id="big-container"
     >
       <!-- SIDEBAR -->
-      <aside id="main-sidebar" class="h-100 flex-shrink-0">
+      <aside id="main-sidebar" class="h-100 flex-shrink-0 closed">
         <div
           class="rounded-3 d-flex flex-column h-100 overflow-hidden"
           style="background-color: #121212"
@@ -226,6 +483,7 @@
               <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
               <button
                 class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+                id="open-podcast-browse-btn"
               >
                 Sfoglia i podcast
               </button>
@@ -435,8 +693,11 @@
       </div>
     </div>
 
-    <div id="generi" class="d-none">
-      <div class="container-fluid">
+    <div
+      id="generi"
+      class="d-none flex-grow-1 overflow-y-auto custom-scroll rounded-3 bg-black p-4"
+    >
+      <div id="browse-view-content" class="container-fluid">
         <div
           class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 gy-4"
           id="generi-wrapper"
@@ -526,8 +787,9 @@
         }
       });
     </script>
+    <script src="./js/last-fm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
     <script src="./js/main.js"></script>
-    <script src="./js/audio-player.js"></script>
-    <script src="./scripts/playlist.js"></script>
+    <script src="./js/browse.js"></script>
   </body>
 </html>
