@@ -132,7 +132,7 @@
                     <ul id="listaData"></ul>
                   </div>
                 </div>
-                <button type="button" class="btn">
+                <button type="button" class="btn" id="open-browse-btn">
                   <i class="bi bi-archive text-light"></i>
                 </button>
               </form>
@@ -225,6 +225,7 @@
               <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
               <button
                 class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+                id="open-podcast-browse-btn"
               >
                 Sfoglia i podcast
               </button>
@@ -413,8 +414,11 @@
       </div>
     </div>
 
-    <div id="generi" class="d-none">
-      <div class="container-fluid">
+    <div
+      id="generi"
+      class="d-none flex-grow-1 overflow-y-auto custom-scroll rounded-3 bg-black p-4"
+    >
+      <div id="browse-view-content" class="container-fluid">
         <div
           class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 gy-4"
           id="generi-wrapper"
@@ -495,18 +499,17 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
+            mainSidebar.classList.toggle("closed")
+          })
         }
-      });
+      })
     </script>
     <script src="./js/last-fm.js"></script>
     <script src="./js/main.js"></script>
-    <script src="./js/audio-player.js"></script>
-    <script src="./scripts/playlist.js"></script>
+    <script src="./js/browse.js"></script>
   </body>
 </html>
