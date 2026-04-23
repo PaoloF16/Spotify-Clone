@@ -20,7 +20,15 @@
         background-color: black;
         color: white;
       }
-
+      main {
+        background: #152331; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to top,
+          #000000,
+          #152331
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to top, #000000, #152331);
+      }
       label {
         font-size: 20px;
       }
@@ -203,7 +211,7 @@
       class="container-fluid p-2 mt-4 h-100 bg-black d-flex align-items-start justify-content-between custom-scroll"
       id="main-content"
     >
-      <aside id="main-sidebar" class="h-100">
+      <aside id="main-sidebar" class="h-100 closed">
         <div
           class="rounded-3 d-flex flex-column h-100 overflow-hidden"
           style="background-color: #121212"
@@ -226,9 +234,7 @@
             id="playlists"
             class="flex-grow-1 overflow-y-auto px-3 custom-scroll"
           >
-            <div
-              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
-            >
+            <div class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2">
               <p class="fw-bold text-white mb-1">Crea la tua prima playlist</p>
               <p class="text-light small mb-3 opacity-75">
                 È facile, ti aiuteremo
