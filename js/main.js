@@ -952,7 +952,7 @@ const fetchSimilarArtistName = async (seedArtist) => {
 
   const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${encodeURIComponent(seedArtist)}&api_key=${API_KEY}&format=json&limit=10`;
   
-  const response  = await fetch("https://api.allorigins.win/raw?url=" + url);
+  const response  = await fetch(url);
   if (!response.ok) throw new Error(`TasteDive failed: ${response.status}`);
  
   const data    = await response.json();
