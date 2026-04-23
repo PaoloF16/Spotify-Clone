@@ -405,6 +405,15 @@ const popolaPiccoleCards = (array, wrapper) => {
 
   const colorThief = typeof ColorThief !== "undefined" ? new ColorThief() : null
 
+  const fallbackPalette = [
+    [180, 60, 60],
+    [60, 95, 150],
+    [60, 130, 90],
+    [140, 100, 50],
+    [110, 70, 150],
+    [90, 90, 90],
+  ]
+
   array.forEach((album, i) => {
     if (wrapper.querySelectorAll(".col").length >= 12) return
 
@@ -412,27 +421,26 @@ const popolaPiccoleCards = (array, wrapper) => {
       <div class="col">
         <a
           href="./album-page.html?albumId=${album.id}"
-          class="spotify-small-card"
-          id="card-${i}"
-          style="background: linear-gradient(90deg, rgba(70,70,70,0.55) 0%, rgba(35,35,35,0.95) 100%);"
+          class="spotify-home-card"
+          id="home-card-${i}"
+          style="background: linear-gradient(90deg, rgba(60,60,60,0.55), rgba(35,35,35,0.95));"
         >
-          <div class="spotify-small-card-inner d-flex align-items-center justify-content-between">
+          <div class="spotify-home-card-inner d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
               <img
                 src="${album.cover_small}"
                 alt="${album.titolo}"
-                class="spotify-small-card-cover"
+                class="spotify-home-card-cover"
                 crossorigin="anonymous"
-                id="img-${i}"
+                id="home-card-img-${i}"
               />
-
-              <div class="spotify-small-card-text px-3 py-2">
-                <p class="spotify-small-card-title">${album.titolo}</p>
-                <p class="spotify-small-card-artist">${album.artista}</p>
+              <div class="px-3 py-2 overflow-hidden">
+                <p class="spotify-home-card-title">${album.titolo}</p>
+                <p class="spotify-home-card-artist">${album.artista}</p>
               </div>
             </div>
 
-            <div class="spotify-small-card-play">
+            <div class="spotify-home-card-play">
               <i class="bi bi-play-fill"></i>
             </div>
           </div>
@@ -441,60 +449,42 @@ const popolaPiccoleCards = (array, wrapper) => {
     `
   })
 
-  const fallbackPalette = [
-    [110, 65, 65],
-    [65, 92, 124],
-    [72, 108, 76],
-    [120, 92, 60],
-    [92, 72, 128],
-    [95, 95, 95],
-  ]
-
-  const applyCardTheme = (card, rgb) => {
+  const applyTheme = (card, rgb) => {
     if (!card || !rgb) return
 
     const [r, g, b] = rgb
-    const strong = `rgba(${r}, ${g}, ${b}, 0.72)`
-    const soft = `rgba(${r}, ${g}, ${b}, 0.42)`
+    const strong = `rgba(${r}, ${g}, ${b}, 0.78)`
+    const soft = `rgba(${r}, ${g}, ${b}, 0.38)`
 
     card.style.background = `
       linear-gradient(
         90deg,
         ${strong} 0%,
-        ${soft} 38%,
+        ${soft} 32%,
         rgba(24,24,24,0.96) 100%
       )
-    `
-
-    card.style.boxShadow = `
-      0 10px 24px rgba(${r}, ${g}, ${b}, 0.12),
-      inset 0 0 0 1px rgba(255,255,255,0.03)
     `
   }
 
   setTimeout(() => {
     array.forEach((album, i) => {
-      const img = document.getElementById(`img-${i}`)
-      const card = document.getElementById(`card-${i}`)
+      const img = document.getElementById(`home-card-img-${i}`)
+      const card = document.getElementById(`home-card-${i}`)
       if (!img || !card) return
 
-      const setFallback = () => {
-        const color = fallbackPalette[i % fallbackPalette.length]
-        applyCardTheme(card, color)
-      }
+      const fallback = fallbackPalette[i % fallbackPalette.length]
 
       const applyColor = () => {
         try {
           if (!colorThief) {
-            setFallback()
+            applyTheme(card, fallback)
             return
           }
 
           const color = colorThief.getColor(img)
-          applyCardTheme(card, color)
+          applyTheme(card, color)
         } catch (error) {
-          console.log("ColorThief fallback", error)
-          setFallback()
+          applyTheme(card, fallback)
         }
       }
 
@@ -502,7 +492,9 @@ const popolaPiccoleCards = (array, wrapper) => {
         applyColor()
       } else {
         img.addEventListener("load", applyColor, { once: true })
-        img.addEventListener("error", setFallback, { once: true })
+        img.addEventListener("error", () => applyTheme(card, fallback), {
+          once: true,
+        })
       }
     })
   }, 250)
@@ -906,245 +898,3 @@ generi.forEach((card) => {
         </div>
         `
 })
-const inputSearch = document.getElementById("inputSearch")
-const generiPage = document.getElementById("generi")
-const audioPlayer = document.getElementById("audio-player")
-const main = document.getElementById("big-container")
-
-inputSearch.addEventListener("focus", function () {
-  generiPage.classList.remove("d-none")
-  audioPlayer.classList.add("d-none")
-  main.classList.add("d-none")
-})
-inputSearch.addEventListener("blur", () => {
-  generiPage.classList.add("d-none")
-  audioPlayer.classList.remove("d-none")
-  main.classList.remove("d-none")
-})
-
-
-
-
-// ================================================================================
-// VIDEO CARDS TANCREDI --------------------------------------------------------
-// ================================================================================
-
-
-const videoCardsDiv = document.getElementById("video-cards-div") // container-div for the cards
-
-const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)]
-
-
-const pickRandomArtistsGroup = (n) => {
-  const copy = [...artisti];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy.slice(0, n);
-};
-
-
-  // TasteDive API fetch
-const fetchSimilarArtistName = async (seedArtist) => {
-  const API_KEY = "7faf963f0cb81d6e1ad6687dd2a61607";
-
-  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${encodeURIComponent(seedArtist)}&api_key=${API_KEY}&format=json&limit=10`;
-
-  console.log("Fetching:", seedArtist);
-
-  const response = await fetch(url);
-
-  console.log("Status:", response.status);
-
-  const data = await response.json();
-  console.log("FULL DATA:", data);
-
-  const results = data?.similarartists?.artist;
-  console.log("RESULTS:", results);
-
-  if (!results || results.length === 0) {
-    throw new Error(`Last.fm: no similar artists for ${seedArtist}`);
-  }
-
-  return randomItem(results).name;
-};
-
-
-
-  // TheAudioDB API Metadata fetch
-const fetchArtistMetadata = async (artistName) => {
-
-  const url = `https://www.theaudiodb.com/api/v1/json/123/search.php?s=${encodeURIComponent(artistName)}`;
-  const response  = await fetch(url);
-  if (!response.ok) throw new Error(`TheAudioDB search failed: ${response.status}`);
- 
-  const data   = await response.json();
-  const artist = data?.artists?.[0];
- 
-  if (!artist) throw new Error(`TheAudioDB: no entry for "${artistName}"`);
- 
-  return {
-    idArtist: artist.idArtist,
-    name:     artist.strArtist,
-    genre:    artist.strGenre || "",
-  };
-
-};
-  
-
-  // get a valid youtube video id from a youtube url
-const getYouTubeId = (url) => {
-  if (!url) return null;
-  const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
-  return match ? match[1] : null;
-};
-
-
-
-// TheAudioDB API Video fetch + extract only id with getYouTubeId
-const fetchArtistVideo = async (artistId) => {
-
-  const url = `https://www.theaudiodb.com/api/v1/json/123/mvid.php?i=${artistId}`;
-  const response  = await fetch(url);
-  if (!response.ok) throw new Error(`TheAudioDB mvid failed: ${response.status}`);
- 
-  const data   = await response.json();
-  const videos = data?.mvids;
- 
-  if (!videos || videos.length === 0) {
-    throw new Error(`No videos found for artist ID ${artistId}`);
-  }
- 
-  for (const vid of videos) {
-    const id = getYouTubeId(vid.strMusicVid);
-    if (id) return id;
-  }
- 
-  throw new Error(`No valid YouTube URL found for artist ID ${artistId}`);
-
-};
-
-
-
-const buildCardData = async (seedArtist) => {
-  const similarName  = await fetchSimilarArtistName(seedArtist);
-  const similarMeta  = await fetchArtistMetadata(similarName);
-  const videoId      = await fetchArtistVideo(similarMeta.idArtist);
- 
-  return {
-    seedArtist,
-    similarArtist: similarMeta,
-    videoId,
-  };
-};
-
-
-
-const buildCard = ({ seedArtist, similarArtist, videoId }) => {
-
-  const card = document.createElement("div");
-  card.classList.add("artist-video-card", "col-12", "col-sm-6", "col-lg-3");
- 
-  card.innerHTML = `
-    <div class="card-video-wrapper">
-      <iframe
-        class="card-video-iframe"
-        src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        loading="lazy"
-      ></iframe>
-    </div>
- 
-    <div class="card-gradient-overlay"></div>
- 
-    <div class="card-content">
-      <div class="card-artist-info">
-        <span class="card-more-like">More like ${seedArtist}</span>
-        <h3 class="card-artist-name">${similarArtist.name}</h3>
-        ${similarArtist.genre ? `<span class="card-genre">${similarArtist.genre}</span>` : ""}
-      </div>
-      <button class="card-play-btn" aria-label="Play ${similarArtist.name}">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-        Play
-      </button>
-    </div>`;
- 
-  return card;
-};
-
-
-// build a skeleton placeholder shown while the real card are loading 
-const buildSkeleton = () => {
-  const el = document.createElement("div");
-  el.classList.add("artist-video-card", "card-skeleton", "col-12", "col-sm-6", "col-lg-3");
-  el.innerHTML = `
-    <div class="skeleton-shimmer"></div>
-    <div class="card-gradient-overlay"></div>
-    <div class="card-content">
-      <div class="card-artist-info">
-        <div class="skeleton-line label"></div>
-        <div class="skeleton-line name"></div>
-        <div class="skeleton-line genre"></div>
-      </div>
-      <div class="skeleton-btn"></div>
-    </div>`;
-  return el;
-};
-
-
-
-// main initialization function for the cards
-const initArtistCards = async (containerId = "video-cards-grid") => {
- 
-  const grid = document.getElementById(containerId);
-  if (!grid) {
-    console.error(`initArtistCards: #${containerId} not found.`);
-    return;
-  }
- 
-  const seeds = pickRandomArtistsGroup(8)
- 
-  // Render 8 skeletons immediately by mapping from the seeds — layout is stable before data arrives
-
-  const skeletons = seeds.map(() => {
-    const sk = buildSkeleton();
-    grid.appendChild(sk);
-    return sk;
-  });
- 
-  // build all 8 cards in parallel
-  // results is an array of objects resulting from mapping every seedArtist -> {seedArtist, similarArtist, videoId}
-  const results = await Promise.allSettled(seeds.map(seed => buildCardData(seed)));
- 
-  // Swap each skeleton for its card, or silently drop failures
-  results.forEach((result, i) => {
-    const skeleton = skeletons[i];
- 
-    if (result.status === "fulfilled") {
-      const card = buildCard(result.value);
- 
-      card.style.opacity = "0";
-      grid.replaceChild(card, skeleton);
-      requestAnimationFrame(() => {
-        card.style.transition = "opacity 0.5s ease";
-        card.style.opacity    = "1";
-      });
-    } else {
-      console.warn("Card dropped:", result.reason?.message);
-      skeleton.remove();
-    }
-  });
- 
-};
- 
- 
-// INIT 
- 
-initArtistCards("video-cards-grid");
-
-// ================================================================================
-// ================================================================================

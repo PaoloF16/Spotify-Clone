@@ -22,112 +22,75 @@
         background: -webkit-linear-gradient(to top, #000000, #152331);
         background: linear-gradient(to top, #000000, #152331);
       }
+
       .carosello {
         overflow-x: scroll;
         overflow-y: hidden;
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
+
       .carosello::-webkit-scrollbar {
         display: none;
       }
+
       #artisti a:hover {
         transform: scale(1.1);
         z-index: 10;
         transition: all 0.15s linear;
       }
+
       #footer-links a {
         text-decoration: none;
         color: gray;
       }
+
       #footer-links a:hover {
         color: white;
       }
+
       #main-sidebar {
         width: 350px;
         transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         flex-shrink: 0;
       }
+
       #main-sidebar.closed {
         width: 85px;
       }
+
       .hide-on-closed {
         display: block;
       }
+
       #main-sidebar.closed .hide-on-closed {
         display: none !important;
       }
+
       #main-sidebar.closed .sidebar-header-content {
         justify-content: center !important;
       }
+
       #main-sidebar.closed .sidebar-header-content i {
         margin-right: 0 !important;
       }
+
       .custom-scroll::-webkit-scrollbar {
         width: 6px;
       }
+
       .custom-scroll::-webkit-scrollbar-thumb {
         background: rgba(255, 255, 255, 0.1);
       }
+
       #artisti-scroll-row::-webkit-scrollbar {
         display: none;
       }
+
       #artisti-scroll-row {
         scrollbar-width: none;
       }
-      .carosello {
-        overflow-x: scroll;
-        overflow-y: hidden;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-      .carosello::-webkit-scrollbar {
-        display: none;
-      }
-      #artisti a:hover {
-        transform: scale(1.1);
-        z-index: 10;
-        transition: all 0.15s linear;
-      }
-      #footer-links a {
-        text-decoration: none;
-        color: gray;
-      }
-      #footer-links a:hover {
-        color: white;
-      }
-      #main-sidebar {
-        width: 350px;
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        flex-shrink: 0;
-      }
-      #main-sidebar.closed {
-        width: 85px;
-      }
-      .hide-on-closed {
-        display: block;
-      }
-      #main-sidebar.closed .hide-on-closed {
-        display: none !important;
-      }
-      #main-sidebar.closed .sidebar-header-content {
-        justify-content: center !important;
-      }
-      #main-sidebar.closed .sidebar-header-content i {
-        margin-right: 0 !important;
-      }
-      .custom-scroll::-webkit-scrollbar {
-        width: 6px;
-      }
-      .custom-scroll::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.1);
-      }
-      #artisti-scroll-row::-webkit-scrollbar {
-        display: none;
-      }
-      #artisti-scroll-row {
-        scrollbar-width: none;
-      }
+
       /* ===== SMALL CARDS PRO ===== */
       .spotify-small-card {
         position: relative;
@@ -279,6 +242,254 @@
         margin-left: 2px;
       }
 
+      /* ===== SMALL CARDS HOME - SPOTIFY ===== */
+      .spotify-home-card {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        border-radius: 8px;
+        text-decoration: none;
+        min-height: 80px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.03)
+        );
+        transition:
+          transform 0.2s ease,
+          background-color 0.25s ease,
+          box-shadow 0.25s ease;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      }
+
+      .spotify-home-card:hover {
+        transform: scale(1.015);
+        box-shadow:
+          0 8px 20px rgba(0, 0, 0, 0.28),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      }
+
+      .spotify-home-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 40%,
+          rgba(0, 0, 0, 0.14) 100%
+        );
+        pointer-events: none;
+      }
+
+      .spotify-home-card-inner {
+        position: relative;
+        z-index: 2;
+      }
+
+      .spotify-home-card-cover {
+        width: 80px;
+        min-width: 80px;
+        height: 80px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .spotify-home-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #fff;
+        margin: 0 0 4px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-home-card-artist {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spotify-home-card-play {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 50%;
+        background: #1ed760;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 14px;
+        box-shadow: 0 8px 18px rgba(30, 215, 96, 0.28);
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease;
+      }
+
+      .spotify-home-card:hover .spotify-home-card-play {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .spotify-home-card-play i {
+        font-size: 1.1rem;
+        margin-left: 2px;
+      }
+
+      /* ===== GENRES / BROWSE ===== */
+      .browse-section-title {
+        font-size: 2.1rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 1.5rem;
+      }
+
+      .spotify-genre-card {
+        position: relative;
+        display: block;
+        height: 180px;
+        border-radius: 12px;
+        overflow: hidden;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.25s ease,
+          filter 0.25s ease;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+      }
+
+      .spotify-genre-card:hover {
+        transform: scale(1.02);
+        filter: brightness(1.05);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.3);
+      }
+
+      .spotify-genre-card h3 {
+        position: relative;
+        z-index: 3;
+        font-size: 1.95rem;
+        font-weight: 800;
+        padding: 16px;
+        color: #fff;
+        line-height: 1.1;
+        margin: 0;
+        max-width: 65%;
+      }
+
+      .spotify-genre-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04) 0%,
+          rgba(0, 0, 0, 0.08) 100%
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .spotify-genre-card-artwork {
+        position: absolute;
+        right: 12px;
+        bottom: 10px;
+        width: 100px;
+        height: 100px;
+        z-index: 2;
+        transform: rotate(24deg);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow:
+          0 16px 28px rgba(0, 0, 0, 0.34),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .spotify-genre-card-artwork img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: saturate(1.08) contrast(1.04);
+      }
+
+      /* ===== PODCAST BROWSE CARDS ===== */
+      .spotify-podcast-card {
+        position: relative;
+        display: block;
+        min-height: 190px;
+        border-radius: 14px;
+        overflow: hidden;
+        text-decoration: none;
+        padding: 22px;
+        background: linear-gradient(135deg, #222, #111);
+        cursor: pointer;
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          filter 0.22s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+      }
+
+      .spotify-podcast-card:hover {
+        transform: translateY(-4px);
+        filter: brightness(1.06);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.32);
+      }
+
+      .spotify-podcast-card-title {
+        position: relative;
+        z-index: 2;
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1.05;
+        color: #fff;
+        margin-bottom: 10px;
+        max-width: 70%;
+      }
+
+      .spotify-podcast-card-text {
+        position: relative;
+        z-index: 2;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.84);
+        max-width: 68%;
+        margin-bottom: 18px;
+      }
+
+      .spotify-podcast-card-button {
+        position: relative;
+        z-index: 2;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-weight: 700;
+        background: #fff;
+        color: #000;
+        width: fit-content;
+      }
+
+      .spotify-podcast-card img {
+        position: absolute;
+        right: -8px;
+        bottom: -8px;
+        width: 160px;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 12px;
+        transform: rotate(-12deg);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+      }
+
       @media (max-width: 991.98px) {
         .spotify-small-card-cover {
           width: 76px;
@@ -299,6 +510,42 @@
 
         .spotify-small-card-artist {
           font-size: 0.82rem;
+        }
+
+        .spotify-home-card-cover {
+          width: 72px;
+          min-width: 72px;
+          height: 72px;
+        }
+
+        .spotify-home-card-play {
+          width: 42px;
+          height: 42px;
+          min-width: 42px;
+          margin-right: 10px;
+        }
+
+        .spotify-genre-card {
+          height: 155px;
+        }
+
+        .spotify-genre-card h3 {
+          font-size: 1.5rem;
+          max-width: 70%;
+        }
+
+        .spotify-genre-card-artwork {
+          width: 84px;
+          height: 84px;
+        }
+
+        .spotify-podcast-card {
+          min-height: 170px;
+        }
+
+        .spotify-podcast-card-title {
+          font-size: 1.6rem;
+          max-width: 65%;
         }
       }
 
@@ -322,8 +569,36 @@
           font-size: 0.78rem;
         }
 
-        .spotify-small-card-play {
+        .spotify-small-card-play,
+        .spotify-home-card-play {
           display: none;
+        }
+
+        .spotify-genre-card {
+          height: 135px;
+        }
+
+        .spotify-genre-card h3 {
+          font-size: 1.2rem;
+          max-width: 75%;
+        }
+
+        .spotify-genre-card-artwork {
+          width: 70px;
+          height: 70px;
+          right: 8px;
+          bottom: 8px;
+        }
+
+        .spotify-podcast-card-title,
+        .spotify-podcast-card-text {
+          max-width: 100%;
+        }
+
+        .spotify-podcast-card img {
+          width: 120px;
+          height: 120px;
+          opacity: 0.82;
         }
       }
     </style>
@@ -595,27 +870,6 @@
               class="d-flex gap-2 overflow-x-scroll py-3 ps-5"
             ></div>
           </section>
-
-          <!--------------------------------------------------------------->
-          <!---------------- VIDEO CARDS TANCREDI ------------------------->
-          <!--------------------------------------------------------------->
-
-          <section id="video-cards">
-            <div
-              id="video-cards-div"
-              class="container-fluid bg-black my-5 border-bottom border-secondary"
-              style="min-height: 400px"
-            >
-              <div id="video-cards-grid" class="row g-3 py-4">
-                <!-- cards injected here by JS -->
-              </div>
-            </div>
-          </section>
-
-          <!--------------------------------------------------------------->
-          <!---------------- VIDEO CARDS TANCREDI ------------------------->
-          <!--------------------------------------------------------------->
-
           <section
             id="footer-links"
             class="container-fluid d-flex flex-column gap-2 pt-2"
@@ -778,14 +1032,14 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
+        const mainSidebar = document.getElementById("main-sidebar")
+        const toggleMainBtn = document.getElementById("toggle-sidebar")
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
+            mainSidebar.classList.toggle("closed")
+          })
         }
-      });
+      })
     </script>
     <script src="./js/last-fm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
