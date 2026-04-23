@@ -15,6 +15,16 @@
     <link rel="stylesheet" href="./assets/css/audioplayer.css" />
 
     <style>
+      main {
+        background: #152331; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to top,
+          #000000,
+          #152331
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to top, #000000, #152331);
+      }
+
       body,
       html {
         height: 100%;
@@ -271,11 +281,12 @@
           </div>
         </div>
       </nav>
+      <!-- FINE NAVBAR -->
     </header>
 
     <div class="container-fluid p-2 h-100">
       <div class="d-flex h-100 gap-2">
-        <aside id="main-sidebar" class="h-100">
+        <aside id="main-sidebar" class="h-100 closed">
           <div
             class="rounded-3 d-flex flex-column h-100 overflow-hidden"
             style="background-color: #121212"
@@ -524,7 +535,7 @@
           <i class="bi bi-layout-sidebar-reverse fs-4"></i>
         </button>
 
-        <aside id="right-sidebar" class="h-100">
+        <aside id="right-sidebar" class="h-100 closed">
           <div
             class="rounded-3 d-flex flex-column h-100 overflow-hidden"
             style="background-color: #000000"

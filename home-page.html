@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="./assets/css/audioplayer.css" />
 
     <style>
+      .flex-grow-1.overflow-y-auto.custom-scroll.rounded-3.bg-black {
+        background: #152331;
+        background: -webkit-linear-gradient(to top, #000000, #152331);
+        background: linear-gradient(to top, #000000, #152331);
+      }
       .carosello {
         overflow-x: scroll;
         overflow-y: hidden;
@@ -437,7 +442,7 @@
       id="big-container"
     >
       <!-- SIDEBAR -->
-      <aside id="main-sidebar" class="h-100 flex-shrink-0">
+      <aside id="main-sidebar" class="h-100 flex-shrink-0 closed">
         <div
           class="rounded-3 d-flex flex-column h-100 overflow-hidden"
           style="background-color: #121212"
@@ -581,7 +586,7 @@
         </main>
 
         <!-- FOOTER -->
-        <footer class="px-3 bg-black">
+        <footer class="px-3">
           <section id="artisti" class="pb-5 border-bottom">
             <h2 class="ps-5">Segui</h2>
             <div
