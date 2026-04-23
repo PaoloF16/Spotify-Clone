@@ -10,75 +10,87 @@ const genreCards = [
     nome: "Pop",
     colore: "#e1339b",
     querySeeds: ["Taylor Swift", "Dua Lipa", "Ariana Grande"],
-    img: "https://i.scdn.co/image/ab67706f00000002ea13d8f3b2a0a8d3c46b8a2d",
   },
   {
     nome: "Rock",
     colore: "#1e3264",
     querySeeds: ["Queen", "Arctic Monkeys", "Linkin Park"],
-    img: "https://i.scdn.co/image/ab67706f00000002d13e53d3b9b0d6d39f7f4b6a",
   },
   {
     nome: "Hip Hop",
     colore: "#ba5d07",
     querySeeds: ["Drake", "Kendrick Lamar", "Travis Scott"],
-    img: "https://i.scdn.co/image/ab67706f00000002a7f53144c0db2f5f9e0d2b3f",
   },
   {
     nome: "Jazz",
     colore: "#9b59b6",
     querySeeds: ["Miles Davis", "John Coltrane", "Nina Simone"],
-    img: "https://i.scdn.co/image/ab67706f00000002c3f7df3f9a6d2f8bd5f7a6e8",
   },
   {
     nome: "Latin",
     colore: "#2774db",
     querySeeds: ["Bad Bunny", "Karol G", "J Balvin"],
-    img: "https://i.scdn.co/image/ab67706f00000002d6f89a9d8bdb74fd9f5c1581",
   },
   {
     nome: "Dance",
     colore: "#6c8a00",
     querySeeds: ["David Guetta", "Calvin Harris", "Avicii"],
-    img: "https://i.scdn.co/image/ab67706f0000000247f9f47d7bdb89b7f8d4d71c",
   },
   {
     nome: "Reggae",
     colore: "#1f8f4c",
     querySeeds: ["Bob Marley", "Sean Paul", "Shaggy"],
-    img: "https://i.scdn.co/image/ab67706f0000000254f1d45d33f7f7348a4f5c55",
   },
   {
     nome: "Indie",
     colore: "#555555",
     querySeeds: ["Tame Impala", "Phoebe Bridgers", "The Strokes"],
-    img: "https://i.scdn.co/image/ab67706f00000002427f4e6d0f4c0a2f6c2df31f",
   },
   {
     nome: "K-Pop",
     colore: "#6f52ed",
     querySeeds: ["BTS", "BLACKPINK", "JENNIE"],
-    img: "https://i.scdn.co/image/ab67706f00000002ddc1f8cf260f1fdb93f8b6d1",
   },
   {
     nome: "Classica",
     colore: "#4d829d",
     querySeeds: ["Mozart", "Beethoven", "Vivaldi"],
-    img: "https://i.scdn.co/image/ab67706f000000028e1c0b5f62a66f6efb66db77",
   },
   {
     nome: "Metal",
     colore: "#2f2f2f",
     querySeeds: ["Metallica", "Iron Maiden", "Slipknot"],
-    img: "https://i.scdn.co/image/ab67706f0000000224f4d1c54db8f2c3a4b2b8f3",
   },
   {
     nome: "R&B",
     colore: "#e91429",
     querySeeds: ["SZA", "Rihanna", "The Weeknd"],
-    img: "https://i.scdn.co/image/ab67706f000000021868b6d00fa0c2c8e85b2e54",
   },
 ]
+
+const createBrowseGenreArtwork = async (genre) => {
+  try {
+    if (!window.fetchSearchResults) {
+      return "https://via.placeholder.com/300x300?text=Music"
+    }
+
+    const seed = genre.querySeeds[0]
+    const results = await window.fetchSearchResults(seed)
+
+    if (results && results.length > 0) {
+      return (
+        results[0]?.album?.cover_medium ||
+        results[0]?.album?.cover_big ||
+        results[0]?.album?.cover ||
+        "https://via.placeholder.com/300x300?text=Music"
+      )
+    }
+  } catch (e) {
+    console.warn("Artwork fallback:", e)
+  }
+
+  return "https://via.placeholder.com/300x300?text=Music"
+}
 
 const showBrowseView = () => {
   if (!generiPage || !mainContainer || !audioPlayer) return
@@ -103,8 +115,8 @@ const bindBackButtons = () => {
     btn.addEventListener("click", renderGenreGrid)
   })
 
-  document.querySelectorAll(".back-podcast-btn").forEach((btn) => {
-    btn.addEventListener("click", renderPodcastBrowseHome)
+  document.querySelectorAll(".back-rankings-btn").forEach((btn) => {
+    btn.addEventListener("click", renderRankingsHome)
   })
 }
 
@@ -180,8 +192,29 @@ const buildTrackListHtml = (tracks, title, backClass = "back-home-btn") => {
   `
 }
 
-const renderGenreGrid = () => {
+const renderGenreGrid = async () => {
   if (!browseViewContent) return
+
+  const cardsHtmlArray = await Promise.all(
+    genreCards.map(async (genre, index) => {
+      const artwork = await createBrowseGenreArtwork(genre)
+
+      return `
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+          <div
+            class="spotify-genre-card"
+            data-genre-index="${index}"
+            style="background-color: ${genre.colore};"
+          >
+            <h3>${genre.nome}</h3>
+            <div class="spotify-genre-card-artwork">
+              <img src="${artwork}" alt="${genre.nome}" />
+            </div>
+          </div>
+        </div>
+      `
+    }),
+  )
 
   browseViewContent.innerHTML = `
     <div class="container-fluid">
@@ -193,22 +226,7 @@ const renderGenreGrid = () => {
       </div>
 
       <div class="row g-3">
-        ${genreCards
-          .map(
-            (genre, index) => `
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-              <div
-                class="spotify-genre-card"
-                data-genre-index="${index}"
-                style="background-color: ${genre.colore};"
-              >
-                <h3>${genre.nome}</h3>
-                <img src="${genre.img}" alt="${genre.nome}" />
-              </div>
-            </div>
-          `,
-          )
-          .join("")}
+        ${cardsHtmlArray.join("")}
       </div>
     </div>
   `
@@ -327,181 +345,61 @@ const renderGenrePage = async (genre) => {
   }
 }
 
-const renderTopPopularTracks = async () => {
-  if (!browseViewContent || !window.fetchSearchResults) return
-
-  browseViewContent.innerHTML = `
-    <div class="container-fluid">
-      <h1 class="text-white">Top 50 canciones populares</h1>
-      <p class="text-secondary">Caricamento...</p>
-    </div>
-  `
-
-  try {
-    const queries = ["top hits", "global hits", "popular music"]
-    const results = await Promise.all(
-      queries.map((query) => window.fetchSearchResults(query)),
-    )
-
-    const merged = results.flat()
-    const tracks = getUniqueTracks(
-      merged.sort((a, b) => (b.rank || 0) - (a.rank || 0)),
-    ).slice(0, 50)
-
-    browseViewContent.innerHTML = buildTrackListHtml(
-      tracks,
-      "Top 50 canciones populares",
-      "back-podcast-btn",
-    )
-
-    bindBackButtons()
-  } catch (error) {
-    console.error("renderTopPopularTracks error:", error)
-  }
-}
-
-const renderTracksOfDay = async () => {
-  if (!browseViewContent || !window.fetchSearchResults) return
-
-  browseViewContent.innerHTML = `
-    <div class="container-fluid">
-      <h1 class="text-white">20 canciones del día</h1>
-      <p class="text-secondary">Caricamento...</p>
-    </div>
-  `
-
-  try {
-    const queries = ["today hits", "new music", "viral songs"]
-    const results = await Promise.all(
-      queries.map((query) => window.fetchSearchResults(query)),
-    )
-
-    const merged = results.flat()
-    const tracks = getUniqueTracks(
-      merged.sort((a, b) => (b.rank || 0) - (a.rank || 0)),
-    ).slice(0, 20)
-
-    browseViewContent.innerHTML = buildTrackListHtml(
-      tracks,
-      "20 canciones del día",
-      "back-podcast-btn",
-    )
-
-    bindBackButtons()
-  } catch (error) {
-    console.error("renderTracksOfDay error:", error)
-  }
-}
-
-const renderBestOfYear = async () => {
-  if (!browseViewContent || !window.fetchSearchResults) return
-
-  const currentYear = new Date().getFullYear()
-
-  browseViewContent.innerHTML = `
-    <div class="container-fluid">
-      <h1 class="text-white">50 mejores del año ${currentYear}</h1>
-      <p class="text-secondary">Caricamento...</p>
-    </div>
-  `
-
-  try {
-    const queries = [
-      `${currentYear} best songs`,
-      `${currentYear} top hits`,
-      `${currentYear} popular songs`,
-    ]
-
-    const results = await Promise.all(
-      queries.map((query) => window.fetchSearchResults(query)),
-    )
-
-    const merged = results.flat()
-    const tracks = getUniqueTracks(
-      merged.sort((a, b) => (b.rank || 0) - (a.rank || 0)),
-    ).slice(0, 50)
-
-    browseViewContent.innerHTML = buildTrackListHtml(
-      tracks,
-      `50 mejores del año ${currentYear}`,
-      "back-podcast-btn",
-    )
-
-    bindBackButtons()
-  } catch (error) {
-    console.error("renderBestOfYear error:", error)
-  }
-}
-
-const podcastBrowseCards = [
+const rankingSections = [
   {
-    title: "Podcast in evidenza",
-    text: "Storie, interviste e nuovi punti di vista.",
-    button: "Scopri di più",
-    color: "linear-gradient(135deg, #3b225c, #1a132f)",
-    img: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=500&auto=format&fit=crop&q=60",
-    action: "popular",
+    id: "italy",
+    title: "Top del giorno - Italia",
+    text: "Le canzoni più forti del momento in Italia.",
+    button: "Apri classifica",
+    color: "linear-gradient(135deg, #1f7a3d, #10251d)",
+    queries: ["italy top hits", "italian hits", "top italy music"],
+    limit: 20,
   },
   {
-    title: "Podcast Originali",
-    text: "Solo su Spotify",
-    button: "Esplora",
-    color: "linear-gradient(135deg, #1d2d6b, #111827)",
-    img: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500&auto=format&fit=crop&q=60",
-    action: "day",
+    id: "europe",
+    title: "Top del giorno - Europa",
+    text: "I brani più ascoltati del giorno in Europa.",
+    button: "Apri classifica",
+    color: "linear-gradient(135deg, #1d4ed8, #172554)",
+    queries: ["europe top hits", "europe popular songs", "top european music"],
+    limit: 20,
   },
   {
-    title: "Parliamo di...",
-    text: "Temi, cultura e attualità",
-    button: "Ascolta",
-    color: "linear-gradient(135deg, #0b3d2e, #10251d)",
-    img: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=500&auto=format&fit=crop&q=60",
-    action: "year",
-  },
-  {
-    title: "True Crime",
-    text: "Misteri, indagini e storie vere",
-    button: "Esplora",
-    color: "linear-gradient(135deg, #5a1f2d, #241015)",
-    img: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&auto=format&fit=crop&q=60",
-    action: "popular",
-  },
-  {
-    title: "Comedy",
-    text: "Risate garantite, sempre",
-    button: "Scopri",
-    color: "linear-gradient(135deg, #8a4b2a, #2d1710)",
-    img: "https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=500&auto=format&fit=crop&q=60",
-    action: "day",
+    id: "global",
+    title: "Top mondiale",
+    text: "La selezione globale più ascoltata del momento.",
+    button: "Apri classifica",
+    color: "linear-gradient(135deg, #7c3aed, #2e1065)",
+    queries: ["global hits", "world top hits", "popular music worldwide"],
+    limit: 20,
   },
 ]
 
-const renderPodcastBrowseHome = () => {
+const renderRankingsHome = () => {
   if (!browseViewContent) return
 
   browseViewContent.innerHTML = `
     <div class="container-fluid">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="browse-section-title m-0">Sfoglia i podcast</h1>
+        <h1 class="browse-section-title m-0">Rankings</h1>
         <button class="btn btn-outline-light btn-sm rounded-pill back-home-btn">
           Torna alla home
         </button>
       </div>
 
       <div class="row g-4">
-        ${podcastBrowseCards
+        ${rankingSections
           .map(
-            (card, index) => `
+            (section, index) => `
             <div class="col-12 col-md-6 col-xl-4">
               <div
                 class="spotify-podcast-card"
-                id="podcast-card-${index}"
-                style="background: ${card.color};"
+                id="ranking-card-${index}"
+                style="background: ${section.color};"
               >
-                <div class="spotify-podcast-card-title">${card.title}</div>
-                <div class="spotify-podcast-card-text">${card.text}</div>
-                <div class="spotify-podcast-card-button">${card.button}</div>
-                <img src="${card.img}" alt="${card.title}" />
+                <div class="spotify-podcast-card-title">${section.title}</div>
+                <div class="spotify-podcast-card-text">${section.text}</div>
+                <div class="spotify-podcast-card-button">${section.button}</div>
               </div>
             </div>
           `,
@@ -511,32 +409,80 @@ const renderPodcastBrowseHome = () => {
     </div>
   `
 
-  podcastBrowseCards.forEach((card, index) => {
-    const el = document.getElementById(`podcast-card-${index}`)
+  rankingSections.forEach((section, index) => {
+    const el = document.getElementById(`ranking-card-${index}`)
     if (!el) return
 
     el.addEventListener("click", () => {
-      if (card.action === "popular") renderTopPopularTracks()
-      if (card.action === "day") renderTracksOfDay()
-      if (card.action === "year") renderBestOfYear()
+      renderRankingTracks(section)
     })
   })
 
   bindBackButtons()
 }
 
+const renderRankingTracks = async (section) => {
+  if (!browseViewContent || !window.fetchSearchResults) return
+
+  browseViewContent.innerHTML = `
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-white m-0">${section.title}</h1>
+        <button class="btn btn-outline-light btn-sm rounded-pill back-rankings-btn">
+          Torna ai rankings
+        </button>
+      </div>
+      <p class="text-secondary">Caricamento...</p>
+    </div>
+  `
+
+  try {
+    const results = await Promise.all(
+      section.queries.map((query) => window.fetchSearchResults(query)),
+    )
+
+    const merged = results.flat()
+
+    const tracks = getUniqueTracks(
+      merged.sort((a, b) => (b.rank || 0) - (a.rank || 0)),
+    ).slice(0, section.limit || 20)
+
+    browseViewContent.innerHTML = buildTrackListHtml(
+      tracks,
+      section.title,
+      "back-rankings-btn",
+    )
+
+    bindBackButtons()
+  } catch (error) {
+    console.error("renderRankingTracks error:", error)
+
+    browseViewContent.innerHTML = `
+      <div class="container-fluid">
+        <h1 class="text-white">${section.title}</h1>
+        <p class="text-danger">Errore nel caricamento della classifica.</p>
+        <button class="btn btn-outline-light btn-sm rounded-pill back-rankings-btn">
+          Torna ai rankings
+        </button>
+      </div>
+    `
+
+    bindBackButtons()
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (openBrowseBtn) {
-    openBrowseBtn.addEventListener("click", () => {
+    openBrowseBtn.addEventListener("click", async () => {
       showBrowseView()
-      renderGenreGrid()
+      await renderGenreGrid()
     })
   }
 
   if (openPodcastBrowseBtn) {
     openPodcastBrowseBtn.addEventListener("click", () => {
       showBrowseView()
-      renderPodcastBrowseHome()
+      renderRankingsHome()
     })
   }
 })
