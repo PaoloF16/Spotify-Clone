@@ -947,24 +947,29 @@ const pickRandomArtistsGroup = (n) => {
 
   // TasteDive API fetch
 const fetchSimilarArtistName = async (seedArtist) => {
-
   const API_KEY = "7faf963f0cb81d6e1ad6687dd2a61607";
 
   const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${encodeURIComponent(seedArtist)}&api_key=${API_KEY}&format=json&limit=10`;
-  
-  const response  = await fetch(url);
-  if (!response.ok) throw new Error(`TasteDive failed: ${response.status}`);
- 
-  const data    = await response.json();
-  const results = data?.Similar?.Results;
- 
+
+  console.log("Fetching:", seedArtist);
+
+  const response = await fetch(url);
+
+  console.log("Status:", response.status);
+
+  const data = await response.json();
+  console.log("FULL DATA:", data);
+
+  const results = data?.similarartists?.artist;
+  console.log("RESULTS:", results);
+
   if (!results || results.length === 0) {
-    throw new Error(`TasteDive: no similar artists found for "${seedArtist}"`);
+    throw new Error(`Last.fm: no similar artists for ${seedArtist}`);
   }
 
-  return randomItem(results).Name;
+  return randomItem(results).name;
+};
 
-}
 
 
   // TheAudioDB API Metadata fetch
