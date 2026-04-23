@@ -848,3 +848,225 @@ inputSearch.addEventListener("blur", () => {
   audioPlayer.classList.remove("d-none")
   main.classList.remove("d-none")
 })
+
+
+
+
+// ================================================================================
+// VIDEO CARDS TANCREDI --------------------------------------------------------
+// ================================================================================
+
+
+const videoCardsDiv = document.getElementById("video-cards-div") // container-div for the cards
+
+const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)]
+
+
+const pickRandomArtistsGroup = (n) => {
+  const copy = [...artisti];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, n);
+};
+
+
+  // TasteDive API fetch
+const fetchSimilarArtistName = async (seedArtist) => {
+
+  const API_KEY = "7faf963f0cb81d6e1ad6687dd2a61607";
+
+  const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${encodeURIComponent(seedArtist)}&api_key=${API_KEY}&format=json&limit=10`;
+  
+  const response  = await fetch("https://api.allorigins.win/raw?url=" + url);
+  if (!response.ok) throw new Error(`TasteDive failed: ${response.status}`);
+ 
+  const data    = await response.json();
+  const results = data?.Similar?.Results;
+ 
+  if (!results || results.length === 0) {
+    throw new Error(`TasteDive: no similar artists found for "${seedArtist}"`);
+  }
+
+  return randomItem(results).Name;
+
+}
+
+
+  // TheAudioDB API Metadata fetch
+const fetchArtistMetadata = async (artistName) => {
+
+  const url = `https://www.theaudiodb.com/api/v1/json/123/search.php?s=${encodeURIComponent(artistName)}`;
+  const response  = await fetch(url);
+  if (!response.ok) throw new Error(`TheAudioDB search failed: ${response.status}`);
+ 
+  const data   = await response.json();
+  const artist = data?.artists?.[0];
+ 
+  if (!artist) throw new Error(`TheAudioDB: no entry for "${artistName}"`);
+ 
+  return {
+    idArtist: artist.idArtist,
+    name:     artist.strArtist,
+    genre:    artist.strGenre || "",
+  };
+
+};
+  
+
+  // get a valid youtube video id from a youtube url
+const getYouTubeId = (url) => {
+  if (!url) return null;
+  const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
+  return match ? match[1] : null;
+};
+
+
+
+// TheAudioDB API Video fetch + extract only id with getYouTubeId
+const fetchArtistVideo = async (artistId) => {
+
+  const url = `https://www.theaudiodb.com/api/v1/json/123/mvid.php?i=${artistId}`;
+  const response  = await fetch(url);
+  if (!response.ok) throw new Error(`TheAudioDB mvid failed: ${response.status}`);
+ 
+  const data   = await response.json();
+  const videos = data?.mvids;
+ 
+  if (!videos || videos.length === 0) {
+    throw new Error(`No videos found for artist ID ${artistId}`);
+  }
+ 
+  for (const vid of videos) {
+    const id = getYouTubeId(vid.strMusicVid);
+    if (id) return id;
+  }
+ 
+  throw new Error(`No valid YouTube URL found for artist ID ${artistId}`);
+
+};
+
+
+
+const buildCardData = async (seedArtist) => {
+  const similarName  = await fetchSimilarArtistName(seedArtist);
+  const similarMeta  = await fetchArtistMetadata(similarName);
+  const videoId      = await fetchArtistVideo(similarMeta.idArtist);
+ 
+  return {
+    seedArtist,
+    similarArtist: similarMeta,
+    videoId,
+  };
+};
+
+
+
+const buildCard = ({ seedArtist, similarArtist, videoId }) => {
+
+  const card = document.createElement("div");
+  card.classList.add("artist-video-card", "col-12", "col-sm-6", "col-lg-3");
+ 
+  card.innerHTML = `
+    <div class="card-video-wrapper">
+      <iframe
+        class="card-video-iframe"
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        loading="lazy"
+      ></iframe>
+    </div>
+ 
+    <div class="card-gradient-overlay"></div>
+ 
+    <div class="card-content">
+      <div class="card-artist-info">
+        <span class="card-more-like">More like ${seedArtist}</span>
+        <h3 class="card-artist-name">${similarArtist.name}</h3>
+        ${similarArtist.genre ? `<span class="card-genre">${similarArtist.genre}</span>` : ""}
+      </div>
+      <button class="card-play-btn" aria-label="Play ${similarArtist.name}">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Play
+      </button>
+    </div>`;
+ 
+  return card;
+};
+
+
+// build a skeleton placeholder shown while the real card are loading 
+const buildSkeleton = () => {
+  const el = document.createElement("div");
+  el.classList.add("artist-video-card", "card-skeleton", "col-12", "col-sm-6", "col-lg-3");
+  el.innerHTML = `
+    <div class="skeleton-shimmer"></div>
+    <div class="card-gradient-overlay"></div>
+    <div class="card-content">
+      <div class="card-artist-info">
+        <div class="skeleton-line label"></div>
+        <div class="skeleton-line name"></div>
+        <div class="skeleton-line genre"></div>
+      </div>
+      <div class="skeleton-btn"></div>
+    </div>`;
+  return el;
+};
+
+
+
+// main initialization function for the cards
+const initArtistCards = async (containerId = "video-cards-grid") => {
+ 
+  const grid = document.getElementById(containerId);
+  if (!grid) {
+    console.error(`initArtistCards: #${containerId} not found.`);
+    return;
+  }
+ 
+  const seeds = pickRandomArtistsGroup(8)
+ 
+  // Render 8 skeletons immediately by mapping from the seeds — layout is stable before data arrives
+
+  const skeletons = seeds.map(() => {
+    const sk = buildSkeleton();
+    grid.appendChild(sk);
+    return sk;
+  });
+ 
+  // build all 8 cards in parallel
+  // results is an array of objects resulting from mapping every seedArtist -> {seedArtist, similarArtist, videoId}
+  const results = await Promise.allSettled(seeds.map(seed => buildCardData(seed)));
+ 
+  // Swap each skeleton for its card, or silently drop failures
+  results.forEach((result, i) => {
+    const skeleton = skeletons[i];
+ 
+    if (result.status === "fulfilled") {
+      const card = buildCard(result.value);
+ 
+      card.style.opacity = "0";
+      grid.replaceChild(card, skeleton);
+      requestAnimationFrame(() => {
+        card.style.transition = "opacity 0.5s ease";
+        card.style.opacity    = "1";
+      });
+    } else {
+      console.warn("Card dropped:", result.reason?.message);
+      skeleton.remove();
+    }
+  });
+ 
+};
+ 
+ 
+// INIT 
+ 
+initArtistCards("video-cards-grid");
+
+// ================================================================================
+// ================================================================================

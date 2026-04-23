@@ -458,6 +458,7 @@ const attachOriginalCarouselScroll = () => {
   })
 }
 
+
 const setFooterYear = () => {
   const dateElement = document.getElementById("date")
   if (!dateElement) return

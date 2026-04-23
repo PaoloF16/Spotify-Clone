@@ -17,9 +17,10 @@ const DEFAULT_ASIDE_CONTENT = `
 
 // ─── STATE ───────────────────────────────────────────────────
 
-// Load playlists and liked songs from localStorage if there are any
 let userPlaylists = [];
 let likedSongs = [];
+
+// Load playlists and liked songs from localStorage if there are any
 
 try {
   userPlaylists = JSON.parse(localStorage.getItem("userPlaylists")) || [];
