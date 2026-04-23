@@ -14,9 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const els = {
       player: document.getElementById("audio-player"),
-      cardSongs:
-        document.getElementById("cardSongs") ||
-        document.getElementById("lista-brani-popolari"),
+      cardSongs: null,
 
       controlBtns: document.getElementById("control-btns"),
       rangeBar: document.getElementById("range-bar"),
@@ -61,6 +59,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const playPauseIcon = buttons.playPause
       ? buttons.playPause.querySelector("i")
       : null
+
+    let observedSongsContainer = null
+    let songsObserver = null
+
+    function getSongsContainer() {
+      els.cardSongs =
+        document.getElementById("cardSongs") ||
+        document.getElementById("lista-brani-popolari") ||
+        document.getElementById("browse-ranking-list") ||
+        null
+
+      return els.cardSongs
+    }
 
     function formatTime(seconds) {
       if (!Number.isFinite(seconds) || seconds < 0) return "0:00"
@@ -135,16 +146,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function rebuildQueueFromDOM() {
-      if (!els.cardSongs) {
+      const container = getSongsContainer()
+
+      if (!container) {
         state.queue = []
         state.currentIndex = -1
         updateNextPreview()
         return
       }
 
-      const rows = Array.from(
-        els.cardSongs.querySelectorAll("[data-track-src]"),
-      )
+      const rows = Array.from(container.querySelectorAll("[data-track-src]"))
 
       state.queue = rows.map(buildTrackFromRow).filter(Boolean)
 
@@ -290,18 +301,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function clearActiveRows() {
-      if (!els.cardSongs) return
+      const container = getSongsContainer()
+      if (!container) return
 
-      els.cardSongs.querySelectorAll(".gp-active-track").forEach((row) => {
+      container.querySelectorAll(".gp-active-track").forEach((row) => {
         row.classList.remove("gp-active-track")
       })
     }
 
     function setActiveRow(index) {
       clearActiveRows()
-      if (!els.cardSongs) return
 
-      const row = els.cardSongs.querySelector(`[data-track-index="${index}"]`)
+      const container = getSongsContainer()
+      if (!container) return
+
+      const row = container.querySelector(`[data-track-index="${index}"]`)
       if (row) row.classList.add("gp-active-track")
     }
 
@@ -514,6 +528,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function bindTrackClicks() {
       document.addEventListener("click", (event) => {
+        if (event.target.closest('[data-no-play="true"]')) return
+
         const row = event.target.closest("[data-track-src]")
         if (!row) return
 
@@ -551,13 +567,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function watchSongContainer() {
-      if (!els.cardSongs) return
+      const attachObserver = () => {
+        const container = getSongsContainer()
 
-      const observer = new MutationObserver(() => {
-        rebuildQueueFromDOM()
+        if (songsObserver) {
+          songsObserver.disconnect()
+          songsObserver = null
+        }
+
+        observedSongsContainer = container
+
+        if (!container) return
+
+        songsObserver = new MutationObserver(() => {
+          rebuildQueueFromDOM()
+        })
+
+        songsObserver.observe(container, {
+          childList: true,
+          subtree: true,
+        })
+      }
+
+      attachObserver()
+
+      const bodyObserver = new MutationObserver(() => {
+        const currentContainer = getSongsContainer()
+
+        if (currentContainer !== observedSongsContainer) {
+          attachObserver()
+        }
       })
 
-      observer.observe(els.cardSongs, {
+      bodyObserver.observe(document.body, {
         childList: true,
         subtree: true,
       })
