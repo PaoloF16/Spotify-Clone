@@ -403,27 +403,110 @@ const popolaPiccoleCards = (array, wrapper) => {
 
   wrapper.innerHTML = ""
 
-  array.forEach((album) => {
+  const colorThief = typeof ColorThief !== "undefined" ? new ColorThief() : null
+
+  array.forEach((album, i) => {
     if (wrapper.querySelectorAll(".col").length >= 12) return
 
     wrapper.innerHTML += `
       <div class="col">
-        <a href="./album-page.html?albumId=${album.id}" class="text-decoration-none">
-          <div class="row g-0 rounded-2 overflow-hidden" style="background-color: #2a2a2a">
-            <div class="col-3">
-              <img src="${album.cover_small}" alt="${album.titolo}" class="h-100 w-100 object-fit-cover" />
+        <a
+          href="./album-page.html?albumId=${album.id}"
+          class="spotify-small-card"
+          id="card-${i}"
+          style="background: linear-gradient(90deg, rgba(70,70,70,0.55) 0%, rgba(35,35,35,0.95) 100%);"
+        >
+          <div class="spotify-small-card-inner d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
+              <img
+                src="${album.cover_small}"
+                alt="${album.titolo}"
+                class="spotify-small-card-cover"
+                crossorigin="anonymous"
+                id="img-${i}"
+              />
+
+              <div class="spotify-small-card-text px-3 py-2">
+                <p class="spotify-small-card-title">${album.titolo}</p>
+                <p class="spotify-small-card-artist">${album.artista}</p>
+              </div>
             </div>
-            <div class="col-9 d-flex flex-column justify-content-center px-2">
-              <span class="fw-bold text-truncate text-light">${album.titolo}</span>
-              <span class="text-secondary small text-truncate">${album.artista}</span>
+
+            <div class="spotify-small-card-play">
+              <i class="bi bi-play-fill"></i>
             </div>
           </div>
         </a>
       </div>
     `
   })
-}
 
+  const fallbackPalette = [
+    [110, 65, 65],
+    [65, 92, 124],
+    [72, 108, 76],
+    [120, 92, 60],
+    [92, 72, 128],
+    [95, 95, 95],
+  ]
+
+  const applyCardTheme = (card, rgb) => {
+    if (!card || !rgb) return
+
+    const [r, g, b] = rgb
+    const strong = `rgba(${r}, ${g}, ${b}, 0.72)`
+    const soft = `rgba(${r}, ${g}, ${b}, 0.42)`
+
+    card.style.background = `
+      linear-gradient(
+        90deg,
+        ${strong} 0%,
+        ${soft} 38%,
+        rgba(24,24,24,0.96) 100%
+      )
+    `
+
+    card.style.boxShadow = `
+      0 10px 24px rgba(${r}, ${g}, ${b}, 0.12),
+      inset 0 0 0 1px rgba(255,255,255,0.03)
+    `
+  }
+
+  setTimeout(() => {
+    array.forEach((album, i) => {
+      const img = document.getElementById(`img-${i}`)
+      const card = document.getElementById(`card-${i}`)
+      if (!img || !card) return
+
+      const setFallback = () => {
+        const color = fallbackPalette[i % fallbackPalette.length]
+        applyCardTheme(card, color)
+      }
+
+      const applyColor = () => {
+        try {
+          if (!colorThief) {
+            setFallback()
+            return
+          }
+
+          const color = colorThief.getColor(img)
+          applyCardTheme(card, color)
+        } catch (error) {
+          console.log("ColorThief fallback", error)
+          setFallback()
+        }
+      }
+
+      if (img.complete && img.naturalWidth > 0) {
+        applyColor()
+      } else {
+        img.addEventListener("load", applyColor, { once: true })
+        img.addEventListener("error", setFallback, { once: true })
+      }
+    })
+  }, 250)
+}
 const popolaArtisti = (array, wrapper) => {
   if (!wrapper) return
 
