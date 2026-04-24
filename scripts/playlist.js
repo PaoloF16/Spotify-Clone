@@ -299,34 +299,31 @@ const displayAsidePlaylists = () => {
 
   userPlaylists.forEach((playlist) => {
     const card = document.createElement("div");
-    card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-4", "d-flex", "flex-row");
+    card.classList.add("card", "bg-secondary", "bg-opacity-10", "text-white", "p-1", "my-2", "d-flex", "flex-row");
     card.dataset.id = playlist.id;
 
     card.innerHTML = `
       <img
         src="${escapeHtml(playlist.img)}"
         class="rounded-start"
-        style="width: 80px; min-width: 80px; max-height: 150px; object-fit: cover;"
+        style="width: 80px; min-width: 80px; object-fit: cover;"
         alt="Cover for ${escapeHtml(playlist.title)}"
         onerror="this.src='${DEFAULT_PLAYLIST_IMAGE}'"
       >
-      <div class="card-body">
+      <div class="card-body p-2 ms-2">
         <h6 class="card-title mb-1">
           <a
             class="text-decoration-none text-white"
             href="./album-page.html?id=${encodeURIComponent(playlist.id)}"
           >${escapeHtml(playlist.title)}</a>
         </h6>
-        <p class="card-text text-secondary mb-1">
-            <i>${escapeHtml(playlist.description)}</i>
-        </p>
         <div class="d-flex align-items-center justify-content-start mb-1 gap-2">
           <small class="text-secondary mb-1">${playlist.tracks.length} songs</small>
           <small class="text-secondary fw-bold mb-1">
             ${playlist.isPublic ? "Public" : "Private"}
           </small>
         </div>
-        <div class="d-flex align-items-center justify-content-start gap-2">
+        <div class="d-flex align-items-center justify-content-start gap-2 pt-2">
           <a href="#" class="play-playlist-btn btn btn-sm btn-success px-3">Play</a>
           <a href="#" class="edit-playlist-btn btn btn-sm btn-dark px-3">Edit</a>
         </div>
