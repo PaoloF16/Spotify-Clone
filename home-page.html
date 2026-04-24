@@ -994,21 +994,26 @@
             </div>
           </div>
 
-          <div id="playlists" class="px-3 custom-scroll overflow-y-auto">
+          <div class="px-3 custom-scroll overflow-y-auto">
             <div
+              id="playlists"
               class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
+            ></div>
+            <div
+              id="goCreateNewPlaylist"
+              class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+              style="display: none"
             >
-              <p class="fw-bold text-white mb-1">Crea la tua prima playlist</p>
-              <p class="text-light small mb-3 opacity-75">
-                È facile, ti aiuteremo
+              <p class="fw-bold text-white mb-1">
+                Vuoi creare una nuova playlist?
               </p>
-              <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
-                <a
-                  href="create-playlist.html"
-                  class="text-decoration-none text-black"
-                  >Crea playlist</a
-                >
-              </button>
+              <a
+                href="./create-playlist.html"
+                class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+                id="open-podcast-browse-btn"
+              >
+                Crea
+              </a>
             </div>
             <div
               class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
@@ -1295,23 +1300,12 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar")
-        const toggleMainBtn = document.getElementById("toggle-sidebar")
-        if (toggleMainBtn) {
-          toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed")
-          })
-        }
-      })
-    </script>
     <script src="./js/last-fm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/audio-player.js"></script>
     <script src="./js/video-cards.js"></script>
     <script src="./js/browse.js"></script>
+    <script src="./scripts/playlist.js"></script>
   </body>
 </html>

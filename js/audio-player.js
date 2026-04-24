@@ -352,6 +352,23 @@ document.addEventListener("DOMContentLoaded", () => {
       audio.src = track.src
       audio.load()
 
+      // -------------------------
+      // Tancredi function 
+      // -------------------------
+
+      if (els.favoriteIcon) {
+        els.favoriteIcon.dataset.trackId       = track.id;
+        els.favoriteIcon.dataset.trackTitle    = track.title;
+        els.favoriteIcon.dataset.trackArtist   = track.artist;
+        els.favoriteIcon.dataset.trackCover    = track.cover;
+        els.favoriteIcon.dataset.trackRank     = track.rank;
+        els.favoriteIcon.dataset.trackSrc      = track.src;
+        els.favoriteIcon.dataset.trackDuration = track.duration;
+      }
+      // -------------------------
+      // Tancredi function 
+      // -------------------------
+
       updateFooter(track)
       updateRightSidebar(track)
       updateNextPreview()
