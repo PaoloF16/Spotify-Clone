@@ -683,6 +683,53 @@ document.addEventListener("click", (event) => {
   }
 })
 
+// ─── LEFT SIDEBAR TOGGLE LOGIC ──────────────────────────────────────────
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const sidebar   = document.getElementById("main-sidebar");
+    const toggleBtn = document.getElementById("toggle-sidebar");
+
+    if (sidebar && toggleBtn) {
+        toggleBtn.addEventListener("click", () => sidebar.classList.toggle("closed"));
+    }
+
+
+// ─── RIGHT SIDEBAR TOGGLE LOGIC ──────────────────────────────────────────
+
+    const rightSidebar = document.getElementById("right-sidebar");
+    const closeRightBtn = document.getElementById("close-right-sidebar");
+    const openBtn = document.getElementById("open-right-sidebar");
+
+    if (closeRightBtn) {
+        closeRightBtn.addEventListener("click", () => {
+            rightSidebar.classList.add("closed");
+        })
+    }
+
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            rightSidebar.classList.remove("closed");
+        });
+    }
+
+    const sideImg = document.getElementById("side-poster-img");
+
+    if (sideImg) {
+        sideImg.style.cursor = "pointer";
+
+        sideImg.addEventListener("click", () => {
+        const myModal = new bootstrap.Modal(
+            document.getElementById("modale-abbonamento"),
+        );
+        myModal.show();
+        });
+}
+
+    });
+
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   injectSuggestionScrollbarStyles()
 
@@ -703,3 +750,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   setFooterYear()
   initFavoriteHeart()
 })
+
+

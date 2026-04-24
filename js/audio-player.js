@@ -365,6 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
         els.favoriteIcon.dataset.trackSrc      = track.src;
         els.favoriteIcon.dataset.trackDuration = track.duration;
       }
+      
       // -------------------------
       // Tancredi function 
       // -------------------------
