@@ -114,9 +114,20 @@ try {
 }
 
 try {
-  userLikedSongs = JSON.parse(localStorage.getItem(`user${USER_ID}LikedSongs`)) || []
+  userLikedSongs = JSON.parse(localStorage.getItem(`user${USER_ID}LikedSongs`)) 
 } catch {
-  userLikedSongs = [];
+    userLikedSongs = new Playlist()
+    userLikedSongs.id                   = `ls-${USER_ID}`;
+    userLikedSongs.title                = "Liked Songs";
+    userLikedSongs.creator              = "Default";
+    userLikedSongs.description          = null;
+    userLikedSongs.img                  = DEFAULT_FAVORITE_IMAGE
+    userLikedSongs.isPublic             = true;
+    userLikedSongs.createdAt            = "Default"
+    userLikedSongs.tracks               = [];
+    userLikedSongs.followerCount        = null;
+    userLikedSongs.totalDurationSeconds = 0;
+  
 }
 
 // set Id of the playlist that is being edited (null = create mode)
@@ -148,15 +159,52 @@ const submitBtn                 = createPlaylistForm ? createPlaylistForm.queryS
 const favoriteIcon              = document.getElementById("favorite-icon");
 
 
-// ─── SIDEBAR TOGGLE ON CLICK ──────────────────────────────────────────
+// ─── LEFT SIDEBAR TOGGLE LOGIC ──────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
-  const sidebar   = document.getElementById("main-sidebar");
-  const toggleBtn = document.getElementById("toggle-sidebar");
-  if (sidebar && toggleBtn) {
-    toggleBtn.addEventListener("click", () => sidebar.classList.toggle("closed"));
-  }
-});
+
+    const sidebar   = document.getElementById("main-sidebar");
+    const toggleBtn = document.getElementById("toggle-sidebar");
+
+    if (sidebar && toggleBtn) {
+        toggleBtn.addEventListener("click", () => sidebar.classList.toggle("closed"));
+    }
+
+
+// ─── RIGHT SIDEBAR TOGGLE LOGIC ──────────────────────────────────────────
+
+    const rightSidebar = document.getElementById("right-sidebar");
+    const closeRightBtn = document.getElementById("close-right-sidebar");
+    const openBtn = document.getElementById("open-right-sidebar");
+
+    if (closeRightBtn) {
+        closeRightBtn.addEventListener("click", () => {
+            rightSidebar.classList.add("closed");
+        })
+    }
+
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            rightSidebar.classList.remove("closed");
+        });
+    }
+
+    const sideImg = document.getElementById("side-poster-img");
+
+    if (sideImg) {
+        sideImg.style.cursor = "pointer";
+
+        sideImg.addEventListener("click", () => {
+        const myModal = new bootstrap.Modal(
+            document.getElementById("modale-abbonamento"),
+        );
+        myModal.show();
+        });
+}
+
+    });
+
+
 
 
 // ─── FORM HELPERS ────────────────────────────────────────────
@@ -197,18 +245,6 @@ const validateForm = (title) => {
 
 // ─── LIKED SONGS ──────────────────────────────────
 
-userLikedSongs.id                   = `ls-${USER_ID}`;
-userLikedSongs.title                = "Liked Songs";
-userLikedSongs.creator              = "Default";
-userLikedSongs.description          = null;
-userLikedSongs.img                  = DEFAULT_FAVORITE_IMAGE
-userLikedSongs.isPublic             = true;
-userLikedSongs.createdAt            = "Default"
-userLikedSongs.tracks               = [];
-userLikedSongs.followerCount        = null;
-userLikedSongs.totalDurationSeconds = 0;
-
-
 
 if (favoriteIcon) favoriteIcon.addEventListener("click", () => {
     
@@ -229,16 +265,24 @@ if (favoriteIcon) favoriteIcon.addEventListener("click", () => {
 
     if (isCurrentlyLiked) {
 
-        const unlikeAtIndex = userLikedSongs.findIndex((song) => song.id === track.id)
+        const unlikeAtIndex = userLikedSongs.tracks.findIndex((song) => song.id === track.id)
 
-        userLikedSongs.splice(unlikeAtIndex, 1)
+        if (unlikeAtIndex !== -1) {
+            userLikedSongs.tracks.splice(unlikeAtIndex, 1);
+        }
+
+        if (userLikedSongs) {
+            if (unlikeAtIndex !== -1) {
+                userLikedSongs.tracks.splice(unlikeAtIndex, 1);
+                saveLikedSongs()
+            } else console.log("Song not found in favorite songs.")
+
+        } else {
+
+        userLikedSongs.tracks.push(track)
         saveLikedSongs()
 
-    } else {
-
-        userLikedSongs.push(track)
-        saveLikedSongs()
-
+        }
     }
 })
 

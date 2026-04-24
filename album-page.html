@@ -300,32 +300,34 @@
 
             <div class="px-3 custom-scroll">
               <div
+                id="playlists"
                 class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 mt-2 hide-on-closed"
+              ></div>
+              <div
+                id="goCreateNewPlaylist"
+                class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
+                style="display: none"
               >
                 <p class="fw-bold text-white mb-1">
-                  Crea la tua prima playlist
+                  Vuoi creare una nuova playlist?
                 </p>
-                <p class="text-light small mb-3 opacity-75">
-                  È facile, ti aiuteremo
-                </p>
-                <button class="btn btn-light rounded-pill fw-bold btn-sm px-3">
-                  <a
-                    href="create-playlist.html"
-                    class="text-decoration-none text-black"
-                  >
-                    Crea playlist
-                  </a>
-                </button>
+                <a
+                  href="./create-playlist.html"
+                  class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+                  id="open-podcast-browse-btn"
+                >
+                  Crea
+                </a>
               </div>
-
               <div
                 class="bg-secondary bg-opacity-10 rounded-3 p-3 mb-3 hide-on-closed"
               >
-                <p class="fw-bold text-white mb-1">Cerca qualche podcast</p>
+                <p class="fw-bold text-white mb-1">Scopri le classifiche</p>
                 <button
                   class="btn btn-light rounded-pill fw-bold btn-sm px-3 mt-2"
+                  id="open-podcast-browse-btn"
                 >
-                  Sfoglia i podcast
+                  Rankings
                 </button>
               </div>
             </div>
@@ -892,47 +894,6 @@
     <script src="./js/last-fm.js"></script>
     <script src="./js/album-page.js"></script>
     <script src="./js/audio-player.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar");
-        const toggleMainBtn = document.getElementById("toggle-sidebar");
-
-        if (toggleMainBtn) {
-          toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed");
-          });
-        }
-
-        const rightSidebar = document.getElementById("right-sidebar");
-        const closeRightBtn = document.getElementById("close-right-sidebar");
-        const openBtn = document.getElementById("open-right-sidebar");
-
-        if (closeRightBtn) {
-          closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed");
-          });
-        }
-
-        if (openBtn) {
-          openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed");
-          });
-        }
-      });
-
-      const sideImg = document.getElementById("side-poster-img");
-
-      if (sideImg) {
-        sideImg.style.cursor = "pointer";
-
-        sideImg.addEventListener("click", () => {
-          const myModal = new bootstrap.Modal(
-            document.getElementById("modale-abbonamento"),
-          );
-          myModal.show();
-        });
-      }
-    </script>
+    <script src="./scripts/playlist.js"></script>
   </body>
 </html>
