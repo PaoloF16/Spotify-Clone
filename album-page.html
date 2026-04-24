@@ -228,7 +228,10 @@
               <div
                 class="d-flex flex-column flex-md-row align-items-md-center gap-3 border-end border-2 px-0 px-md-3"
               >
-                <a href="#" class="text-light fw-bold text-decoration-none">
+                <a
+                  href="./premium.html"
+                  class="text-light fw-bold text-decoration-none"
+                >
                   Premium
                 </a>
                 <a href="#" class="text-light fw-bold text-decoration-none">
@@ -892,43 +895,43 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const mainSidebar = document.getElementById("main-sidebar")
-        const toggleMainBtn = document.getElementById("toggle-sidebar")
+        const mainSidebar = document.getElementById("main-sidebar");
+        const toggleMainBtn = document.getElementById("toggle-sidebar");
 
         if (toggleMainBtn) {
           toggleMainBtn.addEventListener("click", () => {
-            mainSidebar.classList.toggle("closed")
-          })
+            mainSidebar.classList.toggle("closed");
+          });
         }
 
-        const rightSidebar = document.getElementById("right-sidebar")
-        const closeRightBtn = document.getElementById("close-right-sidebar")
-        const openBtn = document.getElementById("open-right-sidebar")
+        const rightSidebar = document.getElementById("right-sidebar");
+        const closeRightBtn = document.getElementById("close-right-sidebar");
+        const openBtn = document.getElementById("open-right-sidebar");
 
         if (closeRightBtn) {
           closeRightBtn.addEventListener("click", () => {
-            rightSidebar.classList.add("closed")
-          })
+            rightSidebar.classList.add("closed");
+          });
         }
 
         if (openBtn) {
           openBtn.addEventListener("click", () => {
-            rightSidebar.classList.remove("closed")
-          })
+            rightSidebar.classList.remove("closed");
+          });
         }
-      })
+      });
 
-      const sideImg = document.getElementById("side-poster-img")
+      const sideImg = document.getElementById("side-poster-img");
 
       if (sideImg) {
-        sideImg.style.cursor = "pointer"
+        sideImg.style.cursor = "pointer";
 
         sideImg.addEventListener("click", () => {
           const myModal = new bootstrap.Modal(
             document.getElementById("modale-abbonamento"),
-          )
-          myModal.show()
-        })
+          );
+          myModal.show();
+        });
       }
     </script>
   </body>
